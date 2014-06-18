@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+ 
+    <DatePicker
+        android:id="@+id/date_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
+    <TextView 
+        android:id="@+id/txt_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+        	android:id="@+id/txt_days_since"
+        	android:layout_weight="1"
+        	android:layout_width="0dp"
+        	android:layout_height="wrap_content"
+        	android:gravity="center"
+        	android:text="Days since:\n0" />
+        <TextView
+        	android:id="@+id/txt_days_left"
+        	android:layout_weight="1"
+        	android:layout_width="0dp"
+        	android:layout_height="wrap_content"
+        	android:gravity="center"
+        	android:text="Days left:\n0" />
+    </LinearLayout>
+    <EditText 
+        android:id="@+id/edt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="What" />
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <Button 
+        android:id="@+id/btn_ok"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="OK" />
+    <Button 
+        android:id="@+id/btn_cancel"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Cancel" />
+    </LinearLayout>
+    
+
+</LinearLayout>
