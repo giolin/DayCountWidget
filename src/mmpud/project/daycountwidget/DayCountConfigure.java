@@ -113,10 +113,10 @@ public class DayCountConfigure extends Activity{
 				targetDate = datePicker.getDayOfMonth();
 				
 				SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-		        prefs.putInt("year", targetYear);
-		        prefs.putInt("month", targetMonth);
-		        prefs.putInt("date", targetDate);
-		        prefs.putString("title", edtTitle.getText().toString());
+		        prefs.putInt(mAppWidgetId+"year", targetYear);
+		        prefs.putInt(mAppWidgetId+"month", targetMonth);
+		        prefs.putInt(mAppWidgetId+"date", targetDate);
+		        prefs.putString(mAppWidgetId+"title", edtTitle.getText().toString());
 		        prefs.commit();
 				
 				RemoteViews views = new RemoteViews(context.getPackageName(),
