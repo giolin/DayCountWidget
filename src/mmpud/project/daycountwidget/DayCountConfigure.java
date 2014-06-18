@@ -3,10 +3,12 @@ package mmpud.project.daycountwidget;
 import java.util.Calendar;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -113,10 +115,10 @@ public class DayCountConfigure extends Activity{
 				targetDate = datePicker.getDayOfMonth();
 				
 				SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-		        prefs.putInt(mAppWidgetId+"year", targetYear);
-		        prefs.putInt(mAppWidgetId+"month", targetMonth);
-		        prefs.putInt(mAppWidgetId+"date", targetDate);
-		        prefs.putString(mAppWidgetId+"title", edtTitle.getText().toString());
+		        prefs.putInt("year"+mAppWidgetId, targetYear);
+		        prefs.putInt("month"+mAppWidgetId, targetMonth);
+		        prefs.putInt("date"+mAppWidgetId, targetDate);
+		        prefs.putString("title"+mAppWidgetId, edtTitle.getText().toString());
 		        prefs.commit();
 				
 				RemoteViews views = new RemoteViews(context.getPackageName(),
@@ -126,6 +128,15 @@ public class DayCountConfigure extends Activity{
 						  targetYear+"-"+(targetMonth+1)+"-"+targetDate+" and "+
 						  todayYear+"-"+(todayMonth+1)+"-"+todayDate+" is "+
 						  diffDays+" days.");
+				
+				//Click on the widget for edit
+				Intent intent = new Intent(context, DayCountConfigure.class);
+				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId); 
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+				//no request code and no flags for this example
+				PendingIntent pender = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+				views.setOnClickPendingIntent(R.id.widget, pender);
 				
 				// Push widget update to surface with newly set prefix
 	            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
