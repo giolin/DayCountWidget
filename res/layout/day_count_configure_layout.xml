@@ -2,59 +2,84 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DDDDDD"
     android:orientation="vertical" >
  
     <DatePicker
+        android:calendarViewShown="false"
         android:id="@+id/date_picker"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:layout_gravity="center_horizontal" />
-    <TextView 
-        android:id="@+id/txt_date"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <LinearLayout 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:orientation="horizontal">
         <TextView
-        	android:id="@+id/txt_days_since"
-        	android:layout_weight="1"
+            android:id="@+id/txt_days_since_left"
         	android:layout_width="0dp"
-        	android:layout_height="wrap_content"
+        	android:layout_weight="1"
+        	android:layout_height="match_parent"
+        	android:background="#014E60"
+        	android:textColor="#FFFFFF"
         	android:gravity="center"
-        	android:text="Days since:\n0" />
+        	android:text="@string/days_since" />
         <TextView
-        	android:id="@+id/txt_days_left"
-        	android:layout_weight="1"
+        	android:id="@+id/txt_days_count"
         	android:layout_width="0dp"
-        	android:layout_height="wrap_content"
+        	android:layout_weight="3"
+        	android:background="#94DBEB"
+        	android:layout_height="match_parent"
+        	android:textColor="#014E60"
         	android:gravity="center"
-        	android:text="Days left:\n0" />
+        	android:text="@string/no_data" />
     </LinearLayout>
-    <EditText 
-        android:id="@+id/edt_title"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:hint="What" />
-    <LinearLayout 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:orientation="horizontal">
-    <Button 
-        android:id="@+id/btn_ok"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="OK" />
-    <Button 
-        android:id="@+id/btn_cancel"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Cancel" />
+        <TextView
+        	android:layout_width="0dp"
+        	android:layout_weight="1"
+        	android:layout_height="match_parent"
+        	android:background="#014E60"
+        	android:textColor="#FFFFFF"
+        	android:gravity="center"
+        	android:text="@string/what" />
+        <TextView 
+        	android:id="@+id/txt_title"
+        	android:layout_width="0dp"
+        	android:layout_weight="3"
+        	android:layout_height="match_parent"
+        	android:textColor="#014E60"
+       	 	android:background="#94DBEB"
+        	android:gravity="center"
+        	android:text="@string/enter_title" />
     </LinearLayout>
+    
+    <Button 
+        android:id="@+id/btn_create"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:background="#014E60"
+        android:textColor="#FFFFFF"
+        android:text="@string/create" />
     
 
 </LinearLayout>

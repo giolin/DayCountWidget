@@ -3,14 +3,18 @@ package mmpud.project.daycountwidget;
 import java.util.Calendar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.DatePicker.OnDateChangedListener;
@@ -18,19 +22,21 @@ import android.widget.EditText;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
-public class DayCountConfigure extends Activity{
+public class DayCountConfigure extends Activity {
+	
 	private static final String PREFS_NAME = "mmpud.project.daycountwidget.DayCountWidget";
+	
 	int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	
-	private TextView txtDate, txtDaysSince, txtDaysLeft;
 	private DatePicker datePicker;
-	private EditText edtTitle;
-	private Button btnOK, btnCancel;
+	private TextView txtDaysSinceLeft;
+	private TextView txtDaysCount;
+	private TextView txtTitle;
+	private Button btnCreate;
 	
-	private int targetYear;
-	private int targetMonth;
-	private int targetDate;
-	
+	private Calendar calToday;
+	private Calendar calTarget;
+		
 	private int todayYear;
 	private int todayMonth;
 	private int todayDate;
@@ -43,53 +49,9 @@ public class DayCountConfigure extends Activity{
 
 	@Override
 	public void onCreate(Bundle bundle) {
-		super.onCreate(bundle);
-		// Set the result to CANCELED.  This will cause the widget host to cancel
-        // out of the widget placement if they press the back button.
-        setResult(RESULT_CANCELED);
-
-        // Set the view layout resource to use.
-        setContentView(R.layout.day_count_configure_layout);
-        
-        txtDate = (TextView) findViewById(R.id.txt_date);
-		txtDaysSince = (TextView) findViewById(R.id.txt_days_since);
-		txtDaysLeft = (TextView) findViewById(R.id.txt_days_left);
-		datePicker = (DatePicker) findViewById(R.id.date_picker);
-		edtTitle = (EditText) findViewById(R.id.edt_title);
-		btnOK = (Button) findViewById(R.id.btn_ok);
-		btnCancel = (Button) findViewById(R.id.btn_cancel);
-		btnOK.setOnClickListener(mOnClickListener);
-		btnCancel.setOnClickListener(mOnClickListener);
-		
-		final Calendar now = Calendar.getInstance();
-		final Calendar pick = Calendar.getInstance();
-		todayYear = now.get(Calendar.YEAR);
-		todayMonth = now.get(Calendar.MONTH);
-		todayDate = now.get(Calendar.DAY_OF_MONTH);
- 
-		// set current date into textview
-		txtDate.setText( new StringBuilder().append("Today: ")
-				// Month is 0 based, just add 1
-				.append(todayMonth + 1).append("-").append(todayDate).append("-")
-				.append(todayYear).append(" "));
- 
-		// set current date into Date Picker
-		datePicker.init(todayYear, todayMonth, todayDate, new OnDateChangedListener(){
-
-			@Override
-			public void onDateChanged(DatePicker view, int year,
-					int monthOfYear, int dayOfMonth) {
-				 	pick.set(year, monthOfYear, dayOfMonth);
-					long nowTime = now.getTime().getTime();
-					long pickTime = pick.getTime().getTime();
-					long diffTime = nowTime - pickTime;
-					diffDays = diffTime / (1000 * 60 * 60 * 24);
-					
-					txtDaysSince.setText("Days since:\n" + diffDays);
-					txtDaysLeft.setText("Days left:\n" + -diffDays);
-			}
-		} );
-        
+		super.onCreate(bundle);    
+		//Remove title bar
+	    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         // Find the widget id from the intent. 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -97,48 +59,148 @@ public class DayCountConfigure extends Activity{
             mAppWidgetId = extras.getInt(
                     AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
-
+        
+		// Set the result to CANCELED.  This will cause the widget host to cancel
+        // out of the widget placement if they press the back button.
+        setResult(RESULT_CANCELED);
+        
         // If they gave us an intent without the widget id, just bail.
         if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
         }
+        
+        // Set the view layout resource to use.
+        setContentView(R.layout.day_count_configure_layout);
+        
+        datePicker = (DatePicker) findViewById(R.id.date_picker);
+        txtDaysSinceLeft = (TextView) findViewById(R.id.txt_days_since_left);
+		txtDaysCount = (TextView) findViewById(R.id.txt_days_count);
+		txtTitle = (TextView) findViewById(R.id.txt_title);
+		btnCreate = (Button) findViewById(R.id.btn_create);
+		
+		btnCreate.setOnClickListener(mOnClickListener);
+		txtTitle.setOnClickListener(mOnClickListener);
+
+		calToday = Calendar.getInstance();
+		calTarget = Calendar.getInstance();
+		
+		todayYear = calToday.get(Calendar.YEAR);
+		todayMonth = calToday.get(Calendar.MONTH);
+		todayDate = calToday.get(Calendar.DAY_OF_MONTH);
+		
+		// Get target YYYY/MM/DD from shared preferences according to different appWidgetId
+		SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME,0);
+		int initYear = prefs.getInt("year"+mAppWidgetId, todayYear);
+		int initMonth = prefs.getInt("month"+mAppWidgetId, todayMonth);
+		int initDate = prefs.getInt("date"+mAppWidgetId, todayDate);
+		String initTitle = prefs.getString("title"+mAppWidgetId, getResources().getString(R.string.enter_title));
+ 
+		// Update the bays difference
+		calTarget.set(initYear, initMonth, initDate);
+		diffDays = daysBetween(calToday, calTarget);
+		if(diffDays > 0) {
+			txtDaysSinceLeft.setText(R.string.days_left);
+			txtDaysCount.setText(Long.toString(diffDays));
+		} else {
+			txtDaysSinceLeft.setText(R.string.days_since);
+			txtDaysCount.setText(Long.toString(-diffDays));
+		}
+		// Set title
+		txtTitle.setText(initTitle);
+		// Set current date into Date Picker
+		datePicker.init(initYear, initMonth, initDate, new OnDateChangedListener() {
+			@Override
+			public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+				// Update the bays difference
+				calTarget.set(year, monthOfYear, dayOfMonth);
+				diffDays = daysBetween(calToday, calTarget);
+				if(diffDays > 0) {
+					txtDaysSinceLeft.setText(R.string.days_left);
+					txtDaysCount.setText(Long.toString(diffDays));
+				} else {
+					txtDaysSinceLeft.setText(R.string.days_since);
+					txtDaysCount.setText(Long.toString(-diffDays));
+				}
+			}
+		} );
+		
+	}
+	
+	public void popUpInputWindow() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Title");
+
+		// Set up the input
+		final EditText input = new EditText(this);
+		// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+		input.setInputType(InputType.TYPE_CLASS_TEXT);
+		builder.setView(input);
+
+		// Set up the buttons
+		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() { 
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		    	txtTitle.setText(input.getText().toString());
+		    }
+		});
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        dialog.cancel();
+		    }
+		});
+
+		builder.show();
 	}
 	
 	View.OnClickListener mOnClickListener = new View.OnClickListener() {
     	final Context context = DayCountConfigure.this;
 		@Override
 		public void onClick(View v) {
-			if(v.getId()==R.id.btn_ok) {   
-	            
-				targetYear = datePicker.getYear();
-				targetMonth = datePicker.getMonth();
-				targetDate = datePicker.getDayOfMonth();
+			switch (v.getId()) {
+			case R.id.txt_title:
+				popUpInputWindow();
+				break;
+			case R.id.btn_create :
 				
+				// Save target YYYY/MM/DD and title in shared preferences
+				// We also need to save the widget style in the shared preferences
 				SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-		        prefs.putInt("year"+mAppWidgetId, targetYear);
-		        prefs.putInt("month"+mAppWidgetId, targetMonth);
-		        prefs.putInt("date"+mAppWidgetId, targetDate);
-		        prefs.putString("title"+mAppWidgetId, edtTitle.getText().toString());
+		        prefs.putInt("year"+mAppWidgetId, datePicker.getYear());
+		        prefs.putInt("month"+mAppWidgetId,  datePicker.getMonth());
+		        prefs.putInt("date"+mAppWidgetId, datePicker.getDayOfMonth());
+		        prefs.putString("title"+mAppWidgetId, txtTitle.getText().toString());
 		        prefs.commit();
 				
-				RemoteViews views = new RemoteViews(context.getPackageName(),
-	            		R.layout.day_count_widget_layout);
-	            		
-				views.setTextViewText(R.id.first, "The difference between "+
-						  targetYear+"-"+(targetMonth+1)+"-"+targetDate+" and "+
-						  todayYear+"-"+(todayMonth+1)+"-"+todayDate+" is "+
-						  diffDays+" days.");
+		        RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.day_count_widget_layout);
+		        if(diffDays > 0) {
+					views.setTextViewText(R.id.widget_since_left, getResources().getString(R.string.days_left));
+					views.setTextViewText(R.id.widget_diffdays, Long.toString(diffDays));
+				} else {
+					views.setTextViewText(R.id.widget_since_left, getResources().getString(R.string.days_since));
+					views.setTextViewText(R.id.widget_diffdays, Long.toString(-diffDays));
+				}
 				
-				//Click on the widget for edit
+				
+				
+				// Click on the widget for edit
 				Intent intent = new Intent(context, DayCountConfigure.class);
 				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId); 
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-				//no request code and no flags for this example
+				// No request code and no flags for this example
 				PendingIntent pender = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 				views.setOnClickPendingIntent(R.id.widget, pender);
+		        
+//				// Click on the widget for edit
+//				Intent intent = new Intent(context, DayCountDetailDialog.class);
+//				//intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId); 
+//						
+//				// No request code and no flags for this example
+//				PendingIntent pender = PendingIntent.getActivity(context, 0, intent, 0);
+//				views.setOnClickPendingIntent(R.id.widget, pender);
 				
-				// Push widget update to surface with newly set prefix
+				// Push widget update to surface
 	            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 				appWidgetManager.updateAppWidget(mAppWidgetId, views);
 				
@@ -147,10 +209,15 @@ public class DayCountConfigure extends Activity{
 	            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 	            setResult(RESULT_OK, resultValue);
 	            finish();
-			} else if(v.getId()==R.id.btn_cancel) {
-				//quit
-				finish();
+				break;
 			}
 		}
 	};
+	
+	public long daysBetween(Calendar startDay, Calendar endDate) {
+		long startTime = startDay.getTime().getTime();
+		long endTime = endDate.getTime().getTime();
+		long diffTime = endTime - startTime;
+		return (diffTime / (1000 * 60 * 60 * 24));
+	}
 }
