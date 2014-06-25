@@ -35,6 +35,8 @@
         <activity
             android:name="mmpud.project.daycountwidget.DayCountDetailDialog"
             android:theme="@android:style/Theme.Dialog"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true"
             android:label="@string/title_activity_day_count_detail_dialog" >
         </activity>
     </application>
