@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 public class DayCountConfigure extends Activity {
 	
 	private static final String PREFS_NAME = "mmpud.project.daycountwidget.DayCountWidget";
+	private static final String TAG_NAME = "mmpud";
 	
 	int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	
@@ -183,22 +185,24 @@ public class DayCountConfigure extends Activity {
 				
 				
 				
+//				// Click on the widget for edit
+//				Intent intent = new Intent(context, DayCountConfigure.class);
+//				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId); 
+//				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//				intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+//				// No request code and no flags for this example
+//				PendingIntent pender = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//				views.setOnClickPendingIntent(R.id.widget, pender);
+		        
+		        Log.d(TAG_NAME, "mAppWidgetId: " + mAppWidgetId);
 				// Click on the widget for edit
-				Intent intent = new Intent(context, DayCountConfigure.class);
+				Intent intent = new Intent(context, DayCountDetailDialog.class);
 				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId); 
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+				intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));		
 				// No request code and no flags for this example
-				PendingIntent pender = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent pender = PendingIntent.getActivity(context, 0, intent, 0);
 				views.setOnClickPendingIntent(R.id.widget, pender);
-		        
-//				// Click on the widget for edit
-//				Intent intent = new Intent(context, DayCountDetailDialog.class);
-//				//intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId); 
-//						
-//				// No request code and no flags for this example
-//				PendingIntent pender = PendingIntent.getActivity(context, 0, intent, 0);
-//				views.setOnClickPendingIntent(R.id.widget, pender);
 				
 				// Push widget update to surface
 	            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);

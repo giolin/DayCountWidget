@@ -27,15 +27,15 @@
 
         <service android:name="mmpud.project.daycountwidget.DayCountWidget$UpdateService" />
 
-        <activity android:name="mmpud.project.daycountwidget.DayCountConfigure" >
+        <activity 	
+            android:name="mmpud.project.daycountwidget.DayCountConfigure">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
         <activity
             android:name="mmpud.project.daycountwidget.DayCountDetailDialog"
-            android:theme="@android:style/Theme.Dialog"
-            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_day_count_detail_dialog" >
         </activity>

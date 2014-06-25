@@ -2,14 +2,12 @@ package mmpud.project.daycountwidget;
 
 import java.util.Calendar;
 
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -30,25 +28,25 @@ public class DayCountWidget extends AppWidgetProvider {
 		}
 	}
 	
-	@Override
-	public void onEnabled(Context context) {
-		 super.onEnabled(context);
-		 //Setting the Calendar object to midnight time.
-		 Calendar calendar = Calendar.getInstance();
-		 calendar.setTimeInMillis(System.currentTimeMillis());
-		 calendar.set(Calendar.SECOND, 0);
-		 calendar.set(Calendar.MINUTE, 0);
-		 calendar.set(Calendar.HOUR, 0);
-		 calendar.set(Calendar.AM_PM, Calendar.AM);
-		 calendar.add(Calendar.DAY_OF_MONTH, 1);
-
-		 //The fired Intent
-		 Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE); //custom intent name
-		 PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		 AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);  
-		 alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-		 calendar.getTimeInMillis(), 1000*60*60*24, pendingIntent);
-	}
+//	@Override
+//	public void onEnabled(Context context) {
+//		 super.onEnabled(context);
+//		 //Setting the Calendar object to midnight time.
+//		 Calendar calendar = Calendar.getInstance();
+//		 calendar.setTimeInMillis(System.currentTimeMillis());
+//		 calendar.set(Calendar.SECOND, 0);
+//		 calendar.set(Calendar.MINUTE, 0);
+//		 calendar.set(Calendar.HOUR, 0);
+//		 calendar.set(Calendar.AM_PM, Calendar.AM);
+//		 calendar.add(Calendar.DAY_OF_MONTH, 1);
+//
+//		 //The fired Intent
+//		 Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE); //custom intent name
+//		 PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//		 AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);  
+//		 alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+//		 calendar.getTimeInMillis(), 1000*60*60*24, pendingIntent);
+//	}
 	
 	@Override
     public void onDeleted(Context context, int[] appWidgetIds) {
@@ -61,11 +59,11 @@ public class DayCountWidget extends AppWidgetProvider {
             Log.i("mmpud", "this is [" + appWidgetId + "] onDelete!");
 		}
 		
-		//The fired Intent
-		 Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE); //custom intent name
-		 PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		 AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);  
-		 alarmManager.cancel(pendingIntent);
+//		//The fired Intent
+//		 Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE); //custom intent name
+//		 PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//		 AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);  
+//		 alarmManager.cancel(pendingIntent);
     }
 	
 	public RemoteViews buildUpdate(Context context, int appWidgetId)
@@ -91,23 +89,23 @@ public class DayCountWidget extends AppWidgetProvider {
 			view.setTextViewText(R.id.widget_diffdays, Long.toString(-diffDays));
 		}
 
-		// Click on the widget for edit
-		Intent intent = new Intent(context, DayCountConfigure.class);
-		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId); 
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-		
-		// No request code and no flags for this example
-		PendingIntent pender = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		view.setOnClickPendingIntent(R.id.widget, pender);
-		
 //		// Click on the widget for edit
-//		Intent intent = new Intent(context, DayCountDetailDialog.class);
-//		//intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId); 
-//				
+//		Intent intent = new Intent(context, DayCountConfigure.class);
+//		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId); 
+//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//		intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+//		
 //		// No request code and no flags for this example
-//		PendingIntent pender = PendingIntent.getActivity(context, 0, intent, 0);
+//		PendingIntent pender = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 //		view.setOnClickPendingIntent(R.id.widget, pender);
+		
+		// Click on the widget for edit
+		Intent intent = new Intent(context, DayCountDetailDialog.class);
+		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId); 
+				
+		// No request code and no flags for this example
+		PendingIntent pender = PendingIntent.getActivity(context, 0, intent, 0);
+		view.setOnClickPendingIntent(R.id.widget, pender);
 		
 		return view;
 	}
