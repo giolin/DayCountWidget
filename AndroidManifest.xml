@@ -28,7 +28,7 @@
         <service android:name="mmpud.project.daycountwidget.DayCountWidget$UpdateService" />
 
         <activity 	
-            android:name="mmpud.project.daycountwidget.DayCountConfigure">
+            android:name="mmpud.project.daycountwidget.DayCountConfigure" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>

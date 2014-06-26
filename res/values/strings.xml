@@ -6,10 +6,11 @@
     <string name="days_left">DAYS LEFT</string>
     <string name="no_data">-</string>
     <string name="enter_title">(TAP HERE TO EDIT TITLE)</string>
-    <string name="create">CREATE</string>
+    <string name="ok">OK</string>
     <string name="what">WHAT</string>
     <string name="title_activity_day_count_detail_dialog">DayCountDetailDialog</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="edit">EDIT</string>
 
 </resources>

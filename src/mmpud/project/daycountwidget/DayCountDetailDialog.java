@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,10 +16,12 @@ public class DayCountDetailDialog extends Activity {
 	
 	private static final String PREFS_NAME = "mmpud.project.daycountwidget.DayCountWidget";
 	private static final String TAG_NAME = "mmpud";
+	
 	private TextView txtDetailDiffDays;
 	private TextView txtDetailTargetDay;
 	private TextView txtDetailTitle;
 	private Button btnEdit;
+	
 	private int mAppWidgetId;
 	
 	@Override
@@ -28,7 +29,7 @@ public class DayCountDetailDialog extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.day_count_detail_dialog);
 		
-        // Find the widget id from the intent. 
+        // Get the widget id from the intent. 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
@@ -36,7 +37,7 @@ public class DayCountDetailDialog extends Activity {
                     AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         
         }
-        Log.d(TAG_NAME, "mAppWidgetId: " + mAppWidgetId);
+        Log.d(TAG_NAME, "The widget [" + mAppWidgetId +"]'s detail is showing");
         txtDetailDiffDays = (TextView)findViewById(R.id.txt_detail_diffdays);
         txtDetailTargetDay = (TextView)findViewById(R.id.txt_detail_targetday);
         txtDetailTitle = (TextView)findViewById(R.id.txt_detail_title);
@@ -46,39 +47,45 @@ public class DayCountDetailDialog extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// Click on the widget for edit
+				// Click to configure the widget
 				Intent intent = new Intent(DayCountDetailDialog.this , DayCountConfigure.class);
-				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId); 
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 				startActivity(intent);
 			}
 		});
-		
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		// Update the layout info when resuming
+		updateLayoutInfo();
+	}
+	
+	private void updateLayoutInfo() {
 		// Get target YYYY/MM/DD from shared preferences according to different appWidgetId
 		SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME,0);
 		int targetYear = prefs.getInt("year"+mAppWidgetId, 0);
 		int targetMonth = prefs.getInt("month"+mAppWidgetId, 0);
 		int targetDate = prefs.getInt("date"+mAppWidgetId, 0);
 		String targetTitle = prefs.getString("title"+mAppWidgetId, "");
-		
+			
 		Calendar calToday = Calendar.getInstance();
-		Calendar calTarget = Calendar.getInstance();
-		
-		// Update the bays difference
+		Calendar calTarget =  Calendar.getInstance(); // Make calTarget and calTaday the same
+				
+		// Update the day difference
 		calTarget.set(targetYear, targetMonth, targetDate);
 		long diffDays = daysBetween(calToday, calTarget);
 		if(diffDays > 0) {
-			txtDetailDiffDays.setText(diffDays + " day(s) left until");
-			txtDetailTargetDay.setText(targetYear + "/" + targetMonth + "/" + targetDate);
+			txtDetailDiffDays.setText(diffDays + " DAYS LEFT UNTIL");
+			txtDetailTargetDay.setText(targetYear + "/" + (targetMonth+1) + "/" + targetDate);
 			txtDetailTitle.setText(targetTitle);
 		} else {
-			txtDetailDiffDays.setText(-diffDays + " day(s) since");
-			txtDetailTargetDay.setText(targetYear + "/" + targetMonth + "/" + targetDate);
+			txtDetailDiffDays.setText(-diffDays + " DAYS SINCE");
+			txtDetailTargetDay.setText(targetYear + "/" + (targetMonth+1) + "/" + targetDate);
 			txtDetailTitle.setText(targetTitle);
 		}
 	}
-		
 	
 	public long daysBetween(Calendar startDay, Calendar endDate) {
 		long startTime = startDay.getTime().getTime();

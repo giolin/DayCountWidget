@@ -1077,9 +1077,10 @@ containing a value of this type.
         public static final int abc_textfield_searchview_holo_light=0x7f020054;
         public static final int abc_textfield_searchview_right_holo_dark=0x7f020055;
         public static final int abc_textfield_searchview_right_holo_light=0x7f020056;
-        public static final int ic_launcher=0x7f020057;
-        public static final int shape_body=0x7f020058;
-        public static final int shape_header=0x7f020059;
+        public static final int btn_common=0x7f020057;
+        public static final int ic_launcher=0x7f020058;
+        public static final int shape_body=0x7f020059;
+        public static final int shape_header=0x7f02005a;
     }
     public static final class id {
         public static final int action_bar=0x7f06001c;
@@ -1097,8 +1098,8 @@ containing a value of this type.
         public static final int activity_chooser_view_content=0x7f060025;
         public static final int always=0x7f06000b;
         public static final int beginning=0x7f060011;
-        public static final int btn_create=0x7f060040;
-        public static final int btn_detail_edit=0x7f060041;
+        public static final int btn_detail_edit=0x7f060044;
+        public static final int btn_ok=0x7f060040;
         public static final int checkbox=0x7f06002d;
         public static final int collapseActionView=0x7f06000d;
         public static final int date_picker=0x7f06003c;
@@ -1145,9 +1146,9 @@ containing a value of this type.
         public static final int top_action_bar=0x7f060020;
         public static final int txt_days_count=0x7f06003e;
         public static final int txt_days_since_left=0x7f06003d;
-        public static final int txt_detail_diffdays=0x7f060042;
-        public static final int txt_detail_targetday=0x7f060043;
-        public static final int txt_detail_title=0x7f060044;
+        public static final int txt_detail_diffdays=0x7f060041;
+        public static final int txt_detail_targetday=0x7f060042;
+        public static final int txt_detail_title=0x7f060043;
         public static final int txt_title=0x7f06003f;
         public static final int up=0x7f060021;
         public static final int useLogo=0x7f060003;
@@ -1257,12 +1258,13 @@ containing a value of this type.
         public static final int abc_shareactionprovider_share_with_application=0x7f0b000b;
         public static final int action_settings=0x7f0b0016;
         public static final int app_name=0x7f0b000d;
-        public static final int create=0x7f0b0012;
         public static final int days_left=0x7f0b000f;
         public static final int days_since=0x7f0b000e;
+        public static final int edit=0x7f0b0017;
         public static final int enter_title=0x7f0b0011;
         public static final int hello_world=0x7f0b0015;
         public static final int no_data=0x7f0b0010;
+        public static final int ok=0x7f0b0012;
         public static final int title_activity_day_count_detail_dialog=0x7f0b0014;
         public static final int what=0x7f0b0013;
     }
@@ -1293,6 +1295,7 @@ containing a value of this type.
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f0c008c;
+        public static final int ButtonConfirm=0x7f0c008f;
         /**  Mimic text appearance in select_dialog_item.xml 
          */
         public static final int TextAppearance_AppCompat_Base_CompactMenu_Dialog=0x7f0c0063;
@@ -1343,6 +1346,8 @@ containing a value of this type.
         public static final int TextAppearance_AppCompat_Widget_PopupMenu_Small=0x7f0c002f;
         public static final int TextAppearance_Widget_AppCompat_Base_ExpandedMenu_Item=0x7f0c0062;
         public static final int TextAppearance_Widget_AppCompat_ExpandedMenu_Item=0x7f0c0028;
+        public static final int TextContent=0x7f0c008e;
+        public static final int TextTitle=0x7f0c008d;
         /**  Themes in the "Theme.AppCompat" family will contain an action bar by default.
          If Holo themes are available on the current platform version they will be used.
          A limited Holo-styled action bar will be provided on platform versions older

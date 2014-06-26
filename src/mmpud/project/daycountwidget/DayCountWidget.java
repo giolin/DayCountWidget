@@ -8,12 +8,14 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 public class DayCountWidget extends AppWidgetProvider {
 	
 	private static final String PREFS_NAME = "mmpud.project.daycountwidget.DayCountWidget";
+	private static final String TAG_NAME = "mmpud";
 	
 	private int targetYear;
 	private int targetMonth;
@@ -56,7 +58,7 @@ public class DayCountWidget extends AppWidgetProvider {
             prefs.edit().remove("month"+appWidgetId).commit();
             prefs.edit().remove("date"+appWidgetId).commit();
             prefs.edit().remove("title"+appWidgetId).commit();
-            Log.i("mmpud", "this is [" + appWidgetId + "] onDelete!");
+            Log.d(TAG_NAME, "The widget [" + appWidgetId + "] onDelete!");
 		}
 		
 //		//The fired Intent
@@ -66,13 +68,13 @@ public class DayCountWidget extends AppWidgetProvider {
 //		 alarmManager.cancel(pendingIntent);
     }
 	
-	public RemoteViews buildUpdate(Context context, int appWidgetId)
+	public RemoteViews buildUpdate(Context context, int mAppWidgetId)
 	{
 		// Get target YYYY/MM/DD from shared preferences according to different appWidgetId
 		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME,0);
-		targetYear = prefs.getInt("year"+appWidgetId, 0);
-		targetMonth = prefs.getInt("month"+appWidgetId, 0);
-		targetDate = prefs.getInt("date"+appWidgetId, 0);
+		targetYear = prefs.getInt("year"+mAppWidgetId, 0);
+		targetMonth = prefs.getInt("month"+mAppWidgetId, 0);
+		targetDate = prefs.getInt("date"+mAppWidgetId, 0);
 		
 		// Get the day difference. Be aware if it is "days since" or "days left"
 		Calendar calToday = Calendar.getInstance();
@@ -80,13 +82,13 @@ public class DayCountWidget extends AppWidgetProvider {
 		calTarget.set(targetYear, targetMonth, targetDate);
 		long diffDays = daysBetween(calToday, calTarget);
 		
-		RemoteViews view = new RemoteViews(context.getPackageName(),R.layout.day_count_widget_layout);
+		RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.day_count_widget_layout);
 		if(diffDays > 0) {
-			view.setTextViewText(R.id.widget_since_left, context.getResources().getString(R.string.days_left));
-			view.setTextViewText(R.id.widget_diffdays, Long.toString(diffDays));
+			views.setTextViewText(R.id.widget_since_left, context.getResources().getString(R.string.days_left));
+			views.setTextViewText(R.id.widget_diffdays, Long.toString(diffDays));
 		} else {
-			view.setTextViewText(R.id.widget_since_left, context.getResources().getString(R.string.days_since));
-			view.setTextViewText(R.id.widget_diffdays, Long.toString(-diffDays));
+			views.setTextViewText(R.id.widget_since_left, context.getResources().getString(R.string.days_since));
+			views.setTextViewText(R.id.widget_diffdays, Long.toString(-diffDays));
 		}
 
 //		// Click on the widget for edit
@@ -98,16 +100,18 @@ public class DayCountWidget extends AppWidgetProvider {
 //		// No request code and no flags for this example
 //		PendingIntent pender = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 //		view.setOnClickPendingIntent(R.id.widget, pender);
-		
-		// Click on the widget for edit
+			
+		// Click on the widget for editing
 		Intent intent = new Intent(context, DayCountDetailDialog.class);
-		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId); 
-				
+		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId); 
+//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));		
+		
 		// No request code and no flags for this example
 		PendingIntent pender = PendingIntent.getActivity(context, 0, intent, 0);
-		view.setOnClickPendingIntent(R.id.widget, pender);
+		views.setOnClickPendingIntent(R.id.widget, pender);
 		
-		return view;
+		return views;
 	}
 	
 	public long daysBetween(Calendar startDay, Calendar endDate) {

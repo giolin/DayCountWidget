@@ -14,6 +14,7 @@
         android:layout_marginRight="4dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
+        android:background="#1ABC9C"
         android:layout_gravity="center_horizontal" />
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,18 +29,16 @@
         	android:layout_width="0dp"
         	android:layout_weight="1"
         	android:layout_height="match_parent"
-        	android:background="#014E60"
-        	android:textColor="#FFFFFF"
         	android:gravity="center"
+        	style="@style/TextTitle"
         	android:text="@string/days_since" />
         <TextView
         	android:id="@+id/txt_days_count"
         	android:layout_width="0dp"
         	android:layout_weight="3"
-        	android:background="#94DBEB"
         	android:layout_height="match_parent"
-        	android:textColor="#014E60"
         	android:gravity="center"
+        	style="@style/TextContent"
         	android:text="@string/no_data" />
     </LinearLayout>
     <LinearLayout
@@ -54,32 +53,29 @@
         	android:layout_width="0dp"
         	android:layout_weight="1"
         	android:layout_height="match_parent"
-        	android:background="#014E60"
-        	android:textColor="#FFFFFF"
         	android:gravity="center"
+        	style="@style/TextTitle"
         	android:text="@string/what" />
         <TextView 
         	android:id="@+id/txt_title"
         	android:layout_width="0dp"
         	android:layout_weight="3"
         	android:layout_height="match_parent"
-        	android:textColor="#014E60"
-       	 	android:background="#94DBEB"
         	android:gravity="center"
+        	style="@style/TextContent"
         	android:text="@string/enter_title" />
     </LinearLayout>
     
     <Button 
-        android:id="@+id/btn_create"
+        android:id="@+id/btn_ok"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
-        android:background="#014E60"
-        android:textColor="#FFFFFF"
-        android:text="@string/create" />
+        style="@style/ButtonConfirm"
+        android:text="@string/ok" />
     
 
 </LinearLayout>

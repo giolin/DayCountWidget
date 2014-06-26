@@ -28,13 +28,13 @@ public class DayCountConfigure extends Activity {
 	private static final String PREFS_NAME = "mmpud.project.daycountwidget.DayCountWidget";
 	private static final String TAG_NAME = "mmpud";
 	
-	int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	
 	private DatePicker datePicker;
 	private TextView txtDaysSinceLeft;
 	private TextView txtDaysCount;
 	private TextView txtTitle;
-	private Button btnCreate;
+	private Button btnOK;
 	
 	private Calendar calToday;
 	private Calendar calTarget;
@@ -43,7 +43,7 @@ public class DayCountConfigure extends Activity {
 	private int todayMonth;
 	private int todayDate;
 	
-	long diffDays;
+	private long diffDays;
 	
     public DayCountConfigure() {
         super();
@@ -52,9 +52,11 @@ public class DayCountConfigure extends Activity {
 	@Override
 	public void onCreate(Bundle bundle) {
 		super.onCreate(bundle);    
-		//Remove title bar
+		
+		// Remove title bar
 	    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        // Find the widget id from the intent. 
+        
+	    // Get the widget id from the intent. 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
@@ -71,16 +73,16 @@ public class DayCountConfigure extends Activity {
             finish();
         }
         
-        // Set the view layout resource to use.
+        // Set up the view layout resource to use.
         setContentView(R.layout.day_count_configure_layout);
         
         datePicker = (DatePicker) findViewById(R.id.date_picker);
         txtDaysSinceLeft = (TextView) findViewById(R.id.txt_days_since_left);
 		txtDaysCount = (TextView) findViewById(R.id.txt_days_count);
 		txtTitle = (TextView) findViewById(R.id.txt_title);
-		btnCreate = (Button) findViewById(R.id.btn_create);
+		btnOK = (Button) findViewById(R.id.btn_ok);
 		
-		btnCreate.setOnClickListener(mOnClickListener);
+		btnOK.setOnClickListener(mOnClickListener);
 		txtTitle.setOnClickListener(mOnClickListener);
 
 		calToday = Calendar.getInstance();
@@ -90,14 +92,14 @@ public class DayCountConfigure extends Activity {
 		todayMonth = calToday.get(Calendar.MONTH);
 		todayDate = calToday.get(Calendar.DAY_OF_MONTH);
 		
-		// Get target YYYY/MM/DD from shared preferences according to different appWidgetId
+		// Get target YYYY/MM/DD from shared preferences according to the appWidgetId
 		SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME,0);
 		int initYear = prefs.getInt("year"+mAppWidgetId, todayYear);
 		int initMonth = prefs.getInt("month"+mAppWidgetId, todayMonth);
 		int initDate = prefs.getInt("date"+mAppWidgetId, todayDate);
 		String initTitle = prefs.getString("title"+mAppWidgetId, getResources().getString(R.string.enter_title));
  
-		// Update the bays difference
+		// Update the day difference
 		calTarget.set(initYear, initMonth, initDate);
 		diffDays = daysBetween(calToday, calTarget);
 		if(diffDays > 0) {
@@ -107,12 +109,15 @@ public class DayCountConfigure extends Activity {
 			txtDaysSinceLeft.setText(R.string.days_since);
 			txtDaysCount.setText(Long.toString(-diffDays));
 		}
+		
 		// Set title
 		txtTitle.setText(initTitle);
-		// Set current date into Date Picker
+		
+		// Set current date into datePicker
 		datePicker.init(initYear, initMonth, initDate, new OnDateChangedListener() {
 			@Override
 			public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+				Log.d(TAG_NAME, "date changed" + year + "/" + monthOfYear + "/" + dayOfMonth);
 				// Update the bays difference
 				calTarget.set(year, monthOfYear, dayOfMonth);
 				diffDays = daysBetween(calToday, calTarget);
@@ -125,15 +130,16 @@ public class DayCountConfigure extends Activity {
 				}
 			}
 		} );
-		
 	}
 	
+	// Pop up for title input
 	public void popUpInputWindow() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Title");
+		builder.setTitle("TITLE");
 
 		// Set up the input
 		final EditText input = new EditText(this);
+		
 		// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
 		input.setInputType(InputType.TYPE_CLASS_TEXT);
 		builder.setView(input);
@@ -145,13 +151,12 @@ public class DayCountConfigure extends Activity {
 		    	txtTitle.setText(input.getText().toString());
 		    }
 		});
-		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
 		        dialog.cancel();
 		    }
 		});
-
 		builder.show();
 	}
 	
@@ -160,10 +165,12 @@ public class DayCountConfigure extends Activity {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+			
 			case R.id.txt_title:
 				popUpInputWindow();
 				break;
-			case R.id.btn_create :
+				
+			case R.id.btn_ok:
 				
 				// Save target YYYY/MM/DD and title in shared preferences
 				// We also need to save the widget style in the shared preferences
@@ -183,8 +190,6 @@ public class DayCountConfigure extends Activity {
 					views.setTextViewText(R.id.widget_diffdays, Long.toString(-diffDays));
 				}
 				
-				
-				
 //				// Click on the widget for edit
 //				Intent intent = new Intent(context, DayCountConfigure.class);
 //				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId); 
@@ -194,12 +199,14 @@ public class DayCountConfigure extends Activity {
 //				PendingIntent pender = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 //				views.setOnClickPendingIntent(R.id.widget, pender);
 		        
-		        Log.d(TAG_NAME, "mAppWidgetId: " + mAppWidgetId);
-				// Click on the widget for edit
+		        Log.d(TAG_NAME, "The widget [" + mAppWidgetId + "] is set");
+				
+		        // Click on the widget for editing
 				Intent intent = new Intent(context, DayCountDetailDialog.class);
 				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId); 
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));		
+				
 				// No request code and no flags for this example
 				PendingIntent pender = PendingIntent.getActivity(context, 0, intent, 0);
 				views.setOnClickPendingIntent(R.id.widget, pender);
