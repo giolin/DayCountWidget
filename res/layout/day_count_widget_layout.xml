@@ -14,7 +14,8 @@
   	    android:layout_height="0dp"
   	    android:layout_weight="1"
   	    android:gravity="center"
-  	    android:background="@drawable/shape_header"
+  	    android:background="@drawable/shape_header8"
+  	    android:textColor="#FFFFFF"
   	    android:textSize="12sp" />
   	
     <TextView
@@ -23,9 +24,8 @@
 		android:layout_height="0dp"
 		android:layout_weight="3"
 		android:gravity="center"
+		android:background="@drawable/shape_body8"
 		android:textColor="#FFFFFF"
-		android:textSize="28sp"
-		android:background="@drawable/shape_body" />
-    
+		android:textSize="28sp" />
 
 </LinearLayout>
