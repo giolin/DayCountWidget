@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Day Count Widget</string>
+    <string name="days_since">已過天數</string>
+    <string name="days_left">剩餘天數</string>
+    <string name="no_data">-</string>
+    <string name="enter_title">(點選新增事件名稱)</string>
+    <string name="ok">確認</string>
+    <string name="what">事件</string>
+    <string name="title_activity_day_count_detail_dialog">DayCountDetailDialog</string>
+    <string name="action_settings">Settings</string>
+    <string name="edit">編輯</string>
+    <string name="style">外觀</string>
+    <string name="header">標題顏色</string>
+    <string name="body">內容顏色</string>
+    <string name="detail_days_since">天　自從</string>
+    <string name="detail_days_left">天　直到</string>
+    <string name="language_settings">語言選擇</string>
+
+</resources>

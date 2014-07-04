@@ -16,6 +16,9 @@ public final class R {
         public static final int abc_slide_out_bottom=0x7f040004;
         public static final int abc_slide_out_top=0x7f040005;
     }
+    public static final class array {
+        public static final int language_list=0x7f0d0000;
+    }
     public static final class attr {
         /**  Custom divider drawable to use for elements in the action bar. 
          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
@@ -1098,7 +1101,7 @@ containing a value of this type.
         public static final int shape_header8=0x7f020069;
     }
     public static final class id {
-        public static final int LinearLayout1=0x7f060056;
+        public static final int LinearLayout1=0x7f060058;
         public static final int action_bar=0x7f06001c;
         public static final int action_bar_activity_content=0x7f060015;
         public static final int action_bar_container=0x7f06001b;
@@ -1110,21 +1113,22 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f060016;
         public static final int action_menu_presenter=0x7f060017;
         public static final int action_mode_close_button=0x7f060024;
-        public static final int action_settings=0x7f06005f;
+        public static final int action_settings=0x7f060062;
         public static final int activity_chooser_view_content=0x7f060025;
         public static final int always=0x7f06000b;
         public static final int beginning=0x7f060011;
-        public static final int body_color1=0x7f06004e;
-        public static final int body_color2=0x7f06004f;
-        public static final int body_color3=0x7f060050;
-        public static final int body_color4=0x7f060051;
-        public static final int body_color5=0x7f060052;
-        public static final int body_color6=0x7f060053;
-        public static final int body_color7=0x7f060054;
-        public static final int body_color8=0x7f060055;
+        public static final int body_color1=0x7f060050;
+        public static final int body_color2=0x7f060051;
+        public static final int body_color3=0x7f060052;
+        public static final int body_color4=0x7f060053;
+        public static final int body_color5=0x7f060054;
+        public static final int body_color6=0x7f060055;
+        public static final int body_color7=0x7f060056;
+        public static final int body_color8=0x7f060057;
         public static final int btn_change_body_color=0x7f060041;
         public static final int btn_change_header_color=0x7f060040;
         public static final int btn_detail_edit=0x7f06004a;
+        public static final int btn_language_settings=0x7f06004f;
         public static final int btn_ok=0x7f060044;
         public static final int checkbox=0x7f06002d;
         public static final int collapseActionView=0x7f06000d;
@@ -1138,22 +1142,23 @@ containing a value of this type.
         public static final int end=0x7f060013;
         public static final int expand_activities_button=0x7f060026;
         public static final int expanded_menu=0x7f06002c;
-        public static final int header_color1=0x7f060057;
-        public static final int header_color2=0x7f060058;
-        public static final int header_color3=0x7f060059;
-        public static final int header_color4=0x7f06005a;
-        public static final int header_color5=0x7f06005b;
-        public static final int header_color6=0x7f06005c;
-        public static final int header_color7=0x7f06005d;
-        public static final int header_color8=0x7f06005e;
+        public static final int header_color1=0x7f060059;
+        public static final int header_color2=0x7f06005a;
+        public static final int header_color3=0x7f06005b;
+        public static final int header_color4=0x7f06005c;
+        public static final int header_color5=0x7f06005d;
+        public static final int header_color6=0x7f06005e;
+        public static final int header_color7=0x7f06005f;
+        public static final int header_color8=0x7f060060;
         public static final int home=0x7f060014;
         public static final int homeAsUp=0x7f060005;
         public static final int icon=0x7f06002a;
         public static final int ifRoom=0x7f06000a;
         public static final int image=0x7f060027;
-        public static final int linear_detailbox=0x7f060046;
+        public static final int language_settings=0x7f060061;
         public static final int listMode=0x7f060001;
         public static final int list_item=0x7f060029;
+        public static final int ll_detailbox=0x7f060046;
         public static final int middle=0x7f060012;
         public static final int never=0x7f060009;
         public static final int none=0x7f060010;
@@ -1161,7 +1166,7 @@ containing a value of this type.
         public static final int progress_circular=0x7f060018;
         public static final int progress_horizontal=0x7f060019;
         public static final int radio=0x7f06002f;
-        public static final int rl_detail=0x7f060045;
+        public static final int rl_detail_page=0x7f060045;
         public static final int sample_widget_body=0x7f060043;
         public static final int sample_widget_header=0x7f060042;
         public static final int search_badge=0x7f060032;
@@ -1179,6 +1184,7 @@ containing a value of this type.
         public static final int showHome=0x7f060004;
         public static final int showTitle=0x7f060006;
         public static final int split_action_bar=0x7f06001e;
+        public static final int spn_language_settings=0x7f06004e;
         public static final int submit_area=0x7f060039;
         public static final int tabMode=0x7f060002;
         public static final int title=0x7f06002b;
@@ -1248,12 +1254,14 @@ containing a value of this type.
         public static final int day_count_configure_layout=0x7f030018;
         public static final int day_count_detail_dialog=0x7f030019;
         public static final int day_count_widget_layout=0x7f03001a;
-        public static final int select_body_color_dialog=0x7f03001b;
-        public static final int select_header_color_dialog=0x7f03001c;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001d;
+        public static final int language_settings_dialog=0x7f03001b;
+        public static final int select_body_color_dialog=0x7f03001c;
+        public static final int select_header_color_dialog=0x7f03001d;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001e;
     }
     public static final class menu {
-        public static final int day_count_detail_dialog=0x7f0d0000;
+        public static final int day_count_configure_layout=0x7f0e0000;
+        public static final int day_count_detail_dialog=0x7f0e0001;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -1301,9 +1309,12 @@ containing a value of this type.
         public static final int body=0x7f0b0019;
         public static final int days_left=0x7f0b000f;
         public static final int days_since=0x7f0b000e;
+        public static final int detail_days_left=0x7f0b001b;
+        public static final int detail_days_since=0x7f0b001a;
         public static final int edit=0x7f0b0016;
         public static final int enter_title=0x7f0b0011;
         public static final int header=0x7f0b0018;
+        public static final int language_settings=0x7f0b001c;
         public static final int no_data=0x7f0b0010;
         public static final int ok=0x7f0b0012;
         public static final int style=0x7f0b0017;

@@ -1,39 +1,42 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl_detail"
+    android:id="@+id/rl_detail_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#aa000000"
     android:orientation="vertical" >
 
-        <LinearLayout 
-            android:id="@+id/linear_detailbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:background="#1ABC9C" >
-            <TextView 
-            android:id="@+id/txt_detail_diffdays"
+    <LinearLayout 
+        android:id="@+id/ll_detailbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:background="#1ABC9C" >
+        
+        <TextView 
+        	android:id="@+id/txt_detail_diffdays"
             style="@style/DetailTextBlock"
             android:textSize="20sp"
             android:background="#55000000" />
-            <TextView 
+        
+        <TextView 
             android:id="@+id/txt_detail_targetday"
             style="@style/DetailTextBlock"
-            android:textSize="20sp"
-            android:background="#55000000" />
-            <TextView 
+            android:textSize="30sp"
+            android:background="#33000000" />
+        
+        <TextView 
             android:id="@+id/txt_detail_title"
 			style="@style/DetailTextBlock"
-            android:textSize="30sp" />
-        </LinearLayout>
+            android:textSize="40sp" />
+    </LinearLayout>
     
     <Button
         android:id="@+id/btn_detail_edit"
         style="@style/ButtonConfirm"
         android:layout_alignParentBottom="true"
         android:text="@string/edit" />
-        
-
 </RelativeLayout>

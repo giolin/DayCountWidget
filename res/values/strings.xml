@@ -14,5 +14,12 @@
     <string name="style">Style</string>
     <string name="header">Header</string>
     <string name="body">Body</string>
+    <string name="detail_days_since">days since</string>
+    <string name="detail_days_left">days left until</string>
+    <string name="language_settings">Language Settings</string>
+    <string-array name="language_list">
+        <item>English</item>
+        <item>繁體中文</item>
+    </string-array>
 
 </resources>

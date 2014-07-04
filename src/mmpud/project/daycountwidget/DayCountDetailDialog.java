@@ -20,8 +20,8 @@ public class DayCountDetailDialog extends Activity {
 	private static final String PREFS_NAME = "mmpud.project.daycountwidget.DayCountWidget";
 	private static final String TAG_NAME = "mmpud";
 	
-	private RelativeLayout rlDetail;
-	private LinearLayout linearDetailbox;
+	private RelativeLayout rlDetailPage;
+	private LinearLayout llDetailbox;
 	private TextView txtDetailDiffDays;
 	private TextView txtDetailTargetDay;
 	private TextView txtDetailTitle;
@@ -38,21 +38,26 @@ public class DayCountDetailDialog extends Activity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            mAppWidgetId = extras.getInt(
-                    AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-        
+        	mAppWidgetId = extras.getInt(
+            		AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
-        Log.d(TAG_NAME, "The widget [" + mAppWidgetId +"]'s detail is showing");
-        rlDetail = (RelativeLayout)findViewById(R.id.rl_detail);
-        rlDetail.setOnClickListener(mOnClickListener);
-        
-        linearDetailbox = (LinearLayout)findViewById(R.id.linear_detailbox);
+        Log.d(TAG_NAME, "Widget [" + mAppWidgetId + "]'s detail is shown");
+        llDetailbox = (LinearLayout)findViewById(R.id.ll_detailbox);
         txtDetailDiffDays = (TextView)findViewById(R.id.txt_detail_diffdays);
         txtDetailTargetDay = (TextView)findViewById(R.id.txt_detail_targetday);
         txtDetailTitle = (TextView)findViewById(R.id.txt_detail_title);
+        
+        rlDetailPage = (RelativeLayout)findViewById(R.id.rl_detail_page);
+        rlDetailPage.setOnClickListener(mOnClickListener);
    
 		btnEdit = (Button)findViewById(R.id.btn_detail_edit);
 		btnEdit.setOnClickListener(mOnClickListener);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		finish();
 	}
 	
 	@Override
@@ -60,12 +65,6 @@ public class DayCountDetailDialog extends Activity {
 		super.onResume();
 		// Update the layout info when resuming
 		updateLayoutInfo();
-	}
-	
-	@Override
-	protected void onPause() {
-		   super.onPause();
-		   finish();
 	}
 
 	View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -85,53 +84,57 @@ public class DayCountDetailDialog extends Activity {
 	};
 	
 	private void updateLayoutInfo() {
-		// Get target YYYY/MM/DD from shared preferences according to different appWidgetId
+		// Get information: 1. YYYY/MM/DD
+		//					2. widget style (but body color only)
+		//					3. title
+		// from shared preferences according to the appWidgetId
 		SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME,0);
 		int targetYear = prefs.getInt("year"+mAppWidgetId, 0);
 		int targetMonth = prefs.getInt("month"+mAppWidgetId, 0);
 		int targetDate = prefs.getInt("date"+mAppWidgetId, 0);
 		int bodyColor = prefs.getInt("bodyColor"+mAppWidgetId, 1);
 		String targetTitle = prefs.getString("title"+mAppWidgetId, "");
-			
+		
 		Calendar calToday = Calendar.getInstance();
-		Calendar calTarget =  Calendar.getInstance(); // Make calTarget and calTaday the same
+		Calendar calTarget =  Calendar.getInstance();
 				
 		// Update the day difference
 		calTarget.set(targetYear, targetMonth, targetDate);
 		long diffDays = daysBetween(calToday, calTarget);
 		if(diffDays > 0) {
-			txtDetailDiffDays.setText(diffDays + " DAYS LEFT UNTIL");
+			txtDetailDiffDays.setText(diffDays + " " + getResources().getString(R.string.detail_days_left));
+			// Better if different types of day format can be shown according to the local habit of use
 			txtDetailTargetDay.setText(targetYear + "/" + (targetMonth+1) + "/" + targetDate);
 			txtDetailTitle.setText(targetTitle);
 		} else {
-			txtDetailDiffDays.setText(-diffDays + " DAYS SINCE");
+			txtDetailDiffDays.setText(-diffDays + " " + getResources().getString(R.string.detail_days_since));
 			txtDetailTargetDay.setText(targetYear + "/" + (targetMonth+1) + "/" + targetDate);
 			txtDetailTitle.setText(targetTitle);
 		}
 		switch(bodyColor) {
 		case 1:
-			linearDetailbox.setBackgroundColor(Color.parseColor("#e74c3c"));
+			llDetailbox.setBackgroundColor(Color.parseColor("#e74c3c"));
 			break;
 		case 2:
-			linearDetailbox.setBackgroundColor(Color.parseColor("#e67e22"));
+			llDetailbox.setBackgroundColor(Color.parseColor("#e67e22"));
 			break;
 		case 3:
-			linearDetailbox.setBackgroundColor(Color.parseColor("#f1c40f"));
+			llDetailbox.setBackgroundColor(Color.parseColor("#f1c40f"));
 			break;
 		case 4:
-			linearDetailbox.setBackgroundColor(Color.parseColor("#1abc9c"));
+			llDetailbox.setBackgroundColor(Color.parseColor("#1abc9c"));
 			break;
 		case 5:
-			linearDetailbox.setBackgroundColor(Color.parseColor("#3498db"));
+			llDetailbox.setBackgroundColor(Color.parseColor("#3498db"));
 			break;
 		case 6:
-			linearDetailbox.setBackgroundColor(Color.parseColor("#34495e"));
+			llDetailbox.setBackgroundColor(Color.parseColor("#34495e"));
 			break;
 		case 7:
-			linearDetailbox.setBackgroundColor(Color.parseColor("#9b59b6"));
+			llDetailbox.setBackgroundColor(Color.parseColor("#9b59b6"));
 			break;
 		case 8:
-			linearDetailbox.setBackgroundColor(Color.parseColor("#95a5a6"));
+			llDetailbox.setBackgroundColor(Color.parseColor("#95a5a6"));
 			break;
 		}
 	}
