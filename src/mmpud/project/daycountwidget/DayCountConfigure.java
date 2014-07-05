@@ -7,10 +7,12 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -124,7 +126,7 @@ public class DayCountConfigure extends Activity {
 		initDate = prefs.getInt("date"+mAppWidgetId, todayDate);
 		headerColor = prefs.getInt("headerColor"+mAppWidgetId, 1);
 		bodyColor = prefs.getInt("bodyColor"+mAppWidgetId, 1);
-		initTitle = prefs.getString("title"+mAppWidgetId, getResources().getString(R.string.enter_title));
+		initTitle = prefs.getString("title"+mAppWidgetId, "");
 
 		setConfigureView();
 	}
@@ -174,20 +176,27 @@ public class DayCountConfigure extends Activity {
 				public void onClick(View v) {
 					if(selectedLan.equals("English")) {
 						// Set the language
-						Locale locale = new Locale("en"); 
-						Locale.setDefault(locale);
-						Configuration config = new Configuration();
-						config.locale = locale;
-						getApplicationContext().getResources().updateConfiguration(config, null);
+					    Resources res = getResources();
+					    Configuration conf = res.getConfiguration();
+				        conf.locale = Locale.ENGLISH;
+					    res.updateConfiguration(conf, null);
 					} else if(selectedLan.equals("繁體中文")) {
-						Locale locale = new Locale("zh"); // "zh-rTW" is wrong
-						Locale.setDefault(locale);
-						Configuration config = new Configuration();
-						config.locale = locale;
-						getApplicationContext().getResources().updateConfiguration(config, null);
+						Log.d(TAG_NAME, "local to Taiwan");
+						Resources res = getResources();
+					    Configuration conf = res.getConfiguration();
+				        conf.locale = Locale.TAIWAN;
+					    res.updateConfiguration(conf, null);
 					}
-					// 1. Restart the configure activity
-					// 2. Perform the onUpdate of DayCountWidget
+					// 1. Reload the text for the widgets
+					// 2. Restart the configure activity
+					AppWidgetManager manager = AppWidgetManager.getInstance(DayCountConfigure.this);
+			        ComponentName widgetComponent = new ComponentName(DayCountConfigure.this, DayCountWidget.class);
+
+			        for (int appWidgetId : manager.getAppWidgetIds(widgetComponent)) {
+						RemoteViews views = buildUpdate(DayCountConfigure.this, appWidgetId);
+						manager.updateAppWidget(appWidgetId, views);
+					}
+			        
 					Intent intent = new Intent(DayCountConfigure.this , DayCountConfigure.class);
 					intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -524,8 +533,9 @@ public class DayCountConfigure extends Activity {
 		}
 				
 		// Set title
-		edtTitle.setText(initTitle);		
-				
+		if(initTitle.isEmpty()) {
+			edtTitle.setText(initTitle);		
+		}
 		// Set the initial color of Header and Body in the configure page
 		switch(headerColor) {
 		case 1:
@@ -597,6 +607,38 @@ public class DayCountConfigure extends Activity {
 			break;
 		}
 	}
+
+	// Here we only reload the text
+	public RemoteViews buildUpdate(Context context, int mAppWidgetId)
+	{
+		// Get information: YYYY/MM/DD
+		// from shared preferences according to the appWidgetId
+		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME,0);
+		int targetYear = prefs.getInt("year"+mAppWidgetId, 0);
+		int targetMonth = prefs.getInt("month"+mAppWidgetId, 0);
+		int targetDate = prefs.getInt("date"+mAppWidgetId, 0);
+		
+		// Get the day difference
+		Calendar calToday = Calendar.getInstance();
+		Calendar calTarget = Calendar.getInstance();
+		calTarget.set(targetYear, targetMonth, targetDate);
+		long diffDays = daysBetween(calToday, calTarget);
+			
+		RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.day_count_widget_layout);
+		
+		// Adjust the digits' textSize according to the number of digits
+		float textSize = textSizeGenerator(diffDays);
+		views.setFloat(R.id.widget_diffdays,"setTextSize", textSize);
+		
+		if(diffDays > 0) {
+			views.setTextViewText(R.id.widget_since_left, context.getResources().getString(R.string.days_left));
+		} else {
+			views.setTextViewText(R.id.widget_since_left, context.getResources().getString(R.string.days_since));
+		}
+		
+		return views;
+	}
+	
 	
 	public float textSizeGenerator(long num) {
 		if(num<0) {
