@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RemoteViews;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -42,7 +43,7 @@ public class DayCountConfigure extends Activity {
 	private TextView txtDaysSinceLeft;
 	private TextView txtDaysCount;
 	private TextView sampleWidgetHeader;
-	private TextView sampleWidgetBody;
+	private LinearLayout sampleWidgetBody;
 	private EditText edtTitle;
 	private Button btnOK;
 	private Button btnChangeHeaderColor;
@@ -99,7 +100,7 @@ public class DayCountConfigure extends Activity {
 		txtDaysCount = (TextView) findViewById(R.id.txt_days_count);
 		edtTitle = (EditText) findViewById(R.id.edt_title);
 		sampleWidgetHeader = (TextView) findViewById(R.id.sample_widget_header);
-		sampleWidgetBody = (TextView) findViewById(R.id.sample_widget_body);
+		sampleWidgetBody = (LinearLayout) findViewById(R.id.sample_widget_body);
 		btnOK = (Button) findViewById(R.id.btn_ok);
 		btnChangeHeaderColor = (Button) findViewById(R.id.btn_change_header_color);
 		btnChangeBodyColor = (Button) findViewById(R.id.btn_change_body_color);
@@ -408,60 +409,16 @@ public class DayCountConfigure extends Activity {
 		        // Start to build up the remote views
 		        RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.day_count_widget_layout);
 		        
-		        // Set the header and body color
-				switch(headerColor) {
-				case 1:
-					views.setInt(R.id.widget_since_left, "setBackgroundResource", R.drawable.shape_header1);
-					break;
-				case 2:
-					views.setInt(R.id.widget_since_left, "setBackgroundResource", R.drawable.shape_header2);
-					break;
-				case 3:
-					views.setInt(R.id.widget_since_left, "setBackgroundResource", R.drawable.shape_header3);
-					break;
-				case 4:
-					views.setInt(R.id.widget_since_left, "setBackgroundResource", R.drawable.shape_header4);
-					break;
-				case 5:
-					views.setInt(R.id.widget_since_left, "setBackgroundResource", R.drawable.shape_header5);
-					break;
-				case 6:
-					views.setInt(R.id.widget_since_left, "setBackgroundResource", R.drawable.shape_header6);
-					break;
-				case 7:
-					views.setInt(R.id.widget_since_left, "setBackgroundResource", R.drawable.shape_header7);
-					break;
-				case 8:
-					views.setInt(R.id.widget_since_left, "setBackgroundResource", R.drawable.shape_header8);
-					break;		
-				}
+		        // Set header and body color
+				String strHeaderColor = "shape_header" + headerColor;
+				int resourceIDHeader = context.getResources().getIdentifier(strHeaderColor, "drawable","mmpud.project.daycountwidget");
+				views.setInt(R.id.widget_title, "setBackgroundResource", resourceIDHeader);
 				
-				switch(bodyColor) {
-				case 1:
-			        views.setInt(R.id.widget_diffdays, "setBackgroundResource", R.drawable.shape_body1);
-					break;
-				case 2:
-			        views.setInt(R.id.widget_diffdays, "setBackgroundResource", R.drawable.shape_body2);
-					break;
-				case 3:
-			        views.setInt(R.id.widget_diffdays, "setBackgroundResource", R.drawable.shape_body3);
-					break;
-				case 4:
-			        views.setInt(R.id.widget_diffdays, "setBackgroundResource", R.drawable.shape_body4);
-					break;
-				case 5:
-			        views.setInt(R.id.widget_diffdays, "setBackgroundResource", R.drawable.shape_body5);
-					break;
-				case 6:
-			        views.setInt(R.id.widget_diffdays, "setBackgroundResource", R.drawable.shape_body6);
-					break;
-				case 7:
-			        views.setInt(R.id.widget_diffdays, "setBackgroundResource", R.drawable.shape_body7);
-					break;
-				case 8:
-			        views.setInt(R.id.widget_diffdays, "setBackgroundResource", R.drawable.shape_body8);
-					break;
-				}
+				String strBodyColor = "shape_body" + bodyColor;
+				int resourceIDBody = context.getResources().getIdentifier(strBodyColor, "drawable","mmpud.project.daycountwidget");
+				views.setInt(R.id.widget, "setBackgroundResource", resourceIDBody);
+				
+				views.setTextViewText(R.id.widget_title, edtTitle.getText().toString());
 				
 				// Adjust the digits' textSize according to the number of digits
 				float textSize = textSizeGenerator(diffDays);
@@ -533,7 +490,7 @@ public class DayCountConfigure extends Activity {
 		}
 				
 		// Set title
-		if(initTitle.isEmpty()) {
+		if(!initTitle.isEmpty()) {
 			edtTitle.setText(initTitle);		
 		}
 		// Set the initial color of Header and Body in the configure page
@@ -645,9 +602,9 @@ public class DayCountConfigure extends Activity {
 			num=-num;
 		}
 		if(num >= 0 && num < 100) {
-			return 42;
+			return 36;
 		} else if (num >= 100 && num < 1000) {
-			return 34;
+			return 32;
 		} else if (num >= 1000 && num < 10000) {
 			return 26;
 		} else if (num >= 10000 && num < 100000) {

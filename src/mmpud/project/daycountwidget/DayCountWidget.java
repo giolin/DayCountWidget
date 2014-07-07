@@ -27,6 +27,7 @@ public class DayCountWidget extends AppWidgetProvider {
 	private int targetDate;
 	private int headerColor;
 	private int bodyColor;;
+	private String title;
 	
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -117,6 +118,7 @@ public class DayCountWidget extends AppWidgetProvider {
 	{
 		// Get information: 1. YYYY/MM/DD
 		//					2. widget style
+		//					3. title
 		// from shared preferences according to the appWidgetId
 		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME,0);
 		targetYear = prefs.getInt("year"+mAppWidgetId, 0);
@@ -124,6 +126,7 @@ public class DayCountWidget extends AppWidgetProvider {
 		targetDate = prefs.getInt("date"+mAppWidgetId, 0);
 		headerColor = prefs.getInt("headerColor"+mAppWidgetId, 1);
 		bodyColor = prefs.getInt("bodyColor"+mAppWidgetId, 1);
+		title = prefs.getString("title"+mAppWidgetId, "");
 		
 		// Get the day difference
 		Calendar calToday = Calendar.getInstance();
@@ -132,6 +135,8 @@ public class DayCountWidget extends AppWidgetProvider {
 		long diffDays = daysBetween(calToday, calTarget);
 		
 		RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.day_count_widget_layout);
+		
+		views.setTextViewText(R.id.widget_title, title);
 		
 		// Adjust the digits' textSize according to the number of digits
 		float textSize = textSizeGenerator(diffDays);
@@ -144,60 +149,15 @@ public class DayCountWidget extends AppWidgetProvider {
 			views.setTextViewText(R.id.widget_since_left, context.getResources().getString(R.string.days_since));
 			views.setTextViewText(R.id.widget_diffdays, Long.toString(-diffDays));
 		}
-
-		switch(headerColor) {
-		case 1:
-			views.setInt(R.id.widget_since_left, "setBackgroundResource", R.drawable.shape_header1);
-			break;
-		case 2:
-			views.setInt(R.id.widget_since_left, "setBackgroundResource", R.drawable.shape_header2);
-			break;
-		case 3:
-			views.setInt(R.id.widget_since_left, "setBackgroundResource", R.drawable.shape_header3);
-			break;
-		case 4:
-			views.setInt(R.id.widget_since_left, "setBackgroundResource", R.drawable.shape_header4);
-			break;
-		case 5:
-			views.setInt(R.id.widget_since_left, "setBackgroundResource", R.drawable.shape_header5);
-			break;
-		case 6:
-			views.setInt(R.id.widget_since_left, "setBackgroundResource", R.drawable.shape_header6);
-			break;
-		case 7:
-			views.setInt(R.id.widget_since_left, "setBackgroundResource", R.drawable.shape_header7);
-			break;
-		case 8:
-			views.setInt(R.id.widget_since_left, "setBackgroundResource", R.drawable.shape_header8);
-			break;		
-		}
 		
-		switch(bodyColor) {
-		case 1:
-	        views.setInt(R.id.widget_diffdays, "setBackgroundResource", R.drawable.shape_body1);
-			break;
-		case 2:
-	        views.setInt(R.id.widget_diffdays, "setBackgroundResource", R.drawable.shape_body2);
-			break;
-		case 3:
-	        views.setInt(R.id.widget_diffdays, "setBackgroundResource", R.drawable.shape_body3);
-			break;
-		case 4:
-	        views.setInt(R.id.widget_diffdays, "setBackgroundResource", R.drawable.shape_body4);
-			break;
-		case 5:
-	        views.setInt(R.id.widget_diffdays, "setBackgroundResource", R.drawable.shape_body5);
-			break;
-		case 6:
-	        views.setInt(R.id.widget_diffdays, "setBackgroundResource", R.drawable.shape_body6);
-			break;
-		case 7:
-	        views.setInt(R.id.widget_diffdays, "setBackgroundResource", R.drawable.shape_body7);
-			break;
-		case 8:
-	        views.setInt(R.id.widget_diffdays, "setBackgroundResource", R.drawable.shape_body8);
-			break;
-		}
+		// Set header and body color
+		String strHeaderColor = "shape_header" + headerColor;
+		int resourceIDHeader = context.getResources().getIdentifier(strHeaderColor, "drawable","mmpud.project.daycountwidget");
+		views.setInt(R.id.widget_title, "setBackgroundResource", resourceIDHeader);
+		
+		String strBodyColor = "shape_body" + bodyColor;
+		int resourceIDBody = context.getResources().getIdentifier(strBodyColor, "drawable","mmpud.project.daycountwidget");
+		views.setInt(R.id.widget, "setBackgroundResource", resourceIDBody);
 					
 		// Click on the widget for editing
 		Intent intent = new Intent(context, DayCountDetailDialog.class);
@@ -216,9 +176,9 @@ public class DayCountWidget extends AppWidgetProvider {
 			num=-num;
 		}
 		if(num >= 0 && num < 100) {
-			return 42;
+			return 36;
 		} else if (num >= 100 && num < 1000) {
-			return 34;
+			return 32;
 		} else if (num >= 1000 && num < 10000) {
 			return 26;
 		} else if (num >= 10000 && num < 100000) {

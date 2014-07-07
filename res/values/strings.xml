@@ -2,8 +2,8 @@
 <resources>
 
     <string name="app_name">Day Counter</string>
-    <string name="days_since">Days Since</string>
-    <string name="days_left">Days Left</string>
+    <string name="days_since">days</string>
+    <string name="days_left">days left</string>
     <string name="no_data">-</string>
     <string name="enter_title">(Tap here to edit title)</string>
     <string name="ok">OK</string>
