@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/Users/georgelin/Documents/Workspace/Android/DayCountWidget/app/src/main/res/values-fr/strings.xml -->
+    <eat-comment/>
+    <string name="app_name">Compteur de jours</string>
+    <string name="days_left">jours restants</string>
+    <string name="days_since">jours</string>
+    <string name="detail_days_left">jours restants avant</string>
+    <string name="detail_days_since">jours depuis</string>
+    <string name="edit">Modifier</string>
+    <string name="enter_title">(Appuyez ici pour modifier le nom)</string>
+    <string name="language_settings">paramètres de langue</string>
+    <string name="no_data">-</string>
+    <string name="ok">OK</string>
+    <string name="sample_widget_title">nom</string>
+    <string name="what">Quoi</string>
+</resources>

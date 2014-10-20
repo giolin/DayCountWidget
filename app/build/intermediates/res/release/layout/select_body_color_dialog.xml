@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+      <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+        <View 
+            android:id="@+id/body_color1"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:background="#e74c3c"/>
+        
+        <View 
+            android:id="@+id/body_color2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:background="#e67e22"/>
+        
+        <View 
+            android:id="@+id/body_color3"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:background="#f1c40f"/>
+        
+        <View 
+            android:id="@+id/body_color4"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:background="#1abc9c"/>
+        
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+        <View 
+            android:id="@+id/body_color5"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:background="#3498db"/>
+        
+        <View 
+            android:id="@+id/body_color6"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:background="#34495e"/>
+        
+        <View 
+            android:id="@+id/body_color7"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:background="#9b59b6"/>
+        
+        <View 
+            android:id="@+id/body_color8"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:background="#95a5a6"/>
+        
+    </LinearLayout>  
+
+</LinearLayout>
+<!-- From: file:/Users/georgelin/Documents/Workspace/DayCountWidget/app/src/main/res/layout/select_body_color_dialog.xml -->

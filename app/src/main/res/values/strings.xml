@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Day Counter</string>
+    <string name="days_since">days</string>
+    <string name="days_left">days left</string>
+    <string name="no_data">-</string>
+    <string name="enter_title">(Tap here to edit title)</string>
+    <string name="ok">OK</string>
+    <string name="what">What</string>
+    <string name="title_activity_day_count_detail_dialog">DayCountDetailDialog</string>
+    <string name="edit">Edit</string>
+    <string name="detail_days_since">days since</string>
+    <string name="detail_days_left">days left until</string>
+    <string name="language_settings">Language Settings</string>
+    <string-array name="language_list">
+        <item>English</item>
+        <item>繁體中文</item>
+        <item>简体中文</item>
+        <item>日本語</item>
+        <item>Français</item>
+        <item>Türkçe</item>
+    </string-array>
+    <string name="sample_widget_title">event title</string>
+    <string name="sample_widget_days">99</string>
+
+</resources>

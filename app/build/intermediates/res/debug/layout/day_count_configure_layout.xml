@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DDDDDD"
+    android:orientation="vertical" >
+ 
+    <DatePicker
+        android:id="@+id/date_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="2dp"
+        android:background="#F5F1DE"
+        android:layout_gravity="center_horizontal"
+        android:calendarViewShown="false" />
+
+    <LinearLayout style="@style/ItemRow">
+        
+        <TextView
+            android:id="@+id/txt_days_since_left"
+            style="@style/TextTitle"
+            android:text="@string/days_since" />
+        
+        <TextView
+        	android:id="@+id/txt_days_count"
+        	style="@style/TextContent"
+        	android:text="@string/no_data" />
+        
+    </LinearLayout>
+    
+    <LinearLayout style="@style/ItemRow">
+        
+        <TextView
+        	style="@style/TextTitle"
+        	android:text="@string/what" />
+        
+        <EditText 
+        	android:id="@+id/edt_title"
+        	style="@style/TextContent"
+        	android:textColorHint="#FFFFFF"
+        	android:hint="@string/enter_title"
+        	android:singleLine="true"
+        	android:imeOptions="actionDone" />
+        
+    </LinearLayout>
+    <HorizontalScrollView 
+        android:id="@+id/hsv_styles"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+        <LinearLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <FrameLayout 
+                android:id="@+id/style1"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:padding="5dp">
+            	<include 
+            	layout="@layout/widget_layout1"
+            	android:layout_width="70dp"
+            	android:layout_height="80dp" />
+            </FrameLayout>
+            
+            <FrameLayout 
+                android:id="@+id/style2"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:padding="5dp">
+            	<include 
+            	layout="@layout/widget_layout2"
+            	android:layout_width="70dp"
+            	android:layout_height="80dp" />
+            </FrameLayout>
+            
+            <FrameLayout 
+                android:id="@+id/style3"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:padding="5dp">
+            	<include 
+            	layout="@layout/widget_layout3"
+            	android:layout_width="70dp"
+            	android:layout_height="80dp" />
+            </FrameLayout>
+            
+            <FrameLayout 
+                android:id="@+id/style4"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:padding="5dp">
+            	<include 
+            	layout="@layout/widget_layout4"
+            	android:layout_width="70dp"
+            	android:layout_height="80dp" />
+            </FrameLayout>
+            
+            <FrameLayout 
+                android:id="@+id/style5"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:padding="5dp">
+            	<include 
+            	layout="@layout/widget_layout5"
+            	android:layout_width="70dp"
+            	android:layout_height="80dp" />
+            </FrameLayout>
+            
+            <FrameLayout 
+                android:id="@+id/style6"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:padding="5dp">
+            	<include 
+            	layout="@layout/widget_layout6"
+            	android:layout_width="70dp"
+            	android:layout_height="80dp" />
+            </FrameLayout>
+            
+            <FrameLayout 
+                android:id="@+id/style7"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:padding="5dp">
+            	<include 
+            	layout="@layout/widget_layout7"
+            	android:layout_width="70dp"
+            	android:layout_height="80dp" />
+            </FrameLayout>
+            
+            <FrameLayout 
+                android:id="@+id/style8"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:padding="5dp">
+            	<include 
+            	layout="@layout/widget_layout8"
+            	android:layout_width="70dp"
+            	android:layout_height="80dp" />
+            </FrameLayout>
+            
+            <FrameLayout 
+                android:id="@+id/style9"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:padding="5dp">
+            	<include 
+            	layout="@layout/widget_layout9"
+            	android:layout_width="70dp"
+            	android:layout_height="80dp" />
+            </FrameLayout>
+            
+            <FrameLayout 
+                android:id="@+id/style10"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:padding="5dp">
+            	<include 
+            	layout="@layout/widget_layout10"
+            	android:layout_width="70dp"
+            	android:layout_height="80dp" />
+            </FrameLayout>
+            
+            <FrameLayout 
+                android:id="@+id/style11"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:padding="5dp">
+            	<include 
+            	layout="@layout/widget_layout11"
+            	android:layout_width="70dp"
+            	android:layout_height="80dp" />
+            </FrameLayout>
+            
+            <FrameLayout 
+                android:id="@+id/style12"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:padding="5dp">
+            	<include 
+            	layout="@layout/widget_layout12"
+            	android:layout_width="70dp"
+            	android:layout_height="80dp" />
+            </FrameLayout>
+            
+            <FrameLayout 
+                android:id="@+id/style13"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:padding="5dp">
+            	<include 
+            	layout="@layout/widget_layout13"
+            	android:layout_width="70dp"
+            	android:layout_height="80dp" />
+            </FrameLayout>
+            
+            <FrameLayout 
+                android:id="@+id/style14"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:padding="5dp">
+            	<include 
+            	layout="@layout/widget_layout14"
+            	android:layout_width="70dp"
+            	android:layout_height="80dp" />
+            </FrameLayout>
+            
+            <FrameLayout 
+                android:id="@+id/style15"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:padding="5dp">
+            	<include 
+            	layout="@layout/widget_layout15"
+            	android:layout_width="70dp"
+            	android:layout_height="80dp" />
+            </FrameLayout>
+            
+        </LinearLayout>
+        
+            
+    </HorizontalScrollView >
+    
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        
+        <Button 
+        	android:id="@+id/btn_ok"
+        	style="@style/ButtonConfirm"
+        	android:layout_alignParentBottom="true"
+        	android:text="@string/ok" />
+    </RelativeLayout>
+    
+</LinearLayout>
+<!-- From: file:/Users/georgelin/Documents/Workspace/Android/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml -->

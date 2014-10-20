@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+  	android:layout_width="70dp"
+  	android:layout_height="80dp"
+  	android:focusable="true"
+  	android:id="@+id/widget"
+  	android:background="@drawable/body_black"
+  	android:orientation="vertical"
+  	android:padding="@dimen/widget_margin" >
+  	
+  	<TextView 
+  	    android:id="@+id/widget_title"
+  	    android:layout_width="match_parent"
+  	    android:layout_height="0dp"
+  	    android:layout_weight="1.2"
+  	    android:gravity="center"
+  	    android:background="@drawable/header_black"
+  	    android:textColor="#FFFFFF"
+  	    android:singleLine="true"
+  	    android:textSize="12sp"
+  	    android:paddingLeft="2dp" />
+  	
+    <TextView
+        android:id="@+id/widget_diffdays" 
+		android:layout_width="match_parent" 
+		android:layout_height="0dp"
+		android:layout_weight="3"
+		android:gravity="center"
+		android:textColor="#FFFFFF"
+		android:textSize= "42sp" />
+    
+    <TextView
+        android:id="@+id/widget_since_left" 
+		android:layout_width="match_parent" 
+		android:layout_height="0dp"
+		android:layout_weight="1.2"
+		android:gravity="center"
+		android:textColor="#FFFFFF"
+		android:textSize= "12sp" />
+
+</LinearLayout>
+<!-- From: file:/Users/georgelin/Documents/Workspace/Android/DayCountWidget/app/src/main/res/layout/day_count_widget_layout.xml -->

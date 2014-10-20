@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/language_settings"
+        android:title="@string/language_settings" />
+</menu>
+<!-- From: file:/Users/georgelin/Documents/Workspace/DayCountWidget/app/src/main/res/menu/day_count_configure_layout.xml -->

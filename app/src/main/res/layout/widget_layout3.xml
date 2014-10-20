@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget"
+  	android:layout_width="70dp"
+  	android:layout_height="80dp"
+  	android:focusable="true"
+  	android:background="@drawable/body_yellow"
+  	android:orientation="vertical"
+  	android:padding="@dimen/widget_margin" >
+  	
+  	<TextView 
+  	    android:id="@+id/widget_title"
+  	    android:layout_width="match_parent"
+  	    android:layout_height="0dp"
+  	    android:layout_weight="1.2"
+  	    android:gravity="center"
+  	    android:background="@drawable/header_yellow"
+  	    android:textColor="#FFFFFF"
+  	    android:singleLine="true"
+  	    android:textSize="12sp"
+  	    android:paddingLeft="2dp"
+  	    android:text="@string/sample_widget_title" />
+  	
+    <TextView
+        android:id="@+id/widget_diffdays" 
+		android:layout_width="match_parent" 
+		android:layout_height="0dp"
+		android:layout_weight="3"
+		android:gravity="center"
+		android:textColor="#FFFFFF"
+		android:textSize= "36sp"
+		android:text="@string/sample_widget_days"  />
+    
+    <TextView
+        android:id="@+id/widget_since_left" 
+		android:layout_width="match_parent" 
+		android:layout_height="0dp"
+		android:layout_weight="1.2"
+		android:gravity="center"
+		android:textColor="#FFFFFF"
+		android:textSize= "12sp"
+		android:text="@string/days_left" />
+
+</LinearLayout>

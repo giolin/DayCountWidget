@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Compteur de jours</string>
+    <string name="days_since">日数</string>
+    <string name="days_left">残り日数</string>
+    <string name="no_data">-</string>
+    <string name="enter_title">（タイトルの編集）</string>
+    <string name="ok">OK</string>
+    <string name="what">何の日？</string>
+    <string name="edit">編集</string>
+    <string name="detail_days_since">日数</string>
+    <string name="detail_days_left">残り日数</string>
+    <string name="language_settings">言語設定</string>
+    <string name="sample_widget_title">タイトル</string>
+
+</resources>

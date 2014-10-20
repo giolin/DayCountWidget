@@ -1,0 +1,431 @@
+package mmpud.project.daycountwidget;
+
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.DatePicker.OnDateChangedListener;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
+import android.widget.RemoteViews;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import java.util.Calendar;
+import java.util.Locale;
+
+import timber.log.Timber;
+
+public class DayCountConfigure extends Activity {
+
+    private static final String PREFS_NAME = "mmpud.project.daycountwidget.DayCountWidget";
+    private static final String WIDGET_UPDATE_MIDNIGHT = "android.appwidget.action.WIDGET_UPDATE_MIDNIGHT";
+
+    private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+
+    private DatePicker datePicker;
+    private TextView txtDaysSinceLeft;
+    private TextView txtDaysCount;
+    private EditText edtTitle;
+    private Button btnOK;
+    private HorizontalScrollView hsvStyles;
+    private FrameLayout[] btnWidget = new FrameLayout[15];
+
+    private Calendar calToday;
+    private Calendar calTarget;
+    private int todayYear;
+    private int todayMonth;
+    private int todayDate;
+    private int initYear;
+    private int initMonth;
+    private int initDate;
+    private String initTitle;
+    private long diffDays;
+
+    private int styleNum;
+    View.OnClickListener widgetOnClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            for (int i = 0; i < btnWidget.length; i++) {
+                btnWidget[i].setBackground(null);
+            }
+            v.setBackgroundColor(Color.parseColor("#FF6600"));
+            styleNum = Integer.parseInt(v.getTag().toString());
+        }
+    };
+    View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        final Context context = DayCountConfigure.this;
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+
+                case R.id.btn_ok:
+
+                    // Save information: 1. YYYY/MM/DD
+                    //		    		 2. widget style
+                    //					 3. title
+                    // to shared preferences according to the appWidgetId
+                    SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
+                    prefs.putInt("year" + mAppWidgetId, datePicker.getYear());
+                    prefs.putInt("month" + mAppWidgetId, datePicker.getMonth());
+                    prefs.putInt("date" + mAppWidgetId, datePicker.getDayOfMonth());
+                    prefs.putInt("styleNum" + mAppWidgetId, styleNum);
+                    prefs.putString("title" + mAppWidgetId, edtTitle.getText().toString());
+                    prefs.commit();
+
+                    // We gotta save it in the db (insert and replace on conflict)
+
+                    String layoutName = "widget_layout" + styleNum;
+                    int resourceIDStyle = context.getResources().getIdentifier(layoutName, "layout", "mmpud.project.daycountwidget");
+                    // Start to build up the remote views
+                    RemoteViews views = new RemoteViews(context.getPackageName(), resourceIDStyle);
+
+                    views.setTextViewText(R.id.widget_title, edtTitle.getText().toString());
+
+                    // Adjust the digits' textSize according to the number of digits
+                    float textSize = textSizeGenerator(diffDays);
+                    views.setFloat(R.id.widget_diffdays, "setTextSize", textSize);
+
+                    // Put in day difference info
+                    if (diffDays > 0) {
+                        views.setTextViewText(R.id.widget_since_left, getResources().getString(R.string.days_left));
+                        views.setTextViewText(R.id.widget_diffdays, Long.toString(diffDays));
+                    } else {
+                        views.setTextViewText(R.id.widget_since_left, getResources().getString(R.string.days_since));
+                        views.setTextViewText(R.id.widget_diffdays, Long.toString(-diffDays));
+                    }
+
+                    Timber.d("The widget [" + mAppWidgetId + "] is set");
+
+                    // Click on the widget for editing
+                    Intent intent = new Intent(context, DayCountDetailDialog.class);
+                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+                    intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+
+                    // No request code and no flags for this example
+                    PendingIntent pending = PendingIntent.getActivity(context, 0, intent, 0);
+                    views.setOnClickPendingIntent(R.id.widget, pending);
+
+                    // Push widget update to surface
+                    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                    appWidgetManager.updateAppWidget(mAppWidgetId, views);
+
+                    // Make sure we pass back the original appWidgetId
+                    Intent resultValue = new Intent();
+                    resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+                    setResult(RESULT_OK, resultValue);
+                    finish();
+                    break;
+            }
+        }
+    };
+    private String selectedLan;
+
+
+    public DayCountConfigure() {
+        super();
+    }
+
+    @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        // Get the widget id from the intent.
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            mAppWidgetId = extras.getInt(
+                    // INVALID_APPWIDGET_ID is 0
+                    AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+        }
+
+        // Set the result to CANCELED.  This will cause the widget host to cancel
+        // out of the widget placement if they press the back button.
+        setResult(RESULT_CANCELED);
+
+        // If they gave us an intent without the widget id, just bail.
+        if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+            finish();
+        }
+
+        // Set up the view layout resource to use.
+        setContentView(R.layout.day_count_configure_layout);
+
+        datePicker = (DatePicker) findViewById(R.id.date_picker);
+        txtDaysSinceLeft = (TextView) findViewById(R.id.txt_days_since_left);
+        txtDaysCount = (TextView) findViewById(R.id.txt_days_count);
+        edtTitle = (EditText) findViewById(R.id.edt_title);
+        btnOK = (Button) findViewById(R.id.btn_ok);
+        hsvStyles = (HorizontalScrollView) findViewById(R.id.hsv_styles);
+
+        for (int i = 0; i < btnWidget.length; i++) {
+            // Set header and body color
+            String strStyle = "style" + (i + 1);
+            int resourceIDStyle = getResources().getIdentifier(strStyle, "id", "mmpud.project.daycountwidget");
+            btnWidget[i] = (FrameLayout) findViewById(resourceIDStyle);
+            btnWidget[i].setTag(i + 1);
+            btnWidget[i].setOnClickListener(widgetOnClickListener);
+        }
+
+        btnOK.setOnClickListener(mOnClickListener);
+
+        // Instantiate calendars for today and the target day
+        calToday = Calendar.getInstance();
+        calTarget = Calendar.getInstance();
+
+        todayYear = calToday.get(Calendar.YEAR);
+        todayMonth = calToday.get(Calendar.MONTH);
+        todayDate = calToday.get(Calendar.DAY_OF_MONTH);
+
+        // Get information: 1. YYYY/MM/DD
+        //					2. widget style
+        //					3. title
+        // from shared preferences according to the appWidgetId
+        SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, 0);
+        initYear = prefs.getInt("year" + mAppWidgetId, todayYear);
+        initMonth = prefs.getInt("month" + mAppWidgetId, todayMonth);
+        initDate = prefs.getInt("date" + mAppWidgetId, todayDate);
+        styleNum = prefs.getInt("styleNum" + mAppWidgetId, 1);
+        initTitle = prefs.getString("title" + mAppWidgetId, "");
+
+        setConfigureView();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.day_count_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.language_settings:
+
+                final Dialog dialogLanguageSettings = new Dialog(DayCountConfigure.this);
+                dialogLanguageSettings.setContentView(R.layout.language_settings_dialog);
+                dialogLanguageSettings.setTitle(getResources().getString(R.string.language_settings));
+
+                Spinner spnLanguageSettings = (Spinner) dialogLanguageSettings.findViewById(R.id.spn_language_settings);
+                // Set initial selected item in the spinner according to the locale language
+                Locale current = getResources().getConfiguration().locale;
+                Timber.d("current language: " + current.getLanguage());
+                if (current.getLanguage().equals("en")) {
+                    spnLanguageSettings.setSelection(0);
+                } else if (current.getLanguage().equals("zh")) {
+                    spnLanguageSettings.setSelection(1);
+                } else if (current.getLanguage().equals("ja")) {
+                    spnLanguageSettings.setSelection(3);
+                } else if (current.getLanguage().equals("fr")) {
+                    spnLanguageSettings.setSelection(4);
+                } else if (current.getLanguage().equals("tr")) {
+                    spnLanguageSettings.setSelection(5);
+                }
+
+                Button btnLanguageSettings = (Button) dialogLanguageSettings.findViewById(R.id.btn_language_settings);
+
+                spnLanguageSettings.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent,
+                                               View view, int position, long id) {
+                        selectedLan = parent.getSelectedItem().toString();
+                        Timber.d("Language [" + selectedLan + "] selected");
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                });
+
+                btnLanguageSettings.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        if (selectedLan.equals("English")) {
+                            // Set the language
+                            Resources res = getResources();
+                            Configuration conf = res.getConfiguration();
+                            conf.locale = Locale.ENGLISH;
+                            res.updateConfiguration(conf, null);
+                        } else if (selectedLan.equals("繁體中文")) {
+                            Resources res = getResources();
+                            Configuration conf = res.getConfiguration();
+                            conf.locale = Locale.TAIWAN;
+                            res.updateConfiguration(conf, null);
+                        } else if (selectedLan.equals("简体中文")) {
+                            Resources res = getResources();
+                            Configuration conf = res.getConfiguration();
+                            conf.locale = Locale.CHINA;
+                            res.updateConfiguration(conf, null);
+                        } else if (selectedLan.equals("日本語")) {
+                            Resources res = getResources();
+                            Configuration conf = res.getConfiguration();
+                            conf.locale = Locale.JAPAN;
+                            res.updateConfiguration(conf, null);
+                        } else if (selectedLan.equals("Français")) {
+                            Resources res = getResources();
+                            Configuration conf = res.getConfiguration();
+                            conf.locale = Locale.FRANCE;
+                            res.updateConfiguration(conf, null);
+                        } else if (selectedLan.equals("Türkçe")) {
+                            Resources res = getResources();
+                            Configuration conf = res.getConfiguration();
+                            conf.locale = new Locale("tr");
+                            res.updateConfiguration(conf, null);
+                        }
+                        // 1. Force to update the widgets
+                        Intent i = new Intent(WIDGET_UPDATE_MIDNIGHT);
+                        sendBroadcast(i);
+                        // 2. Restart the configure activity
+                        Intent intent = new Intent(DayCountConfigure.this, DayCountConfigure.class);
+                        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        dialogLanguageSettings.dismiss();
+                    }
+                });
+
+                dialogLanguageSettings.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void setConfigureView() {
+        Timber.d("Set the configure view");
+        // Show the selected layout
+        btnWidget[styleNum - 1].setBackgroundColor(Color.parseColor("#FF6600"));
+
+        // Set current date into datePicker
+        datePicker.init(initYear, initMonth, initDate, new OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Timber.d("date changed" + year + "/" + monthOfYear + "/" + dayOfMonth);
+                // Update the bays difference
+                calTarget.set(year, monthOfYear, dayOfMonth);
+                diffDays = daysBetween(calToday, calTarget);
+                if (diffDays > 0) {
+                    txtDaysSinceLeft.setText(R.string.days_left);
+                    txtDaysCount.setText(Long.toString(diffDays));
+                } else {
+                    txtDaysSinceLeft.setText(R.string.days_since);
+                    txtDaysCount.setText(Long.toString(-diffDays));
+                }
+            }
+        });
+
+        // Update the day difference
+        calTarget.set(initYear, initMonth, initDate);
+        diffDays = daysBetween(calToday, calTarget);
+        if (diffDays > 0) {
+            txtDaysSinceLeft.setText(R.string.days_left);
+            txtDaysCount.setText(Long.toString(diffDays));
+        } else {
+            txtDaysSinceLeft.setText(R.string.days_since);
+            txtDaysCount.setText(Long.toString(-diffDays));
+        }
+
+        // Set title
+        if (!initTitle.isEmpty()) {
+            edtTitle.setText(initTitle);
+        }
+
+        // Scroll the HorizontalScrollView to the selected position
+        float density = getApplicationContext().getResources().getDisplayMetrics().density;
+        final float unitWidth = Math.round((float) 80 * density);
+        hsvStyles.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hsvStyles.smoothScrollBy((int) unitWidth * (styleNum - 1), 0);
+            }
+        }, 100);
+
+    }
+
+    // Here we only reload the text (layout not updated)
+    public RemoteViews buildUpdate(Context context, int mAppWidgetId) {
+        // Get information: YYYY/MM/DD
+        // from shared preferences according to the appWidgetId
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+        int targetYear = prefs.getInt("year" + mAppWidgetId, 0);
+        int targetMonth = prefs.getInt("month" + mAppWidgetId, 0);
+        int targetDate = prefs.getInt("date" + mAppWidgetId, 0);
+
+        // Get the day difference
+        Calendar calToday = Calendar.getInstance();
+        Calendar calTarget = Calendar.getInstance();
+        calTarget.set(targetYear, targetMonth, targetDate);
+        long diffDays = daysBetween(calToday, calTarget);
+
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.day_count_widget_layout);
+
+        // Adjust the digits' textSize according to the number of digits
+        float textSize = textSizeGenerator(diffDays);
+        views.setFloat(R.id.widget_diffdays, "setTextSize", textSize);
+
+        if (diffDays > 0) {
+            views.setTextViewText(R.id.widget_since_left, context.getResources().getString(R.string.days_left));
+        } else {
+            views.setTextViewText(R.id.widget_since_left, context.getResources().getString(R.string.days_since));
+        }
+
+        return views;
+    }
+
+
+    public float textSizeGenerator(long num) {
+        if (num < 0) {
+            num = -num;
+        }
+        if (num >= 0 && num < 100) {
+            return 36;
+        } else if (num >= 100 && num < 1000) {
+            return 32;
+        } else if (num >= 1000 && num < 10000) {
+            return 26;
+        } else if (num >= 10000 && num < 100000) {
+            return 22;
+        } else {
+            return 18;
+        }
+    }
+
+
+    public long daysBetween(Calendar startDay, Calendar endDate) {
+        long startTime = startDay.getTime().getTime();
+        long endTime = endDate.getTime().getTime();
+        long diffTime = endTime - startTime;
+        return (diffTime / (1000 * 60 * 60 * 24));
+    }
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/Users/georgelin/Documents/Workspace/Android/DayCountWidget/app/src/main/res/values-zh-rTW/strings.xml -->
+    <eat-comment/>
+    <string name="app_name">數日子</string>
+    <string name="days_left">剩餘天數</string>
+    <string name="days_since">已過天數</string>
+    <string name="detail_days_left">天　直到</string>
+    <string name="detail_days_since">天　自從</string>
+    <string name="edit">編輯</string>
+    <string name="enter_title">(點選新增事件名稱)</string>
+    <string name="language_settings">語言選擇</string>
+    <string name="no_data">-</string>
+    <string name="ok">確認</string>
+    <string name="sample_widget_title">事件主題</string>
+    <string name="what">事件</string>
+</resources>
