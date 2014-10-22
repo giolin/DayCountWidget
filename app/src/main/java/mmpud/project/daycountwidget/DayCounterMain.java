@@ -54,6 +54,7 @@ public class DayCounterMain extends ListActivity
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         Timber.d("post [" + counters.get(position).getTitle() + "] is clicked");
+        // Put info into bundle
         Intent intent = new Intent(this, DayCounterSet.class);
         Bundle bundle = new Bundle();
         bundle.putInt("position", position);
@@ -68,12 +69,12 @@ public class DayCounterMain extends ListActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == UPDATE_COUNTER_REQUEST && resultCode == RESULT_OK) {
-            //update the db and the counters list arrays
+            // Update the db and the counters list arrays
             Counter counter = counters.get(data.getIntExtra("position", -1));
             counter.setTargetDate(data.getStringExtra("target_date"));
             counter.setTitle(data.getStringExtra("title"));
             counter.setDetail(data.getStringExtra("detail"));
-            //update DB
+            // Update DB
             ContentValues contentValues = new ContentValues();
             contentValues.put(CounterContract.Counter.COLUMN_NAME_TARGET_DATE, data.getStringExtra("target_date"));
             contentValues.put(CounterContract.Counter.COLUMN_NAME_TITLE, data.getStringExtra("title"));
@@ -85,7 +86,7 @@ public class DayCounterMain extends ListActivity
                     new String[]{Integer.toString(data.getIntExtra("id", -1))});
             mAdapter.notifyDataSetChanged();
         } else if (requestCode == CREATE_COUNTER_REQUEST && resultCode == RESULT_OK) {
-            Timber.d("CREATE COUNTER RESULT!");
+            // Insert to DB
             ContentValues contentValues = new ContentValues();
             contentValues.put(CounterContract.Counter.COLUMN_NAME_TARGET_DATE, data.getStringExtra("target_date"));
             contentValues.put(CounterContract.Counter.COLUMN_NAME_TITLE, data.getStringExtra("title"));
@@ -95,7 +96,7 @@ public class DayCounterMain extends ListActivity
             getContentResolver().insert(Uri.parse(CounterContract.BASE_CONTENT_URI
                     + "/" + CounterContract.Counter.TABLE_NAME),
                     contentValues);
-
+            // Reload the data
             getLoaderManager().restartLoader(LOADER_COUNTER_LIST, null, this);
         }
     }

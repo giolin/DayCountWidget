@@ -13,4 +13,23 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_target_date"
         android:text= "Hello" />
-</RelativeLayout><!-- From: file:/Users/georgelin/Documents/Workspace/Android/DayCountWidget/app/src/main/res/layout/list_item.xml -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true">
+        <TextView
+            android:id="@+id/tv_day_diff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp" />
+        <TextView
+            android:id="@+id/tv_day_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text= "DAYS" />
+    </LinearLayout>
+
+
+</RelativeLayout><!-- From: file:/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/list_item.xml -->

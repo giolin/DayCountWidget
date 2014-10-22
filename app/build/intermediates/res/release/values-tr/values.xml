@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/Users/georgelin/Documents/Workspace/DayCountWidget/app/src/main/res/values-tr/strings.xml -->
+    <!-- From: file:/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/values-tr/strings.xml -->
     <eat-comment/>
     <string name="app_name">Compteur de jours</string>
     <string name="days_left">kalan günler</string>

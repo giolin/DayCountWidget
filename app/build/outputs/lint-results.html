@@ -18,25 +18,21 @@ document.getElementById(id+'Link').style.display = 'none';
 <body>
 <h1>Lint Report</h1>
 <div class="titleSeparator"></div>
-Check performed at Thu Oct 09 23:36:29 CST 2014.<br/>
-5 errors and 115 warnings found:<br/><br/>
+Check performed at Wed Oct 22 14:13:25 CST 2014.<br/>
+5 errors and 126 warnings found:<br/><br/>
 <table class="overview">
 <tr><td></td><td class="categoryColumn"><a href="#Correctness">Correctness</a>
 </td></tr>
 <tr>
-<td class="countColumn">1</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-error.png" alt="Error" />
-<a href="#MissingRegistered">MissingRegistered: Missing registered class</a>
-</td></tr>
-<tr>
-<td class="countColumn">1</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
-<a href="#AppCompatMethod">AppCompatMethod: Using Wrong AppCompat Method</a>
+<td class="countColumn">6</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
+<a href="#CommitPrefEdits">CommitPrefEdits: Missing <code>commit()</code> on <code>SharedPreference</code> editor</a>
 </td></tr>
 <tr>
 <td class="countColumn">56</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
 <a href="#DuplicateIncludedIds">DuplicateIncludedIds: Duplicate ids across layouts combined with include tags</a>
 </td></tr>
 <tr>
-<td class="countColumn">1</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-error.png" alt="Error" />
+<td class="countColumn">2</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-error.png" alt="Error" />
 <a href="#NewApi">NewApi: Calling new methods on older versions</a>
 </td></tr>
 <tr>
@@ -44,20 +40,12 @@ Check performed at Thu Oct 09 23:36:29 CST 2014.<br/>
 <a href="#OldTargetApi">OldTargetApi: Target SDK attribute is not targeting latest version</a>
 </td></tr>
 <tr>
-<td class="countColumn">3</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
-<a href="#UnusedAttribute">UnusedAttribute: Attribute unused on older versions</a>
-</td></tr>
-<tr>
-<td class="countColumn">1</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
+<td class="countColumn">2</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
 <a href="#GradleDependency">GradleDependency: Obsolete Gradle Dependency</a>
 </td></tr>
 <tr>
 <td class="countColumn">2</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
 <a href="#GradleDynamicVersion">GradleDynamicVersion: Gradle Dynamic Version</a>
-</td></tr>
-<tr>
-<td class="countColumn">2</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
-<a href="#GradleOverrides">GradleOverrides: Value overridden by Gradle build script</a>
 </td></tr>
 <tr><td></td><td class="categoryColumn"><a href="#Correctness:Messages">Correctness:Messages</a>
 </td></tr>
@@ -65,10 +53,16 @@ Check performed at Thu Oct 09 23:36:29 CST 2014.<br/>
 <td class="countColumn">3</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-error.png" alt="Error" />
 <a href="#MissingTranslation">MissingTranslation: Incomplete translation</a>
 </td></tr>
+<tr><td></td><td class="categoryColumn"><a href="#Security">Security</a>
+</td></tr>
+<tr>
+<td class="countColumn">1</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
+<a href="#ExportedContentProvider">ExportedContentProvider: Content provider does not require permission</a>
+</td></tr>
 <tr><td></td><td class="categoryColumn"><a href="#Performance">Performance</a>
 </td></tr>
 <tr>
-<td class="countColumn">4</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
+<td class="countColumn">6</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
 <a href="#Overdraw">Overdraw: Overdraw: Painting regions more than once</a>
 </td></tr>
 <tr>
@@ -86,12 +80,18 @@ Check performed at Thu Oct 09 23:36:29 CST 2014.<br/>
 <a href="#IconDuplicatesConfig">IconDuplicatesConfig: Identical bitmaps across various configurations</a>
 </td></tr>
 <tr>
-<td class="countColumn">4</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
+<td class="countColumn">5</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
 <a href="#IconLocation">IconLocation: Image defined in density-independent drawable folder</a>
 </td></tr>
 <tr>
 <td class="countColumn">1</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
 <a href="#IconMissingDensityFolder">IconMissingDensityFolder: Missing density folder</a>
+</td></tr>
+<tr><td></td><td class="categoryColumn"><a href="#Internationalization">Internationalization</a>
+</td></tr>
+<tr>
+<td class="countColumn">5</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
+<a href="#HardcodedText">HardcodedText: Hardcoded text</a>
 </td></tr>
 <tr><td></td><td class="categoryColumn"><a href="#Bi-directional Text">Bi-directional Text</a>
 </td></tr>
@@ -100,7 +100,7 @@ Check performed at Thu Oct 09 23:36:29 CST 2014.<br/>
 <a href="#RtlSymmetry">RtlSymmetry: Padding and margin symmetry</a>
 </td></tr>
 <tr>
-<td class="countColumn">16</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
+<td class="countColumn">17</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
 <a href="#RtlHardcoded">RtlHardcoded: Using left/right instead of start/end attributes</a>
 </td></tr>
 <tr><td></td><td class="categoryColumn"><a href="#MissingIssues">Disabled Checks (9)</a>
@@ -109,42 +109,58 @@ Check performed at Thu Oct 09 23:36:29 CST 2014.<br/>
 <a name="Correctness"></a>
 <div class="category"><a href="#" title="Return to top">Correctness</a><div class="categorySeparator"></div>
 </div>
-<a name="MissingRegistered"></a>
+<a name="CommitPrefEdits"></a>
 <div class="issue">
-<div class="id"><a href="#" title="Return to top">MissingRegistered: Missing registered class</a><div class="issueSeparator"></div>
+<div class="id"><a href="#" title="Return to top">CommitPrefEdits: Missing <code>commit()</code> on <code>SharedPreference</code> editor</a><div class="issueSeparator"></div>
 </div>
 <div class="warningslist">
-<span class="location"><a href="../../src/main/AndroidManifest.xml">../../src/main/AndroidManifest.xml</a>:31</span>: <span class="message">Class referenced in the manifest, mmpud.project.daycountwidget.DayCountWidget.UpdateService, was not found in the project or the libraries</span><br /><pre class="errorlines">
-<span class="lineno">  28</span>                 android:resource="@xml/day_count_widget" />
-<span class="lineno">  29</span>         &lt;/receiver>
-<span class="lineno">  30</span> 
-<span class="lineno">  31</span>         <span class="errorspan">&lt;service android:name="mmpud.project.daycountwidget.DayCountWidget$UpdateService" /></span>
-<span class="lineno">  32</span> 
-<span class="lineno">  33</span>         &lt;activity 	
+<span class="location"><a href="../../src/main/java/mmpud/project/daycountwidget/DayCountConfigure.java">../../src/main/java/mmpud/project/daycountwidget/DayCountConfigure.java</a>:93</span>: <span class="message">Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background</span><br /><pre class="errorlines">
+<span class="lineno">  90</span>                     prefs.putInt("date" + mAppWidgetId, datePicker.getDayOfMonth());
+<span class="lineno">  91</span>                     prefs.putInt("styleNum" + mAppWidgetId, styleNum);
+<span class="lineno">  92</span>                     prefs.putString("title" + mAppWidgetId, edtTitle.getText().toString());
+<span class="lineno">  93</span>                     <span class="errorspan">prefs.commit();</span>
+<span class="lineno">  94</span> 
+<span class="lineno">  95</span>                     // We gotta save it in the db (insert and replace on conflict)
 </pre>
-</div>
-<div class="metadata">Priority: 8 / 10<br/>
-Category: Correctness</div>
-Severity: <span class="error">Error</span><div class="summary">
-Explanation: Ensures that classes referenced in the manifest are present in the project or libraries.</div>
-<div class="explanation">
-If a class is referenced in the manifest, it must also exist in the project (or in one of the libraries included by the project. This check helps uncover typos in registration names, or attempts to rename or move classes without updating the manifest file properly.
-</div>
-<br/><div class="moreinfo">More info: <a href="http://developer.android.com/guide/topics/manifest/manifest-intro.html">http://developer.android.com/guide/topics/manifest/manifest-intro.html</a>
-</div><br/>To suppress this error, use the issue id "MissingRegistered" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
-</div>
-<a name="AppCompatMethod"></a>
-<div class="issue">
-<div class="id"><a href="#" title="Return to top">AppCompatMethod: Using Wrong AppCompat Method</a><div class="issueSeparator"></div>
-</div>
-<div class="warningslist">
-<span class="location"><a href="../../src/main/java/mmpud/project/daycountwidget/DayCountConfigure.java">../../src/main/java/mmpud/project/daycountwidget/DayCountConfigure.java</a>:80</span>: <span class="message">Should use supportRequestWindowFeature instead of requestWindowFeature name</span><br /><pre class="errorlines">
-<span class="lineno">  77</span> 	public void onCreate(Bundle bundle) {
-<span class="lineno">  78</span> 		super.onCreate(bundle);    
-<span class="lineno">  79</span> 		
-<span class="lineno">  80</span> 	    <span class="errorspan">this.requestWindowFeature(Window.FEATURE_NO_TITLE);</span>
-<span class="lineno">  81</span>         
-<span class="lineno">  82</span> 	    // Get display width
+<span class="location"><a href="../../src/main/java/mmpud/project/daycountwidget/DayCountWidget.java">../../src/main/java/mmpud/project/daycountwidget/DayCountWidget.java</a>:95</span>: <span class="message">Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background</span><br /><pre class="errorlines">
+<span class="lineno">  92</span>     public void onDeleted(Context context, int[] appWidgetIds) {
+<span class="lineno">  93</span>         for (int appWidgetId : appWidgetIds) {
+<span class="lineno">  94</span>             SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+<span class="lineno">  95</span>             <span class="errorspan">prefs.edit().remove("year" + appWidgetId).commit();</span>
+<span class="lineno">  96</span>             prefs.edit().remove("month" + appWidgetId).commit();
+<span class="lineno">  97</span>             prefs.edit().remove("date" + appWidgetId).commit();
+</pre>
+<span class="location"><a href="../../src/main/java/mmpud/project/daycountwidget/DayCountWidget.java">../../src/main/java/mmpud/project/daycountwidget/DayCountWidget.java</a>:96</span>: <span class="message">Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background</span><br /><pre class="errorlines">
+<span class="lineno">  93</span>         for (int appWidgetId : appWidgetIds) {
+<span class="lineno">  94</span>             SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+<span class="lineno">  95</span>             prefs.edit().remove("year" + appWidgetId).commit();
+<span class="lineno">  96</span>             <span class="errorspan">prefs.edit().remove("month" + appWidgetId).commit();</span>
+<span class="lineno">  97</span>             prefs.edit().remove("date" + appWidgetId).commit();
+<span class="lineno">  98</span>             prefs.edit().remove("styleNum" + appWidgetId).commit();
+</pre>
+<span class="location"><a href="../../src/main/java/mmpud/project/daycountwidget/DayCountWidget.java">../../src/main/java/mmpud/project/daycountwidget/DayCountWidget.java</a>:97</span>: <span class="message">Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background</span><br /><pre class="errorlines">
+<span class="lineno">  94</span>             SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+<span class="lineno">  95</span>             prefs.edit().remove("year" + appWidgetId).commit();
+<span class="lineno">  96</span>             prefs.edit().remove("month" + appWidgetId).commit();
+<span class="lineno">  97</span>             <span class="errorspan">prefs.edit().remove("date" + appWidgetId).commit();</span>
+<span class="lineno">  98</span>             prefs.edit().remove("styleNum" + appWidgetId).commit();
+<span class="lineno">  99</span>             prefs.edit().remove("title" + appWidgetId).commit();
+</pre>
+<span class="location"><a href="../../src/main/java/mmpud/project/daycountwidget/DayCountWidget.java">../../src/main/java/mmpud/project/daycountwidget/DayCountWidget.java</a>:98</span>: <span class="message">Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background</span><br /><pre class="errorlines">
+<span class="lineno">  95</span>             prefs.edit().remove("year" + appWidgetId).commit();
+<span class="lineno">  96</span>             prefs.edit().remove("month" + appWidgetId).commit();
+<span class="lineno">  97</span>             prefs.edit().remove("date" + appWidgetId).commit();
+<span class="lineno">  98</span>             <span class="errorspan">prefs.edit().remove("styleNum" + appWidgetId).commit();</span>
+<span class="lineno">  99</span>             prefs.edit().remove("title" + appWidgetId).commit();
+<span class="lineno"> 100</span>             Timber.d("The widget [" + appWidgetId + "] onDelete!");
+</pre>
+<span class="location"><a href="../../src/main/java/mmpud/project/daycountwidget/DayCountWidget.java">../../src/main/java/mmpud/project/daycountwidget/DayCountWidget.java</a>:99</span>: <span class="message">Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background</span><br /><pre class="errorlines">
+<span class="lineno">  96</span>             prefs.edit().remove("month" + appWidgetId).commit();
+<span class="lineno">  97</span>             prefs.edit().remove("date" + appWidgetId).commit();
+<span class="lineno">  98</span>             prefs.edit().remove("styleNum" + appWidgetId).commit();
+<span class="lineno">  99</span>             <span class="errorspan">prefs.edit().remove("title" + appWidgetId).commit();</span>
+<span class="lineno"> 100</span>             Timber.d("The widget [" + appWidgetId + "] onDelete!");
+<span class="lineno"> 101</span>         }
 </pre>
 </div>
 <div class="metadata">Note: This issue has an associated quickfix operation in Android Studio/IntelliJ&nbsp;<img alt="Fix" border="0" align="top" src="lint-results_files/lint-run.png" />
@@ -152,12 +168,11 @@ If a class is referenced in the manifest, it must also exist in the project (or 
 Priority: 6 / 10<br/>
 Category: Correctness</div>
 Severity: <span class="warning">Warning</span><div class="summary">
-Explanation: Finds cases where a custom <code>appcompat</code> method should be used instead.</div>
+Explanation: Looks for code editing a <code>SharedPreference</code> but forgetting to call <code>commit()</code> on it.</div>
 <div class="explanation">
-When using the appcompat library, there are some methods you should be calling instead of the normal ones; for example, <code>getSupportActionBar()</code> instead of <code>getActionBar()</code>. This lint check looks for calls to the wrong method.
+After calling <code>edit()</code> on a <code>SharedPreference</code>, you must call <code>commit()</code> or <code>apply()</code> on the editor to save the results.
 </div>
-<br/><div class="moreinfo">More info: <a href="http://developer.android.com/tools/support-library/index.html">http://developer.android.com/tools/support-library/index.html</a>
-</div><br/>To suppress this error, use the issue id "AppCompatMethod" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
+<br/><div class="moreinfo">More info: </div><br/>To suppress this error, use the issue id "CommitPrefEdits" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
 </div>
 <a name="DuplicateIncludedIds"></a>
 <div class="issue">
@@ -6510,13 +6525,21 @@ It's okay for two independent layouts to use the same ids. However, if layouts a
 <div class="id"><a href="#" title="Return to top">NewApi: Calling new methods on older versions</a><div class="issueSeparator"></div>
 </div>
 <div class="warningslist">
-<span class="location"><a href="../../src/main/res/values/styles.xml">../../src/main/res/values/styles.xml</a>:7</span>: <span class="message">android:Theme.Holo requires API level 11 (current min is 8)</span><br /><pre class="errorlines">
-<span class="lineno">   4</span>         Base application theme, dependent on API level. This theme is replaced
-<span class="lineno">   5</span>         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-<span class="lineno">   6</span>     -->
-<span class="lineno">   7</span>     &lt;style name="AppBaseTheme" <span class="errorspan">parent="android:Theme.Holo"></span>
-<span class="lineno">   8</span>         &lt;!--
-<span class="lineno">   9</span>             Theme customizations available in newer API levels can go in
+<span class="location"><a href="../../src/main/java/mmpud/project/daycountwidget/DayCountConfigure.java">../../src/main/java/mmpud/project/daycountwidget/DayCountConfigure.java</a>:68</span>: <span class="message">Call requires API level 16 (current min is 11): android.widget.FrameLayout#setBackground</span><br /><pre class="errorlines">
+<span class="lineno">  65</span>         @Override
+<span class="lineno">  66</span>         public void onClick(View v) {
+<span class="lineno">  67</span>             for (int i = 0; i &lt; btnWidget.length; i++) {
+<span class="lineno">  68</span>                 btnWidget[i].<span class="errorspan">setBackground(null);</span>
+<span class="lineno">  69</span>             }
+<span class="lineno">  70</span>             v.setBackgroundColor(Color.parseColor("#FF6600"));
+</pre>
+<span class="location"><a href="../../src/main/java/mmpud/project/daycountwidget/util/Utils.java">../../src/main/java/mmpud/project/daycountwidget/util/Utils.java</a>:23</span>: <span class="message">Call requires API level 13 (current min is 11): android.view.Display#getSize</span><br /><pre class="errorlines">
+<span class="lineno">  20</span> 
+<span class="lineno">  21</span>         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+<span class="lineno">  22</span>             final Point point = new Point();
+<span class="lineno">  23</span>             display.<span class="errorspan">getSize(point);</span>
+<span class="lineno">  24</span>             screenWidth = point.x;
+<span class="lineno">  25</span>         } else { // For older version
 </pre>
 </div>
 <div class="metadata">Note: This issue has an associated quickfix operation in Eclipse/ADT & Android Studio/IntelliJ&nbsp;<img alt="Fix" border="0" align="top" src="lint-results_files/lint-run.png" />
@@ -6545,8 +6568,8 @@ Similarly, you can use tools:targetApi="11" in an XML file to indicate that the 
 <span class="location"><a href="../../build.gradle">../../build.gradle</a>:10</span>: <span class="message">Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details.</span><br /><pre class="errorlines">
 <span class="lineno">   7</span>     defaultConfig {
 <span class="lineno">   8</span>         applicationId "mmpud.project.daycountwidget"
-<span class="lineno">   9</span>         minSdkVersion 8
-<span class="lineno">  10</span>         <span class="errorspan">targetSdkVersion 18</span>
+<span class="lineno">   9</span>         minSdkVersion 11
+<span class="lineno">  10</span>         <span class="errorspan">targetSdkVersion 20</span>
 <span class="lineno">  11</span>     }
 <span class="lineno">  12</span>     lintOptions {
 </pre>
@@ -6565,61 +6588,26 @@ To fix this issue, set the <code>targetSdkVersion</code> to the highest availabl
 <br/><div class="moreinfo">More info: <a href="http://developer.android.com/reference/android/os/Build.VERSION_CODES.html">http://developer.android.com/reference/android/os/Build.VERSION_CODES.html</a>
 </div><br/>To suppress this error, use the issue id "OldTargetApi" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
 </div>
-<a name="UnusedAttribute"></a>
-<div class="issue">
-<div class="id"><a href="#" title="Return to top">UnusedAttribute: Attribute unused on older versions</a><div class="issueSeparator"></div>
-</div>
-<div class="warningslist">
-<span class="location"><a href="../../src/main/res/layout/day_count_configure_layout.xml">../../src/main/res/layout/day_count_configure_layout.xml</a>:18</span>: <span class="message">Attribute "calendarViewShown" is only used in API level 11 and higher (current min is 8)</span><br /><pre class="errorlines">
-<span class="lineno">  15</span>         android:layout_marginBottom="2dp"
-<span class="lineno">  16</span>         android:background="#F5F1DE"
-<span class="lineno">  17</span>         android:layout_gravity="center_horizontal"
-<span class="lineno">  18</span>         <span class="errorspan">android:calendarViewShown="false" /></span>
-<span class="lineno">  19</span> 
-<span class="lineno">  20</span>     &lt;LinearLayout style="@style/ItemRow">
-</pre>
-<span class="location"><a href="../../src/main/res/xml/day_count_widget.xml">../../src/main/res/xml/day_count_widget.xml</a>:6</span>: <span class="message">Attribute "previewImage" is only used in API level 11 and higher (current min is 8)</span><br /><pre class="errorlines">
-<span class="lineno">   3</span>     android:minWidth="50dp"
-<span class="lineno">   4</span>     android:minHeight="50dp"
-<span class="lineno">   5</span>     android:configure="mmpud.project.daycountwidget.DayCountConfigure"
-<span class="lineno">   6</span>     <span class="errorspan">android:previewImage="@drawable/widget_preview"</span>
-<span class="lineno">   7</span>     android:initialLayout="@layout/day_count_widget_layout" />
-
-</pre>
-<span class="location"><a href="../../src/main/res/layout/language_settings_dialog.xml">../../src/main/res/layout/language_settings_dialog.xml</a>:13</span>: <span class="message">Attribute "spinnerMode" is only used in API level 11 and higher (current min is 8)</span><br /><pre class="errorlines">
-<span class="lineno">  10</span>         android:layout_width="wrap_content"
-<span class="lineno">  11</span>         android:layout_height="wrap_content"
-<span class="lineno">  12</span>         android:entries="@array/language_list"
-<span class="lineno">  13</span>         <span class="errorspan">android:spinnerMode="dropdown" /></span>
-<span class="lineno">  14</span>     
-<span class="lineno">  15</span>     &lt;Button 
-</pre>
-</div>
-<div class="metadata">Priority: 6 / 10<br/>
-Category: Correctness</div>
-Severity: <span class="warning">Warning</span><div class="summary">
-Explanation: Finds usages of attributes that will not be used (read) on all targeted versions.</div>
-<div class="explanation">
-This check finds attributes set in XML files that were introduced in a version newer than the oldest version targeted by your application (with the the <code>minSdkVersion</code> attribute).<br/>
-<br/>
-This is not an error; the application will simply ignore the attribute. However, if the attribute is important to the appearance of functionality of your application, you should consider finding an alternative way to achieve the same result with only available attributes, and then you can optionally create a copy of the layout in a layout-vNN folder which will be used on API NN or higher where you can take advantage of the newer attribute.<br/>
-<br/>
-Note: This check does not only apply to attributes. For example, some tags can be unused too, such as the new <code>&lt;tag></code> element in layouts introduced in API 21.
-</div>
-<br/><div class="moreinfo">More info: </div><br/>To suppress this error, use the issue id "UnusedAttribute" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
-</div>
 <a name="GradleDependency"></a>
 <div class="issue">
 <div class="id"><a href="#" title="Return to top">GradleDependency: Obsolete Gradle Dependency</a><div class="issueSeparator"></div>
 </div>
 <div class="warningslist">
-<span class="location"><a href="../../build.gradle">../../build.gradle</a>:25</span>: <span class="message">A newer version of com.android.support:appcompat-v7 than 18.0.+ is available: 20.0.0</span><br /><pre class="errorlines">
+<span class="location"><a href="../../build.gradle">../../build.gradle</a>:4</span>: <span class="message">The targetSdkVersion (20) should not be higher than the compileSdkVersion (19)</span><br /><pre class="errorlines">
+<span class="lineno">   1</span> apply plugin: 'com.android.application'
+<span class="lineno">   2</span> 
+<span class="lineno">   3</span> android {
+<span class="lineno">   4</span>     <span class="errorspan">compileSdkVersion 19</span>
+<span class="lineno">   5</span>     buildToolsVersion "20.0.0"
+<span class="lineno">   6</span> 
+</pre>
+<span class="location"><a href="../../build.gradle">../../build.gradle</a>:24</span>: <span class="message">A newer version of com.android.support:support-v4 than 20.0.+ is available: 21.0.0</span><br /><pre class="errorlines">
+<span class="lineno">  21</span> }
 <span class="lineno">  22</span> 
 <span class="lineno">  23</span> dependencies {
-<span class="lineno">  24</span>     compile 'com.android.support:support-v4:20.0.+'
-<span class="lineno">  25</span>     <span class="errorspan">compile 'com.android.support:appcompat-v7:18.0.+'</span>
+<span class="lineno">  24</span>     <span class="errorspan">compile 'com.android.support:support-v4:20.0.+'</span>
+<span class="lineno">  25</span>     compile 'com.jakewharton.timber:timber:2.4.+'
 <span class="lineno">  26</span> }
-<span class="lineno">  27</span> 
 </pre>
 </div>
 <div class="metadata">Note: This issue has an associated quickfix operation in Android Studio/IntelliJ&nbsp;<img alt="Fix" border="0" align="top" src="lint-results_files/lint-run.png" />
@@ -6643,14 +6631,14 @@ This detector looks for usages of libraries where the version you are using is n
 <span class="lineno">  22</span> 
 <span class="lineno">  23</span> dependencies {
 <span class="lineno">  24</span>     <span class="errorspan">compile 'com.android.support:support-v4:20.0.+'</span>
-<span class="lineno">  25</span>     compile 'com.android.support:appcompat-v7:18.0.+'
+<span class="lineno">  25</span>     compile 'com.jakewharton.timber:timber:2.4.+'
 <span class="lineno">  26</span> }
 </pre>
-<span class="location"><a href="../../build.gradle">../../build.gradle</a>:25</span>: <span class="message">Avoid using + in version numbers; can lead to unpredictable and unrepeatable builds (com.android.support:appcompat-v7:18.0.+)</span><br /><pre class="errorlines">
+<span class="location"><a href="../../build.gradle">../../build.gradle</a>:25</span>: <span class="message">Avoid using + in version numbers; can lead to unpredictable and unrepeatable builds (com.jakewharton.timber:timber:2.4.+)</span><br /><pre class="errorlines">
 <span class="lineno">  22</span> 
 <span class="lineno">  23</span> dependencies {
 <span class="lineno">  24</span>     compile 'com.android.support:support-v4:20.0.+'
-<span class="lineno">  25</span>     <span class="errorspan">compile 'com.android.support:appcompat-v7:18.0.+'</span>
+<span class="lineno">  25</span>     <span class="errorspan">compile 'com.jakewharton.timber:timber:2.4.+'</span>
 <span class="lineno">  26</span> }
 <span class="lineno">  27</span> 
 </pre>
@@ -6665,37 +6653,6 @@ Explanation: Looks for dependencies using a dynamic version rather than a fixed 
 Using <code>+</code> in dependencies lets you automatically pick up the latest available version rather than a specific, named version. However, this is not recommended; your builds are not repeatable; you may have tested with a slightly different version than what the build server used. (Using a dynamic version as the major version number is more problematic than using it in the minor version position.)
 </div>
 <br/><div class="moreinfo">More info: </div><br/>To suppress this error, use the issue id "GradleDynamicVersion" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
-</div>
-<a name="GradleOverrides"></a>
-<div class="issue">
-<div class="id"><a href="#" title="Return to top">GradleOverrides: Value overridden by Gradle build script</a><div class="issueSeparator"></div>
-</div>
-<div class="warningslist">
-<span class="location"><a href="../../src/main/AndroidManifest.xml">../../src/main/AndroidManifest.xml</a>:8</span>: <span class="message">This minSdkVersion value (8) is not used; it is always overridden by the value specified in the Gradle build script (8)</span><br /><pre class="errorlines">
-<span class="lineno">   5</span>     android:versionName="1.3" >
-<span class="lineno">   6</span> 
-<span class="lineno">   7</span>     &lt;uses-sdk
-<span class="lineno">   8</span>         <span class="errorspan">android:minSdkVersion="8"</span>
-<span class="lineno">   9</span>         android:targetSdkVersion="20" />
-<span class="lineno">  10</span> 
-</pre>
-<span class="location"><a href="../../src/main/AndroidManifest.xml">../../src/main/AndroidManifest.xml</a>:9</span>: <span class="message">This targetSdkVersion value (20) is not used; it is always overridden by the value specified in the Gradle build script (18)</span><br /><pre class="errorlines">
-<span class="lineno">   6</span> 
-<span class="lineno">   7</span>     &lt;uses-sdk
-<span class="lineno">   8</span>         android:minSdkVersion="8"
-<span class="lineno">   9</span>         <span class="errorspan">android:targetSdkVersion="20" /></span>
-<span class="lineno">  10</span> 
-<span class="lineno">  11</span>     &lt;application
-</pre>
-</div>
-<div class="metadata">Priority: 4 / 10<br/>
-Category: Correctness</div>
-Severity: <span class="warning">Warning</span><div class="summary">
-Explanation: Looks for values specified in the manifest file which are overridden by values in Gradle.</div>
-<div class="explanation">
-The value of (for example) <code>minSdkVersion</code> is only used if it is not specified in the <code>build.gradle</code> build scripts. When specified in the Gradle build scripts, the manifest value is ignored and can be misleading, so should be removed to avoid ambiguity.
-</div>
-<br/><div class="moreinfo">More info: </div><br/>To suppress this error, use the issue id "GradleOverrides" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
 </div>
 
 <a name="Correctness:Messages"></a>
@@ -6749,6 +6706,33 @@ You can tell lint (and other tools) which language is the default language in yo
 <br/><div class="moreinfo">More info: </div><br/>To suppress this error, use the issue id "MissingTranslation" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
 </div>
 
+<a name="Security"></a>
+<div class="category"><a href="#" title="Return to top">Security</a><div class="categorySeparator"></div>
+</div>
+<a name="ExportedContentProvider"></a>
+<div class="issue">
+<div class="id"><a href="#" title="Return to top">ExportedContentProvider: Content provider does not require permission</a><div class="issueSeparator"></div>
+</div>
+<div class="warningslist">
+<span class="location"><a href="../../src/main/AndroidManifest.xml">../../src/main/AndroidManifest.xml</a>:28</span>: <span class="message">Exported content providers can provide access to potentially sensitive data</span><br /><pre class="errorlines">
+<span class="lineno">  25</span> 
+<span class="lineno">  26</span>         &lt;/activity>
+<span class="lineno">  27</span>         
+<span class="lineno">  28</span>         <span class="errorspan">&lt;provider</span>
+<span class="lineno">  29</span>             android:authorities="mmpud.project.daycountwidget.provider"
+<span class="lineno">  30</span>             android:name="mmpud.project.daycountwidget.provider.CounterProvider">&lt;/provider>
+</pre>
+</div>
+<div class="metadata">Priority: 5 / 10<br/>
+Category: Security</div>
+Severity: <span class="warning">Warning</span><div class="summary">
+Explanation: Checks for exported content providers that do not require permissions.</div>
+<div class="explanation">
+Content providers are exported by default and any application on the system can potentially use them to read and write data. If the content provider provides access to sensitive data, it should be protected by specifying <code>export=false</code> in the manifest or by protecting it with a permission that can be granted to other applications.
+</div>
+<br/><div class="moreinfo">More info: </div><br/>To suppress this error, use the issue id "ExportedContentProvider" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
+</div>
+
 <a name="Performance"></a>
 <div class="category"><a href="#" title="Return to top">Performance</a><div class="categorySeparator"></div>
 </div>
@@ -6764,6 +6748,22 @@ You can tell lint (and other tools) which language is the default language in yo
 <span class="lineno">   5</span>     <span class="errorspan">android:background="#DDDDDD"</span>
 <span class="lineno">   6</span>     android:orientation="vertical" >
 <span class="lineno">   7</span>  
+</pre>
+<span class="location"><a href="../../src/main/res/layout/day_count_detail_dialog.xml">../../src/main/res/layout/day_count_detail_dialog.xml</a>:5</span>: <span class="message">Possible overdraw: Root element paints background #dd000000 with a theme that also paints a background (inferred theme is @style/AppTheme)</span><br /><pre class="errorlines">
+<span class="lineno">   2</span>     android:id="@+id/rl_detail_page"
+<span class="lineno">   3</span>     android:layout_width="match_parent"
+<span class="lineno">   4</span>     android:layout_height="match_parent"
+<span class="lineno">   5</span>     <span class="errorspan">android:background="#dd000000"</span>
+<span class="lineno">   6</span>     android:orientation="vertical" >
+<span class="lineno">   7</span> 
+</pre>
+<span class="location"><a href="../../src/main/res/layout/day_count_set_layout.xml">../../src/main/res/layout/day_count_set_layout.xml</a>:5</span>: <span class="message">Possible overdraw: Root element paints background #DDDDDD with a theme that also paints a background (inferred theme is @style/AppTheme)</span><br /><pre class="errorlines">
+<span class="lineno">   2</span> &lt;RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<span class="lineno">   3</span>     android:layout_width="match_parent"
+<span class="lineno">   4</span>     android:layout_height="match_parent"
+<span class="lineno">   5</span>     <span class="errorspan">android:background="#DDDDDD" ></span>
+<span class="lineno">   6</span>  
+<span class="lineno">   7</span>     &lt;DatePicker
 </pre>
 <span class="location"><a href="../../src/main/res/layout/widget_layout11.xml">../../src/main/res/layout/widget_layout11.xml</a>:8</span>: <span class="message">Possible overdraw: Root element paints background @drawable/camouflage with a theme that also paints a background (inferred theme is @style/AppTheme)</span><br /><pre class="errorlines">
 <span class="lineno">   5</span>   	android:layout_width="70dp"
@@ -6812,6 +6812,7 @@ Of course it's possible that your custom drawable is translucent and you want it
 </div>
 <div class="warningslist">
 <span class="location"><a href="../../src/main/res/drawable/body_camouflage.xml">../../src/main/res/drawable/body_camouflage.xml</a></span>: <span class="message">The resource R.drawable.body_camouflage appears to be unused</span><br />
+<span class="location"><a href="../../src/main/res/xml/day_count_widget.xml">../../src/main/res/xml/day_count_widget.xml</a></span>: <span class="message">The resource R.xml.day_count_widget appears to be unused</span><br />
 <span class="location"><a href="../../src/main/res/values/dimens.xml">../../src/main/res/values/dimens.xml</a>:5</span>: <span class="message">The resource R.dimen.activity_horizontal_margin appears to be unused</span><br /><pre class="errorlines">
 <span class="lineno">   2</span> &lt;resources>
 <span class="lineno">   3</span> 
@@ -6820,8 +6821,8 @@ Of course it's possible that your custom drawable is translucent and you want it
 <span class="lineno">   6</span>     &lt;dimen name="activity_vertical_margin">16dp&lt;/dimen>
 <span class="lineno">   7</span> 
 </pre>
-<ul></ul><button id="Location2DivLink" onclick="reveal('Location2Div');" />+ 1 Additional Locations...</button>
-<div id="Location2Div" style="display: none">
+<ul></ul><button id="Location3DivLink" onclick="reveal('Location3Div');" />+ 1 Additional Locations...</button>
+<div id="Location3Div" style="display: none">
 Additional locations: <ul>
 <li> <span class="location"><a href="../../src/main/res/values-w820dp/dimens.xml">../../src/main/res/values-w820dp/dimens.xml</a>:8</span>
 </ul>
@@ -6835,8 +6836,8 @@ Additional locations: <ul>
 <span class="lineno">   8</span> &lt;/resources>
 </pre>
 <span class="location"><a href="../../src/main/res/drawable-hdpi/ic_launcher.png">../../src/main/res/drawable-hdpi/ic_launcher.png</a></span>: <span class="message">The resource R.drawable.ic_launcher appears to be unused</span><br />
-<ul></ul><button id="Location4DivLink" onclick="reveal('Location4Div');" />+ 2 Additional Locations...</button>
-<div id="Location4Div" style="display: none">
+<ul></ul><button id="Location5DivLink" onclick="reveal('Location5Div');" />+ 2 Additional Locations...</button>
+<div id="Location5Div" style="display: none">
 Additional locations: <ul>
 <li> <span class="location"><a href="../../src/main/res/drawable-mdpi/ic_launcher.png">../../src/main/res/drawable-mdpi/ic_launcher.png</a></span>
 <li> <span class="location"><a href="../../src/main/res/drawable-xhdpi/ic_launcher.png">../../src/main/res/drawable-xhdpi/ic_launcher.png</a></span>
@@ -6847,8 +6848,14 @@ Additional locations: <ul>
 </td><td><a href="../../src/main/res/drawable-mdpi/ic_launcher.png"><img border="0" align="top" src="../../src/main/res/drawable-mdpi/ic_launcher.png" /></a>
 </td></tr><tr><th>xhdpi</th><th>hdpi</th><th>mdpi</th></tr>
 </table>
-<span class="location"><a href="../../src/main/res/layout/select_body_color_dialog.xml">../../src/main/res/layout/select_body_color_dialog.xml</a></span>: <span class="message">The resource R.layout.select_body_color_dialog appears to be unused</span><br />
-<span class="location"><a href="../../src/main/res/layout/select_header_color_dialog.xml">../../src/main/res/layout/select_header_color_dialog.xml</a></span>: <span class="message">The resource R.layout.select_header_color_dialog appears to be unused</span><br />
+<span class="location"><a href="../../src/main/res/values/strings.xml">../../src/main/res/values/strings.xml</a>:11</span>: <span class="message">The resource R.string.title_activity_day_count_detail_dialog appears to be unused</span><br /><pre class="errorlines">
+<span class="lineno">   8</span>     &lt;string name="enter_title">(Tap here to edit title)&lt;/string>
+<span class="lineno">   9</span>     &lt;string name="ok">OK&lt;/string>
+<span class="lineno">  10</span>     &lt;string name="what">What&lt;/string>
+<span class="lineno">  11</span>     &lt;string <span class="errorspan">name="title_activity_day_count_detail_dialog">DayCountDetailDialog&lt;/string></span>
+<span class="lineno">  12</span>     &lt;string name="edit">Edit&lt;/string>
+<span class="lineno">  13</span>     &lt;string name="detail_days_since">days since&lt;/string>
+</pre>
 </div>
 <div class="metadata">Priority: 3 / 10<br/>
 Category: Performance</div>
@@ -6928,6 +6935,7 @@ If an icon is provided under different configuration parameters such as <code>dr
 <div class="warningslist">
 <span class="location"><a href="../../src/main/res/drawable/camouflage.png">../../src/main/res/drawable/camouflage.png</a></span>: <img class="embedimage" align="right" src="../../src/main/res/drawable/camouflage.png" /><span class="message">Found bitmap drawable res/drawable/camouflage.png in densityless folder</span><br clear="right"/>
 <span class="location"><a href="../../src/main/res/drawable/denin.png">../../src/main/res/drawable/denin.png</a></span>: <img class="embedimage" align="right" src="../../src/main/res/drawable/denin.png" /><span class="message">Found bitmap drawable res/drawable/denin.png in densityless folder</span><br clear="right"/>
+<span class="location"><a href="../../src/main/res/drawable/ic_action_new.png">../../src/main/res/drawable/ic_action_new.png</a></span>: <img class="embedimage" align="right" src="../../src/main/res/drawable/ic_action_new.png" /><span class="message">Found bitmap drawable res/drawable/ic_action_new.png in densityless folder</span><br clear="right"/>
 <span class="location"><a href="../../src/main/res/drawable/widget_preview.png">../../src/main/res/drawable/widget_preview.png</a></span>: <img class="embedimage" align="right" src="../../src/main/res/drawable/widget_preview.png" /><span class="message">Found bitmap drawable res/drawable/widget_preview.png in densityless folder</span><br clear="right"/>
 <span class="location"><a href="../../src/main/res/drawable/wood.png">../../src/main/res/drawable/wood.png</a></span>: <img class="embedimage" align="right" src="../../src/main/res/drawable/wood.png" /><span class="message">Found bitmap drawable res/drawable/wood.png in densityless folder</span><br clear="right"/>
 </div>
@@ -6958,6 +6966,73 @@ Low density is not really used much anymore, so this check ignores the ldpi dens
 </div>
 <br/><div class="moreinfo">More info: <a href="http://developer.android.com/guide/practices/screens_support.html">http://developer.android.com/guide/practices/screens_support.html</a>
 </div><br/>To suppress this error, use the issue id "IconMissingDensityFolder" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
+</div>
+
+<a name="Internationalization"></a>
+<div class="category"><a href="#" title="Return to top">Internationalization</a><div class="categorySeparator"></div>
+</div>
+<a name="HardcodedText"></a>
+<div class="issue">
+<div class="id"><a href="#" title="Return to top">HardcodedText: Hardcoded text</a><div class="issueSeparator"></div>
+</div>
+<div class="warningslist">
+<span class="location"><a href="../../src/main/res/menu/day_count_menu.xml">../../src/main/res/menu/day_count_menu.xml</a>:5</span>: <span class="message">[I18N] Hardcoded string "Create Counter", should use @string resource</span><br /><pre class="errorlines">
+<span class="lineno">   2</span> &lt;menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<span class="lineno">   3</span>     &lt;item
+<span class="lineno">   4</span>         android:id="@+id/action_create_counter"
+<span class="lineno">   5</span>         <span class="errorspan">android:title="Create Counter"</span>
+<span class="lineno">   6</span>         android:icon="@drawable/ic_action_new"
+<span class="lineno">   7</span>         android:showAsAction="ifRoom"/>
+</pre>
+<span class="location"><a href="../../src/main/res/layout/day_count_set_layout.xml">../../src/main/res/layout/day_count_set_layout.xml</a>:49</span>: <span class="message">[I18N] Hardcoded string "(Tap to write details)", should use @string resource</span><br /><pre class="errorlines">
+<span class="lineno">  46</span>             android:textSize="20sp"
+<span class="lineno">  47</span>             android:padding="10dp"
+<span class="lineno">  48</span>             android:textColorHint="#FFFFFF"
+<span class="lineno">  49</span>             <span class="errorspan">android:hint="(Tap to write details)"</span>
+<span class="lineno">  50</span>             android:singleLine="true"
+<span class="lineno">  51</span>             android:imeOptions="actionDone" />
+</pre>
+<span class="location"><a href="../../src/main/res/layout/list_item.xml">../../src/main/res/layout/list_item.xml</a>:9</span>: <span class="message">[I18N] Hardcoded string "2012-02-01", should use @string resource</span><br /><pre class="errorlines">
+<span class="lineno">   6</span>         android:id="@+id/tv_target_date"
+<span class="lineno">   7</span>         android:layout_width="wrap_content"
+<span class="lineno">   8</span>         android:layout_height="wrap_content"
+<span class="lineno">   9</span>         <span class="errorspan">android:text="2012-02-01"/></span>
+<span class="lineno">  10</span>     &lt;TextView
+<span class="lineno">  11</span>         android:id="@+id/tv_title"
+</pre>
+<span class="location"><a href="../../src/main/res/layout/list_item.xml">../../src/main/res/layout/list_item.xml</a>:15</span>: <span class="message">[I18N] Hardcoded string "Hello", should use @string resource</span><br /><pre class="errorlines">
+<span class="lineno">  12</span>         android:layout_width="wrap_content"
+<span class="lineno">  13</span>         android:layout_height="wrap_content"
+<span class="lineno">  14</span>         android:layout_below="@+id/tv_target_date"
+<span class="lineno">  15</span>         <span class="errorspan">android:text= "Hello" /></span>
+<span class="lineno">  16</span>     &lt;TextView
+<span class="lineno">  17</span>         android:id="@+id/tv_day_diff"
+</pre>
+<span class="location"><a href="../../src/main/res/layout/list_item.xml">../../src/main/res/layout/list_item.xml</a>:22</span>: <span class="message">[I18N] Hardcoded string "10 days", should use @string resource</span><br /><pre class="errorlines">
+<span class="lineno">  19</span>         android:layout_height="wrap_content"
+<span class="lineno">  20</span>         android:layout_alignParentBottom="true"
+<span class="lineno">  21</span>         android:layout_alignParentRight="true"
+<span class="lineno">  22</span>         <span class="errorspan">android:text= "10 days" /></span>
+<span class="lineno">  23</span> &lt;/RelativeLayout>
+
+</pre>
+</div>
+<div class="metadata">Note: This issue has an associated quickfix operation in Eclipse/ADT&nbsp;<img alt="Fix" border="0" align="top" src="lint-results_files/lint-run.png" />
+<br>
+Priority: 5 / 10<br/>
+Category: Internationalization</div>
+Severity: <span class="warning">Warning</span><div class="summary">
+Explanation: Looks for hardcoded text attributes which should be converted to resource lookup.</div>
+<div class="explanation">
+Hardcoding text attributes directly in layout files is bad for several reasons:<br/>
+<br/>
+* When creating configuration variations (for example for landscape or portrait)you have to repeat the actual text (and keep it up to date when making changes)<br/>
+<br/>
+* The application cannot be translated to other languages by just adding new translations for existing string resources.<br/>
+<br/>
+In Android Studio and Eclipse there are quickfixes to automatically extract this hardcoded string into a resource lookup.
+</div>
+<br/><div class="moreinfo">More info: </div><br/>To suppress this error, use the issue id "HardcodedText" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
 </div>
 
 <a name="Bi-directional Text"></a>
@@ -7122,6 +7197,14 @@ If you specify padding or margin on the left side of a layout, you should probab
 <span class="lineno">  23</span>   	
 <span class="lineno">  24</span>     &lt;TextView
 </pre>
+<span class="location"><a href="../../src/main/res/layout/list_item.xml">../../src/main/res/layout/list_item.xml</a>:21</span>: <span class="message">Consider adding android:layout_alignParentEnd="true" to better support right-to-left layouts</span><br /><pre class="errorlines">
+<span class="lineno">  18</span>         android:layout_width="wrap_content"
+<span class="lineno">  19</span>         android:layout_height="wrap_content"
+<span class="lineno">  20</span>         android:layout_alignParentBottom="true"
+<span class="lineno">  21</span>         <span class="errorspan">android:layout_alignParentRight="true"</span>
+<span class="lineno">  22</span>         android:text= "10 days" />
+<span class="lineno">  23</span> &lt;/RelativeLayout>
+</pre>
 <span class="location"><a href="../../src/main/res/layout/widget_layout1.xml">../../src/main/res/layout/widget_layout1.xml</a>:22</span>: <span class="message">Consider adding android:paddingStart="2dp" to better support right-to-left layouts</span><br /><pre class="errorlines">
 <span class="lineno">  19</span>   	    android:textColor="#FFFFFF"
 <span class="lineno">  20</span>   	    android:singleLine="true"
@@ -7146,6 +7229,8 @@ If you specify padding or margin on the left side of a layout, you should probab
 <span class="lineno">  23</span>   	    android:text="@string/sample_widget_title" />
 <span class="lineno">  24</span>   	
 </pre>
+<button id="RtlHardcodedDivLink" onclick="reveal('RtlHardcodedDiv');" />+ 12 More Occurrences...</button>
+<div id="RtlHardcodedDiv" style="display: none">
 <span class="location"><a href="../../src/main/res/layout/widget_layout12.xml">../../src/main/res/layout/widget_layout12.xml</a>:22</span>: <span class="message">Consider adding android:paddingStart="2dp" to better support right-to-left layouts</span><br /><pre class="errorlines">
 <span class="lineno">  19</span>   	    android:textColor="#FFFFFF"
 <span class="lineno">  20</span>   	    android:singleLine="true"
@@ -7154,8 +7239,6 @@ If you specify padding or margin on the left side of a layout, you should probab
 <span class="lineno">  23</span>   	    android:text="@string/sample_widget_title" />
 <span class="lineno">  24</span>   	
 </pre>
-<button id="RtlHardcodedDivLink" onclick="reveal('RtlHardcodedDiv');" />+ 11 More Occurrences...</button>
-<div id="RtlHardcodedDiv" style="display: none">
 <span class="location"><a href="../../src/main/res/layout/widget_layout13.xml">../../src/main/res/layout/widget_layout13.xml</a>:22</span>: <span class="message">Consider adding android:paddingStart="2dp" to better support right-to-left layouts</span><br /><pre class="errorlines">
 <span class="lineno">  19</span>   	    android:textColor="#FFFFFF"
 <span class="lineno">  20</span>   	    android:singleLine="true"

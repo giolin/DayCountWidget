@@ -28,14 +28,14 @@ int drawable ic_action_new 0x7f020016
 int drawable ic_launcher 0x7f020017
 int drawable widget_preview 0x7f020018
 int drawable wood 0x7f020019
-int id action_create_counter 0x7f0a0028
+int id action_create_counter 0x7f0a002a
 int id btn_detail_edit 0x7f0a001a
 int id btn_language_settings 0x7f0a0025
 int id btn_ok 0x7f0a0014
 int id date_picker 0x7f0a0000
 int id edt_title 0x7f0a0003
 int id hsv_styles 0x7f0a0004
-int id language_settings 0x7f0a0029
+int id language_settings 0x7f0a002b
 int id ll_detailbox 0x7f0a0016
 int id rl_detail_page 0x7f0a0015
 int id row_title 0x7f0a001c
@@ -59,6 +59,8 @@ int id style6 0x7f0a000a
 int id style7 0x7f0a000b
 int id style8 0x7f0a000c
 int id style9 0x7f0a000d
+int id tv_day_diff 0x7f0a0028
+int id tv_day_left 0x7f0a0029
 int id tv_target_date 0x7f0a0026
 int id tv_title 0x7f0a0027
 int id txt_days_count 0x7f0a0002

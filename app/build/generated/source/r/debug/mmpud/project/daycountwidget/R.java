@@ -47,14 +47,14 @@ public final class R {
         public static final int wood=0x7f020019;
     }
     public static final class id {
-        public static final int action_create_counter=0x7f0a0028;
+        public static final int action_create_counter=0x7f0a002a;
         public static final int btn_detail_edit=0x7f0a001a;
         public static final int btn_language_settings=0x7f0a0025;
         public static final int btn_ok=0x7f0a0014;
         public static final int date_picker=0x7f0a0000;
         public static final int edt_title=0x7f0a0003;
         public static final int hsv_styles=0x7f0a0004;
-        public static final int language_settings=0x7f0a0029;
+        public static final int language_settings=0x7f0a002b;
         public static final int ll_detailbox=0x7f0a0016;
         public static final int rl_detail_page=0x7f0a0015;
         public static final int row_title=0x7f0a001c;
@@ -78,6 +78,8 @@ public final class R {
         public static final int style7=0x7f0a000b;
         public static final int style8=0x7f0a000c;
         public static final int style9=0x7f0a000d;
+        public static final int tv_day_diff=0x7f0a0028;
+        public static final int tv_day_left=0x7f0a0029;
         public static final int tv_target_date=0x7f0a0026;
         public static final int tv_title=0x7f0a0027;
         public static final int txt_days_count=0x7f0a0002;
