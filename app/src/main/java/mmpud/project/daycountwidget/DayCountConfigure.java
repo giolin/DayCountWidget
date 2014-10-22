@@ -1,5 +1,6 @@
 package mmpud.project.daycountwidget;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.PendingIntent;
@@ -11,6 +12,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,17 +22,18 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.RemoteViews;
 import android.widget.Spinner;
-import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import mmpud.project.daycountwidget.util.Utils;
 import timber.log.Timber;
 
 public class DayCountConfigure extends Activity {
@@ -41,36 +44,33 @@ public class DayCountConfigure extends Activity {
     private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     private DatePicker datePicker;
-    private TextView txtDaysSinceLeft;
-    private TextView txtDaysCount;
     private EditText edtTitle;
     private Button btnOK;
     private HorizontalScrollView hsvStyles;
     private FrameLayout[] btnWidget = new FrameLayout[15];
 
-    private Calendar calToday;
-    private Calendar calTarget;
-    private int todayYear;
-    private int todayMonth;
-    private int todayDate;
-    private int initYear;
-    private int initMonth;
-    private int initDate;
+    private String initTargetDate;
     private String initTitle;
-    private long diffDays;
 
     private int styleNum;
+
     View.OnClickListener widgetOnClickListener = new View.OnClickListener() {
 
+        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
         @Override
         public void onClick(View v) {
             for (int i = 0; i < btnWidget.length; i++) {
-                btnWidget[i].setBackground(null);
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    btnWidget[i].setBackgroundDrawable(null);
+                } else {
+                    btnWidget[i].setBackground(null);
+                }
             }
             v.setBackgroundColor(Color.parseColor("#FF6600"));
             styleNum = Integer.parseInt(v.getTag().toString());
         }
     };
+
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
         final Context context = DayCountConfigure.this;
 
@@ -79,27 +79,40 @@ public class DayCountConfigure extends Activity {
             switch (v.getId()) {
 
                 case R.id.btn_ok:
-
-                    // Save information: 1. YYYY/MM/DD
+                    // Save information: 1. YYYY-MM-DD
                     //		    		 2. widget style
                     //					 3. title
                     // to shared preferences according to the appWidgetId
                     SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-                    prefs.putInt("year" + mAppWidgetId, datePicker.getYear());
-                    prefs.putInt("month" + mAppWidgetId, datePicker.getMonth());
-                    prefs.putInt("date" + mAppWidgetId, datePicker.getDayOfMonth());
+                    String targetDate = datePicker.getYear() + "-" + (datePicker.getMonth() + 1) + "-" + datePicker.getDayOfMonth();
+                    Timber.d("Date: " + targetDate);
+                    prefs.putString("targetDate" + mAppWidgetId, targetDate);
                     prefs.putInt("styleNum" + mAppWidgetId, styleNum);
                     prefs.putString("title" + mAppWidgetId, edtTitle.getText().toString());
                     prefs.commit();
 
                     // We gotta save it in the db (insert and replace on conflict)
 
+                    // Get layout resource id with styleNum
                     String layoutName = "widget_layout" + styleNum;
                     int resourceIDStyle = context.getResources().getIdentifier(layoutName, "layout", "mmpud.project.daycountwidget");
                     // Start to build up the remote views
                     RemoteViews views = new RemoteViews(context.getPackageName(), resourceIDStyle);
 
                     views.setTextViewText(R.id.widget_title, edtTitle.getText().toString());
+
+                    Calendar calToday = Calendar.getInstance();
+                    Calendar calTarget = Calendar.getInstance();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                    try {
+                        calTarget.setTime(sdf.parse(targetDate));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    long diffDays = Utils.daysBetween(calToday, calTarget);
+
+                    Timber.d("Diff days: " + diffDays);
 
                     // Adjust the digits' textSize according to the number of digits
                     float textSize = textSizeGenerator(diffDays);
@@ -173,8 +186,6 @@ public class DayCountConfigure extends Activity {
         setContentView(R.layout.day_count_configure_layout);
 
         datePicker = (DatePicker) findViewById(R.id.date_picker);
-        txtDaysSinceLeft = (TextView) findViewById(R.id.txt_days_since_left);
-        txtDaysCount = (TextView) findViewById(R.id.txt_days_count);
         edtTitle = (EditText) findViewById(R.id.edt_title);
         btnOK = (Button) findViewById(R.id.btn_ok);
         hsvStyles = (HorizontalScrollView) findViewById(R.id.hsv_styles);
@@ -191,21 +202,14 @@ public class DayCountConfigure extends Activity {
         btnOK.setOnClickListener(mOnClickListener);
 
         // Instantiate calendars for today and the target day
-        calToday = Calendar.getInstance();
-        calTarget = Calendar.getInstance();
+        Calendar calToday = Calendar.getInstance();
 
-        todayYear = calToday.get(Calendar.YEAR);
-        todayMonth = calToday.get(Calendar.MONTH);
-        todayDate = calToday.get(Calendar.DAY_OF_MONTH);
-
-        // Get information: 1. YYYY/MM/DD
+        // Get information: 1. YYYY-MM-DD
         //					2. widget style
         //					3. title
         // from shared preferences according to the appWidgetId
         SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, 0);
-        initYear = prefs.getInt("year" + mAppWidgetId, todayYear);
-        initMonth = prefs.getInt("month" + mAppWidgetId, todayMonth);
-        initDate = prefs.getInt("date" + mAppWidgetId, todayDate);
+        initTargetDate = prefs.getString("targetDate" + mAppWidgetId, calToday.get(Calendar.YEAR) + "-" + (calToday.get(Calendar.MONTH)+1) + "-" + calToday.get(Calendar.DAY_OF_MONTH));
         styleNum = prefs.getInt("styleNum" + mAppWidgetId, 1);
         initTitle = prefs.getString("title" + mAppWidgetId, "");
 
@@ -328,33 +332,9 @@ public class DayCountConfigure extends Activity {
         btnWidget[styleNum - 1].setBackgroundColor(Color.parseColor("#FF6600"));
 
         // Set current date into datePicker
-        datePicker.init(initYear, initMonth, initDate, new OnDateChangedListener() {
-            @Override
-            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Timber.d("date changed" + year + "/" + monthOfYear + "/" + dayOfMonth);
-                // Update the bays difference
-                calTarget.set(year, monthOfYear, dayOfMonth);
-                diffDays = daysBetween(calToday, calTarget);
-                if (diffDays > 0) {
-                    txtDaysSinceLeft.setText(R.string.days_left);
-                    txtDaysCount.setText(Long.toString(diffDays));
-                } else {
-                    txtDaysSinceLeft.setText(R.string.days_since);
-                    txtDaysCount.setText(Long.toString(-diffDays));
-                }
-            }
-        });
+        String[] ymd = initTargetDate.split("-");
 
-        // Update the day difference
-        calTarget.set(initYear, initMonth, initDate);
-        diffDays = daysBetween(calToday, calTarget);
-        if (diffDays > 0) {
-            txtDaysSinceLeft.setText(R.string.days_left);
-            txtDaysCount.setText(Long.toString(diffDays));
-        } else {
-            txtDaysSinceLeft.setText(R.string.days_since);
-            txtDaysCount.setText(Long.toString(-diffDays));
-        }
+        datePicker.updateDate(Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1])-2, Integer.parseInt(ymd[2]));
 
         // Set title
         if (!initTitle.isEmpty()) {
@@ -373,37 +353,6 @@ public class DayCountConfigure extends Activity {
 
     }
 
-    // Here we only reload the text (layout not updated)
-    public RemoteViews buildUpdate(Context context, int mAppWidgetId) {
-        // Get information: YYYY/MM/DD
-        // from shared preferences according to the appWidgetId
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        int targetYear = prefs.getInt("year" + mAppWidgetId, 0);
-        int targetMonth = prefs.getInt("month" + mAppWidgetId, 0);
-        int targetDate = prefs.getInt("date" + mAppWidgetId, 0);
-
-        // Get the day difference
-        Calendar calToday = Calendar.getInstance();
-        Calendar calTarget = Calendar.getInstance();
-        calTarget.set(targetYear, targetMonth, targetDate);
-        long diffDays = daysBetween(calToday, calTarget);
-
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.day_count_widget_layout);
-
-        // Adjust the digits' textSize according to the number of digits
-        float textSize = textSizeGenerator(diffDays);
-        views.setFloat(R.id.widget_diffdays, "setTextSize", textSize);
-
-        if (diffDays > 0) {
-            views.setTextViewText(R.id.widget_since_left, context.getResources().getString(R.string.days_left));
-        } else {
-            views.setTextViewText(R.id.widget_since_left, context.getResources().getString(R.string.days_since));
-        }
-
-        return views;
-    }
-
-
     public float textSizeGenerator(long num) {
         if (num < 0) {
             num = -num;
@@ -419,13 +368,5 @@ public class DayCountConfigure extends Activity {
         } else {
             return 18;
         }
-    }
-
-
-    public long daysBetween(Calendar startDay, Calendar endDate) {
-        long startTime = startDay.getTime().getTime();
-        long endTime = endDate.getTime().getTime();
-        long diffTime = endTime - startTime;
-        return (diffTime / (1000 * 60 * 60 * 24));
     }
 }

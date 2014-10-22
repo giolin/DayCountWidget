@@ -14,7 +14,7 @@
         quickfix="studio">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/java/mmpud/project/daycountwidget/DayCountConfigure.java"
-            line="93"
+            line="98"
             column="21"/>
     </issue>
 
@@ -26,46 +26,12 @@
         priority="6"
         summary="Looks for code editing a `SharedPreference` but forgetting to call `commit()` on it"
         explanation="After calling `edit()` on a `SharedPreference`, you must call `commit()` or `apply()` on the editor to save the results."
-        errorLine1="            prefs.edit().remove(&quot;year&quot; + appWidgetId).commit();"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        errorLine1="            prefs.edit().remove(&quot;targetDate&quot; + appWidgetId).commit();"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         quickfix="studio">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/java/mmpud/project/daycountwidget/DayCountWidget.java"
-            line="95"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="CommitPrefEdits"
-        severity="Warning"
-        message="Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background"
-        category="Correctness"
-        priority="6"
-        summary="Looks for code editing a `SharedPreference` but forgetting to call `commit()` on it"
-        explanation="After calling `edit()` on a `SharedPreference`, you must call `commit()` or `apply()` on the editor to save the results."
-        errorLine1="            prefs.edit().remove(&quot;month&quot; + appWidgetId).commit();"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        quickfix="studio">
-        <location
-            file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/java/mmpud/project/daycountwidget/DayCountWidget.java"
-            line="96"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="CommitPrefEdits"
-        severity="Warning"
-        message="Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background"
-        category="Correctness"
-        priority="6"
-        summary="Looks for code editing a `SharedPreference` but forgetting to call `commit()` on it"
-        explanation="After calling `edit()` on a `SharedPreference`, you must call `commit()` or `apply()` on the editor to save the results."
-        errorLine1="            prefs.edit().remove(&quot;date&quot; + appWidgetId).commit();"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        quickfix="studio">
-        <location
-            file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/java/mmpud/project/daycountwidget/DayCountWidget.java"
-            line="97"
+            line="102"
             column="13"/>
     </issue>
 
@@ -82,7 +48,7 @@
         quickfix="studio">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/java/mmpud/project/daycountwidget/DayCountWidget.java"
-            line="98"
+            line="103"
             column="13"/>
     </issue>
 
@@ -99,7 +65,7 @@
         quickfix="studio">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/java/mmpud/project/daycountwidget/DayCountWidget.java"
-            line="99"
+            line="104"
             column="13"/>
     </issue>
 
@@ -115,7 +81,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="76"
+            line="62"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -191,7 +157,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="76"
+            line="62"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -267,7 +233,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="76"
+            line="62"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -343,7 +309,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="76"
+            line="62"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -419,7 +385,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="87"
+            line="73"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -495,7 +461,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="87"
+            line="73"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -571,7 +537,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="87"
+            line="73"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -647,7 +613,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="87"
+            line="73"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -723,7 +689,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="98"
+            line="84"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -799,7 +765,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="98"
+            line="84"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -875,7 +841,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="98"
+            line="84"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -951,7 +917,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="98"
+            line="84"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -1027,7 +993,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="109"
+            line="95"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -1103,7 +1069,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="109"
+            line="95"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -1179,7 +1145,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="109"
+            line="95"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -1255,7 +1221,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="109"
+            line="95"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -1331,7 +1297,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="120"
+            line="106"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -1407,7 +1373,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="120"
+            line="106"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -1483,7 +1449,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="120"
+            line="106"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -1559,7 +1525,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="120"
+            line="106"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -1635,7 +1601,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="131"
+            line="117"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -1711,7 +1677,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="131"
+            line="117"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -1787,7 +1753,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="131"
+            line="117"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -1863,7 +1829,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="131"
+            line="117"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -1939,7 +1905,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="142"
+            line="128"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -2015,7 +1981,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="142"
+            line="128"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -2091,7 +2057,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="142"
+            line="128"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -2167,7 +2133,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="142"
+            line="128"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -2243,7 +2209,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="153"
+            line="139"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -2319,7 +2285,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="153"
+            line="139"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -2395,7 +2361,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="153"
+            line="139"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -2471,7 +2437,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="153"
+            line="139"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -2547,7 +2513,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="164"
+            line="150"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -2623,7 +2589,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="164"
+            line="150"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -2699,7 +2665,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="164"
+            line="150"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -2775,7 +2741,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="164"
+            line="150"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -2851,7 +2817,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="175"
+            line="161"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -2927,7 +2893,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="175"
+            line="161"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -3003,7 +2969,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="175"
+            line="161"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -3079,7 +3045,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="175"
+            line="161"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -3155,7 +3121,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="186"
+            line="172"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -3231,7 +3197,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="186"
+            line="172"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -3307,7 +3273,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="186"
+            line="172"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -3383,7 +3349,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="186"
+            line="172"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -3459,7 +3425,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="197"
+            line="183"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -3535,7 +3501,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="197"
+            line="183"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -3611,7 +3577,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="197"
+            line="183"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -3687,7 +3653,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="197"
+            line="183"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -3763,7 +3729,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="208"
+            line="194"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -3839,7 +3805,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="208"
+            line="194"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -3915,7 +3881,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="208"
+            line="194"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -3991,7 +3957,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="208"
+            line="194"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -4067,7 +4033,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="219"
+            line="205"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -4143,7 +4109,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="219"
+            line="205"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -4219,7 +4185,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="219"
+            line="205"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -4295,7 +4261,7 @@
         errorLine2="             ^">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="219"
+            line="205"
             column="14"/>
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout1.xml"
@@ -4357,30 +4323,6 @@
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/widget_layout15.xml"
             line="13"
             column="8"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        severity="Error"
-        message="Call requires API level 16 (current min is 11): android.widget.FrameLayout#setBackground"
-        category="Correctness"
-        priority="6"
-        summary="Finds API accesses to APIs that are not supported in all targeted API versions"
-        explanation="This check scans through all the Android API calls in the application and warns about any calls that are not available on *all* versions targeted by this application (according to its minimum SDK attribute in the manifest).
-
-If you really want to use this API and don&apos;t need to support older devices just set the `minSdkVersion` in your `build.gradle` or `AndroidManifest.xml` files.
-If your code is *deliberately* accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the `@TargetApi` annotation specifying the local minimum SDK to apply, such as `@TargetApi(11)`, such that this check considers 11 rather than your manifest file&apos;s minimum SDK as the required API level.
-
-If you are deliberately setting `android:` attributes in style definitions, make sure you place this in a `values-v11` folder in order to avoid running into runtime conflicts on certain devices where manufacturers have added custom attributes whose ids conflict with the new ones on later platforms.
-
-Similarly, you can use tools:targetApi=&quot;11&quot; in an XML file to indicate that the element will only be inflated in an adequate context."
-        errorLine1="                btnWidget[i].setBackground(null);"
-        errorLine2="                             ~~~~~~~~~~~~~"
-        quickfix="studio,adt">
-        <location
-            file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/java/mmpud/project/daycountwidget/DayCountConfigure.java"
-            line="68"
-            column="30"/>
     </issue>
 
     <issue
@@ -4403,7 +4345,7 @@ Similarly, you can use tools:targetApi=&quot;11&quot; in an XML file to indicate
         quickfix="studio,adt">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/java/mmpud/project/daycountwidget/util/Utils.java"
-            line="23"
+            line="28"
             column="21"/>
     </issue>
 
@@ -4566,22 +4508,6 @@ You can tell lint (and other tools) which language is the default language in yo
     </issue>
 
     <issue
-        id="ExportedContentProvider"
-        severity="Warning"
-        message="Exported content providers can provide access to potentially sensitive data"
-        category="Security"
-        priority="5"
-        summary="Checks for exported content providers that do not require permissions"
-        explanation="Content providers are exported by default and any application on the system can potentially use them to read and write data. If the content provider provides access to sensitive data, it should be protected by specifying `export=false` in the manifest or by protecting it with a permission that can be granted to other applications."
-        errorLine1="        &lt;provider"
-        errorLine2="        ^">
-        <location
-            file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/AndroidManifest.xml"
-            line="28"
-            column="9"/>
-    </issue>
-
-    <issue
         id="Overdraw"
         severity="Warning"
         message="Possible overdraw: Root element paints background #DDDDDD with a theme that also paints a background (inferred theme is @style/AppTheme)"
@@ -4600,29 +4526,6 @@ Of course it&apos;s possible that your custom drawable is translucent and you wa
         errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_configure_layout.xml"
-            line="5"
-            column="5"/>
-    </issue>
-
-    <issue
-        id="Overdraw"
-        severity="Warning"
-        message="Possible overdraw: Root element paints background #dd000000 with a theme that also paints a background (inferred theme is @style/AppTheme)"
-        category="Performance"
-        priority="3"
-        summary="Looks for overdraw issues (where a view is painted only to be fully painted over)"
-        explanation="If you set a background drawable on a root view, then you should use a custom theme where the theme background is null. Otherwise, the theme background will be painted first, only to have your custom background completely cover it; this is called &quot;overdraw&quot;.
-
-NOTE: This detector relies on figuring out which layouts are associated with which activities based on scanning the Java code, and it&apos;s currently doing that using an inexact pattern matching algorithm. Therefore, it can incorrectly conclude which activity the layout is associated with and then wrongly complain that a background-theme is hidden.
-
-If you want your custom background on multiple pages, then you should consider making a custom theme with your custom background and just using that theme instead of a root element background.
-
-Of course it&apos;s possible that your custom drawable is translucent and you want it to be mixed with the background. However, you will get better performance if you pre-mix the background with your drawable and use that resulting image or color as a custom theme background instead.
-"
-        errorLine1="    android:background=&quot;#dd000000&quot;"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/day_count_detail_dialog.xml"
             line="5"
             column="5"/>
     </issue>
@@ -4734,18 +4637,6 @@ Of course it&apos;s possible that your custom drawable is translucent and you wa
     <issue
         id="UnusedResources"
         severity="Warning"
-        message="The resource R.xml.day_count_widget appears to be unused"
-        category="Performance"
-        priority="3"
-        summary="Looks for unused resources"
-        explanation="Unused resources make applications larger and slow down builds.">
-        <location
-            file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/xml/day_count_widget.xml"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        severity="Warning"
         message="The resource R.dimen.activity_horizontal_margin appears to be unused"
         category="Performance"
         priority="3"
@@ -4798,16 +4689,40 @@ Of course it&apos;s possible that your custom drawable is translucent and you wa
     <issue
         id="UnusedResources"
         severity="Warning"
-        message="The resource R.string.title_activity_day_count_detail_dialog appears to be unused"
+        message="The resource R.string.no_data appears to be unused"
         category="Performance"
         priority="3"
         summary="Looks for unused resources"
         explanation="Unused resources make applications larger and slow down builds."
-        errorLine1="    &lt;string name=&quot;title_activity_day_count_detail_dialog&quot;>DayCountDetailDialog&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        errorLine1="    &lt;string name=&quot;no_data&quot;>-&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/values/strings.xml"
-            line="11"
+            line="7"
+            column="13"/>
+        <location
+            file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/values-fr/strings.xml"
+            line="7"
+            column="13"/>
+        <location
+            file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/values-ja/strings.xml"
+            line="7"
+            column="13"/>
+        <location
+            file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/values-tr/strings.xml"
+            line="7"
+            column="13"/>
+        <location
+            file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/values-zh/strings.xml"
+            line="7"
+            column="13"/>
+        <location
+            file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/values-zh-rCN/strings.xml"
+            line="7"
+            column="13"/>
+        <location
+            file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/values-zh-rTW/strings.xml"
+            line="7"
             column="13"/>
     </issue>
 
@@ -5025,7 +4940,7 @@ In Android Studio and Eclipse there are quickfixes to automatically extract this
     <issue
         id="HardcodedText"
         severity="Warning"
-        message="[I18N] Hardcoded string &quot;10 days&quot;, should use @string resource"
+        message="[I18N] Hardcoded string &quot;DAYS&quot;, should use @string resource"
         category="Internationalization"
         priority="5"
         summary="Looks for hardcoded text attributes which should be converted to resource lookup"
@@ -5036,13 +4951,13 @@ In Android Studio and Eclipse there are quickfixes to automatically extract this
 * The application cannot be translated to other languages by just adding new translations for existing string resources.
 
 In Android Studio and Eclipse there are quickfixes to automatically extract this hardcoded string into a resource lookup."
-        errorLine1="        android:text= &quot;10 days&quot; />"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~"
+        errorLine1="            android:text= &quot;DAYS&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~"
         quickfix="adt">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/list_item.xml"
-            line="22"
-            column="9"/>
+            line="32"
+            column="13"/>
     </issue>
 
     <issue
@@ -5333,8 +5248,44 @@ For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStar
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/list_item.xml"
-            line="21"
+            line="20"
             column="9"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        severity="Warning"
+        message="Consider adding android:layout_marginEnd=&quot;5dp&quot; to better support right-to-left layouts"
+        category="Bi-directional Text"
+        priority="5"
+        summary="Looks for hardcoded left/right constants which could be start/end for bidirectional text"
+        explanation="Using `Gravity#LEFT` and `Gravity#RIGHT` can lead to problems when a layout is rendered in locales where text flows from right to left. Use `Gravity#START` and `Gravity#END` instead. Similarly, in XML `gravity` and `layout_gravity` attributes, use `start` rather than `left`.
+For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStart` and `layout_marginStart`. *NOTE*: If your `minSdkVersion` is less than 17, you should add *both* the older left/right attributes *as well as* the new start/right attributes. On older platforms, where RTL is not supported and the start/right attributes are unknown and therefore ignored, you need the older left/right attributes. There is a separate lint check which catches that type of error.
+(Note: For `Gravity#LEFT` and `Gravity#START`, you can use these constants even when targeting older platforms, because the `start` bitmask is a superset of the `left` bitmask. Therefore, you can use `gravity=&quot;start&quot;` rather than `gravity=&quot;left|start&quot;`.)"
+        errorLine1="        android:layout_marginRight=&quot;5dp&quot; >"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/list_item.xml"
+            line="22"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        severity="Warning"
+        message="Consider adding android:layout_marginEnd=&quot;5dp&quot; to better support right-to-left layouts"
+        category="Bi-directional Text"
+        priority="5"
+        summary="Looks for hardcoded left/right constants which could be start/end for bidirectional text"
+        explanation="Using `Gravity#LEFT` and `Gravity#RIGHT` can lead to problems when a layout is rendered in locales where text flows from right to left. Use `Gravity#START` and `Gravity#END` instead. Similarly, in XML `gravity` and `layout_gravity` attributes, use `start` rather than `left`.
+For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStart` and `layout_marginStart`. *NOTE*: If your `minSdkVersion` is less than 17, you should add *both* the older left/right attributes *as well as* the new start/right attributes. On older platforms, where RTL is not supported and the start/right attributes are unknown and therefore ignored, you need the older left/right attributes. There is a separate lint check which catches that type of error.
+(Note: For `Gravity#LEFT` and `Gravity#START`, you can use these constants even when targeting older platforms, because the `start` bitmask is a superset of the `left` bitmask. Therefore, you can use `gravity=&quot;start&quot;` rather than `gravity=&quot;left|start&quot;`.)"
+        errorLine1="            android:layout_marginRight=&quot;5dp&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/src/main/res/layout/list_item.xml"
+            line="27"
+            column="13"/>
     </issue>
 
     <issue

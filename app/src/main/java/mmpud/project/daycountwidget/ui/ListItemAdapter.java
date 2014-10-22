@@ -75,7 +75,6 @@ public class ListItemAdapter extends ArrayAdapter<Counter> {
     }
 
     private static class CounterLayoutHolder {
-
         TextView tvTargetDate;
         TextView tvTitle;
         TextView tvDayDiff;

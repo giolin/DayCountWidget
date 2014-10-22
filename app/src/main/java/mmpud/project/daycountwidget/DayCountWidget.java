@@ -12,8 +12,12 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
+import mmpud.project.daycountwidget.util.Utils;
 import timber.log.Timber;
 
 public class DayCountWidget extends AppWidgetProvider {
@@ -24,9 +28,9 @@ public class DayCountWidget extends AppWidgetProvider {
 
     private static final int ALARM_ID = 0;
 
-    private int targetYear;
-    private int targetMonth;
-    private int targetDate;
+//    private int targetYear;
+//    private int targetMonth;
+    private String targetDate;
     private int styleNum;
     private String title;
 
@@ -92,9 +96,10 @@ public class DayCountWidget extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
             SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-            prefs.edit().remove("year" + appWidgetId).commit();
-            prefs.edit().remove("month" + appWidgetId).commit();
-            prefs.edit().remove("date" + appWidgetId).commit();
+//            prefs.edit().remove("year" + appWidgetId).commit();
+//            prefs.edit().remove("month" + appWidgetId).commit();
+//            prefs.edit().remove("date" + appWidgetId).commit();
+            prefs.edit().remove("targetDate" + appWidgetId).commit();
             prefs.edit().remove("styleNum" + appWidgetId).commit();
             prefs.edit().remove("title" + appWidgetId).commit();
             Timber.d("The widget [" + appWidgetId + "] onDelete!");
@@ -119,17 +124,24 @@ public class DayCountWidget extends AppWidgetProvider {
         //					3. title
         // from shared preferences according to the appWidgetId
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        targetYear = prefs.getInt("year" + mAppWidgetId, 0);
-        targetMonth = prefs.getInt("month" + mAppWidgetId, 0);
-        targetDate = prefs.getInt("date" + mAppWidgetId, 0);
+//        targetYear = prefs.getInt("year" + mAppWidgetId, 0);
+//        targetMonth = prefs.getInt("month" + mAppWidgetId, 0);
+//        targetDate = prefs.getInt("date" + mAppWidgetId, 0);
+        targetDate = prefs.getString("targetDate" + mAppWidgetId, "");
         styleNum = prefs.getInt("styleNum" + mAppWidgetId, 1);
         title = prefs.getString("title" + mAppWidgetId, "");
 
         // Get the day difference
         Calendar calToday = Calendar.getInstance();
         Calendar calTarget = Calendar.getInstance();
-        calTarget.set(targetYear, targetMonth, targetDate);
-        long diffDays = daysBetween(calToday, calTarget);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        try {
+            calTarget.setTime(sdf.parse(targetDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        long diffDays = Utils.daysBetween(calToday, calTarget);
 
         String layoutName = "widget_layout" + styleNum;
         int resourceIDStyle = context.getResources().getIdentifier(layoutName, "layout", "mmpud.project.daycountwidget");
@@ -179,10 +191,4 @@ public class DayCountWidget extends AppWidgetProvider {
         }
     }
 
-    public long daysBetween(Calendar startDay, Calendar endDate) {
-        long startTime = startDay.getTime().getTime();
-        long endTime = endDate.getTime().getTime();
-        long diffTime = endTime - startTime;
-        return (diffTime / (1000 * 60 * 60 * 24));
-    }
 }

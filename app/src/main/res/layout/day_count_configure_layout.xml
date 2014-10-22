@@ -16,20 +16,6 @@
         android:background="#F5F1DE"
         android:layout_gravity="center_horizontal"
         android:calendarViewShown="false" />
-
-    <LinearLayout style="@style/ItemRow">
-        
-        <TextView
-            android:id="@+id/txt_days_since_left"
-            style="@style/TextTitle"
-            android:text="@string/days_since" />
-        
-        <TextView
-        	android:id="@+id/txt_days_count"
-        	style="@style/TextContent"
-        	android:text="@string/no_data" />
-        
-    </LinearLayout>
     
     <LinearLayout style="@style/ItemRow">
         

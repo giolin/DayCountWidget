@@ -14,50 +14,50 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:name=".DayCounter">
-        <activity android:name="mmpud.project.daycountwidget.DayCounterMain">
+        <!--<activity android:name="mmpud.project.daycountwidget.DayCounterMain">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+
+        <!--<activity android:name=".DayCounterSet">-->
+
+        <!--</activity>-->
+        <!---->
+        <!--<provider-->
+            <!--android:authorities="mmpud.project.daycountwidget.provider"-->
+            <!--android:name="mmpud.project.daycountwidget.provider.CounterProvider"></provider>-->
+
+        <receiver
+            android:name="mmpud.project.daycountwidget.DayCountWidget"
+            android:theme="@style/AppTheme"
+            android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.appwidget.action.WIDGET_UPDATE_MIDNIGHT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/day_count_widget" />
+        </receiver>
+
+
+        <activity
+            android:name="mmpud.project.daycountwidget.DayCountConfigure"
+            android:theme="@style/AppTheme" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".DayCounterSet">
-
+        <activity
+            android:name="mmpud.project.daycountwidget.DayCountDetailDialog"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:excludeFromRecents="true"
+            android:label="@string/title_activity_day_count_detail_dialog" >
         </activity>
-        
-        <provider
-            android:authorities="mmpud.project.daycountwidget.provider"
-            android:name="mmpud.project.daycountwidget.provider.CounterProvider"></provider>
-
-        <!--<receiver-->
-            <!--android:name="mmpud.project.daycountwidget.DayCountWidget"-->
-            <!--android:theme="@style/AppTheme"-->
-            <!--android:label="@string/app_name" >-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />-->
-            <!--</intent-filter>-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.appwidget.action.WIDGET_UPDATE_MIDNIGHT" />-->
-            <!--</intent-filter>-->
-            <!--<meta-data-->
-                <!--android:name="android.appwidget.provider"-->
-                <!--android:resource="@xml/day_count_widget" />-->
-        <!--</receiver>-->
-
-
-        <!--<activity 	-->
-            <!--android:name="mmpud.project.daycountwidget.DayCountConfigure"-->
-            <!--android:theme="@style/AppTheme" >-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
-        <!--<activity-->
-            <!--android:name="mmpud.project.daycountwidget.DayCountDetailDialog"-->
-            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar"-->
-            <!--android:excludeFromRecents="true"-->
-            <!--android:label="@string/title_activity_day_count_detail_dialog" >-->
-        <!--</activity>-->
     </application>
 
 </manifest>

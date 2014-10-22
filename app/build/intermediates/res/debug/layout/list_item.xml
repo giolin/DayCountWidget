@@ -18,7 +18,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true">
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp" >
         <TextView
             android:id="@+id/tv_day_diff"
             android:layout_width="wrap_content"

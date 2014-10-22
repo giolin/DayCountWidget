@@ -2,12 +2,6 @@
 <pre-dex-items>
 
     <item
-        dex="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/build/intermediates/pre-dexed/debug/joda-time-2.5-3dd655bd3daede5057e619cb079bef4e9c0710e7.jar"
-        jar="/home/george/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.5/c73038a3688525aad5cf33409df483178290cd64/joda-time-2.5.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="c73038a3688525aad5cf33409df483178290cd64"/>
-    <item
         dex="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/build/intermediates/pre-dexed/debug/internal_impl-20.0.0-d4ab4126c18f79cb20daf662a734df312c85c0a8.jar"
         jar="/home/george/Document/AndroidStudioProjects/DayCountWidget/app/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/libs/internal_impl-20.0.0.jar"
         jumboMode="false"
