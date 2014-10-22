@@ -115,7 +115,7 @@ public class DayCountConfigure extends Activity {
                     Timber.d("Diff days: " + diffDays);
 
                     // Adjust the digits' textSize according to the number of digits
-                    float textSize = textSizeGenerator(diffDays);
+                    float textSize = Utils.textSizeGenerator(diffDays);
                     views.setFloat(R.id.widget_diffdays, "setTextSize", textSize);
 
                     // Put in day difference info
@@ -152,7 +152,6 @@ public class DayCountConfigure extends Activity {
         }
     };
     private String selectedLan;
-
 
     public DayCountConfigure() {
         super();
@@ -209,7 +208,7 @@ public class DayCountConfigure extends Activity {
         //					3. title
         // from shared preferences according to the appWidgetId
         SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, 0);
-        initTargetDate = prefs.getString("targetDate" + mAppWidgetId, calToday.get(Calendar.YEAR) + "-" + (calToday.get(Calendar.MONTH)+1) + "-" + calToday.get(Calendar.DAY_OF_MONTH));
+        initTargetDate = prefs.getString("targetDate" + mAppWidgetId, calToday.get(Calendar.YEAR) + "-" + (calToday.get(Calendar.MONTH) + 1) + "-" + calToday.get(Calendar.DAY_OF_MONTH));
         styleNum = prefs.getInt("styleNum" + mAppWidgetId, 1);
         initTitle = prefs.getString("title" + mAppWidgetId, "");
 
@@ -334,7 +333,7 @@ public class DayCountConfigure extends Activity {
         // Set current date into datePicker
         String[] ymd = initTargetDate.split("-");
 
-        datePicker.updateDate(Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1])-2, Integer.parseInt(ymd[2]));
+        datePicker.updateDate(Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1]) - 2, Integer.parseInt(ymd[2]));
 
         // Set title
         if (!initTitle.isEmpty()) {
@@ -353,20 +352,4 @@ public class DayCountConfigure extends Activity {
 
     }
 
-    public float textSizeGenerator(long num) {
-        if (num < 0) {
-            num = -num;
-        }
-        if (num >= 0 && num < 100) {
-            return 36;
-        } else if (num >= 100 && num < 1000) {
-            return 32;
-        } else if (num >= 1000 && num < 10000) {
-            return 26;
-        } else if (num >= 10000 && num < 100000) {
-            return 22;
-        } else {
-            return 18;
-        }
-    }
 }

@@ -10,8 +10,12 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
+import mmpud.project.daycountwidget.util.Utils;
 import timber.log.Timber;
 
 public class DayCountDetailDialog extends Activity {
@@ -55,7 +59,6 @@ public class DayCountDetailDialog extends Activity {
                     AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
         Timber.d("Widget [" + mAppWidgetId + "]'s detail is shown");
-//        llDetailbox = (LinearLayout)findViewById(R.id.ll_detailbox);
         txtDetailDiffDays = (TextView) findViewById(R.id.txt_detail_diffdays);
         txtDetailTargetDay = (TextView) findViewById(R.id.txt_detail_targetday);
         txtDetailTitle = (TextView) findViewById(R.id.txt_detail_title);
@@ -86,34 +89,32 @@ public class DayCountDetailDialog extends Activity {
         //					3. title
         // from shared preferences according to the appWidgetId
         SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, 0);
-        int targetYear = prefs.getInt("year" + mAppWidgetId, 0);
-        int targetMonth = prefs.getInt("month" + mAppWidgetId, 0);
-        int targetDate = prefs.getInt("date" + mAppWidgetId, 0);
-//		int styleNum = prefs.getInt("styleNum"+mAppWidgetId, 1);
+        String targetDate = prefs.getString("targetDate" + mAppWidgetId, "0-0-0");
         String targetTitle = prefs.getString("title" + mAppWidgetId, "");
 
         Calendar calToday = Calendar.getInstance();
         Calendar calTarget = Calendar.getInstance();
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        try {
+            calTarget.setTime(sdf.parse(targetDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         // Update the day difference
-        calTarget.set(targetYear, targetMonth, targetDate);
-        long diffDays = daysBetween(calToday, calTarget);
+        long diffDays = Utils.daysBetween(calToday, calTarget);
+
         if (diffDays > 0) {
             txtDetailDiffDays.setText(diffDays + " " + getResources().getString(R.string.detail_days_left));
             // Better if different types of day format can be shown according to the local habit of use
-            txtDetailTargetDay.setText(targetYear + "/" + (targetMonth + 1) + "/" + targetDate);
+            txtDetailTargetDay.setText(targetDate);
             txtDetailTitle.setText(targetTitle);
         } else {
             txtDetailDiffDays.setText(-diffDays + " " + getResources().getString(R.string.detail_days_since));
-            txtDetailTargetDay.setText(targetYear + "/" + (targetMonth + 1) + "/" + targetDate);
+            txtDetailTargetDay.setText(targetDate);
             txtDetailTitle.setText(targetTitle);
         }
-
-//        String layoutName = "widget_layout" + styleNum;
-//        int resourceIDStyle = getResources().getIdentifier(layoutName, "layout","mmpud.project.daycountwidget");
-//        LayoutInflater factory = LayoutInflater.from(this);
-//        View myView = factory.inflate(resourceIDStyle, null);
-//        llDetailbox.setBackground(myView.getBackground());
 
     }
 

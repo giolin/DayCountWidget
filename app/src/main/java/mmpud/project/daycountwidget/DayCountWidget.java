@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import java.text.ParseException;
@@ -23,13 +22,10 @@ import timber.log.Timber;
 public class DayCountWidget extends AppWidgetProvider {
 
     private static final String PREFS_NAME = "mmpud.project.daycountwidget.DayCountWidget";
-//    private static final String TAG_NAME = "mmpud";
     private static final String WIDGET_UPDATE_MIDNIGHT = "android.appwidget.action.WIDGET_UPDATE_MIDNIGHT";
 
     private static final int ALARM_ID = 0;
 
-//    private int targetYear;
-//    private int targetMonth;
     private String targetDate;
     private int styleNum;
     private String title;
@@ -124,9 +120,6 @@ public class DayCountWidget extends AppWidgetProvider {
         //					3. title
         // from shared preferences according to the appWidgetId
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-//        targetYear = prefs.getInt("year" + mAppWidgetId, 0);
-//        targetMonth = prefs.getInt("month" + mAppWidgetId, 0);
-//        targetDate = prefs.getInt("date" + mAppWidgetId, 0);
         targetDate = prefs.getString("targetDate" + mAppWidgetId, "");
         styleNum = prefs.getInt("styleNum" + mAppWidgetId, 1);
         title = prefs.getString("title" + mAppWidgetId, "");
@@ -151,7 +144,7 @@ public class DayCountWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.widget_title, title);
 
         // Adjust the digits' textSize according to the number of digits
-        float textSize = textSizeGenerator(diffDays);
+        float textSize = Utils.textSizeGenerator(diffDays);
         views.setFloat(R.id.widget_diffdays, "setTextSize", textSize);
 
         if (diffDays > 0) {
@@ -172,23 +165,6 @@ public class DayCountWidget extends AppWidgetProvider {
         views.setOnClickPendingIntent(R.id.widget, pender);
 
         return views;
-    }
-
-    public float textSizeGenerator(long num) {
-        if (num < 0) {
-            num = -num;
-        }
-        if (num >= 0 && num < 100) {
-            return 36;
-        } else if (num >= 100 && num < 1000) {
-            return 32;
-        } else if (num >= 1000 && num < 10000) {
-            return 26;
-        } else if (num >= 10000 && num < 100000) {
-            return 22;
-        } else {
-            return 18;
-        }
     }
 
 }
