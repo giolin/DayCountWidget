@@ -7,14 +7,14 @@ public class Counter {
     private int id;
     private String targetDate;
     private String title;
-    private String detail;
     private String createTime;
+    private int style;
 
-    public Counter(int id, String targetDate, String title, String detail, String createTime) {
+    public Counter(int id, String targetDate, String title, int style, String createTime) {
         this.id = id;
         this.targetDate = targetDate;
         this.title = title;
-        this.detail = detail;
+        this.style = style;
         this.createTime = createTime;
     }
 
@@ -30,8 +30,8 @@ public class Counter {
         return title;
     }
 
-    public String getDetail() {
-        return detail;
+    public int getStyle() {
+        return style;
     }
 
     public String getCreateTime() {
@@ -50,8 +50,8 @@ public class Counter {
         this.title = title;
     }
 
-    public void setDetail(String detail) {
-        this.detail = detail;
+    public void setStyle(int style) {
+        this.style = style;
     }
 
     public void setCreateTime(String createTime) {

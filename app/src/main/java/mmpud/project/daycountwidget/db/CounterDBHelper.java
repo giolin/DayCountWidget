@@ -21,11 +21,12 @@ public class CounterDBHelper extends SQLiteOpenHelper {
     private static final String ID = CounterContract.Counter._ID;
     private static final String TARGET_DATE = CounterContract.Counter.COLUMN_NAME_TARGET_DATE;
     private static final String TITLE = CounterContract.Counter.COLUMN_NAME_TITLE;
-    private static final String DETAIL = CounterContract.Counter.COLUMN_NAME_DETAIL;
+    private static final String STYLE = CounterContract.Counter.COLUMN_STYLE;
     private static final String CREATE_TIME = CounterContract.Counter.COLUMN_NAME_CREATE_TIME;
 
 
     private static final String TYPE_TEXT = " TEXT";
+    private static final String TYPE_INTEGER = " INTEGER";
     private static final String COMMA_SEP = ",";
 
     public CounterDBHelper(Context context) {
@@ -38,7 +39,7 @@ public class CounterDBHelper extends SQLiteOpenHelper {
                 ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 TARGET_DATE + TYPE_TEXT + COMMA_SEP +
                 TITLE + TYPE_TEXT + COMMA_SEP +
-                DETAIL + TYPE_TEXT + COMMA_SEP +
+                STYLE + TYPE_INTEGER + COMMA_SEP +
                 CREATE_TIME + TYPE_TEXT
                 + ")";
         db.execSQL(CREATE_WIDGET_TABLE);

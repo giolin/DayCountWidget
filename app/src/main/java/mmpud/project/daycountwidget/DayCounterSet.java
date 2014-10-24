@@ -12,13 +12,11 @@ public class DayCounterSet extends Activity {
 
     private DatePicker datePicker;
     private EditText edtTitle;
-    private EditText edtDetail;
     private Button btnOK;
     private int mPosition;
     private int mId;
     private String mTargetDate;
     private String mTitle;
-    private String mDetail;
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
 
         @Override
@@ -28,7 +26,6 @@ public class DayCounterSet extends Activity {
                         + (datePicker.getMonth()+1) + "-" // To show the right month, add 1
                         + datePicker.getDayOfMonth();
                 mTitle = edtTitle.getText().toString();
-                mDetail = edtDetail.getText().toString();
 
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
@@ -36,7 +33,6 @@ public class DayCounterSet extends Activity {
                 bundle.putInt("id", mId);
                 bundle.putString("target_date", mTargetDate);
                 bundle.putString("title", mTitle);
-                bundle.putString("detail", mDetail);
                 intent.putExtras(bundle);
                 setResult(RESULT_OK, intent);
                 finish();
@@ -53,7 +49,6 @@ public class DayCounterSet extends Activity {
 
         datePicker = (DatePicker) findViewById(R.id.set_picker);
         edtTitle = (EditText) findViewById(R.id.set_edt_title);
-        edtDetail = (EditText) findViewById(R.id.set_edt_detail);
         btnOK = (Button) findViewById(R.id.set_btn_ok);
 
         btnOK.setOnClickListener(mOnClickListener);
@@ -63,7 +58,6 @@ public class DayCounterSet extends Activity {
         mId = intent.getIntExtra("id", -1);
         mTargetDate = intent.getStringExtra("target_date");
         mTitle = intent.getStringExtra("title");
-        mDetail = intent.getStringExtra("detail");
 
         if(mTargetDate != null) {
             String[] ymd = mTargetDate.split("-");
@@ -73,9 +67,6 @@ public class DayCounterSet extends Activity {
         }
         if(mTitle != null) {
             edtTitle.setText(mTitle);
-        }
-        if(mDetail != null) {
-            edtDetail.setText(mDetail);
         }
     }
 

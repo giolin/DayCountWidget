@@ -92,9 +92,6 @@ public class DayCountWidget extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
             SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-//            prefs.edit().remove("year" + appWidgetId).commit();
-//            prefs.edit().remove("month" + appWidgetId).commit();
-//            prefs.edit().remove("date" + appWidgetId).commit();
             prefs.edit().remove("targetDate" + appWidgetId).commit();
             prefs.edit().remove("styleNum" + appWidgetId).commit();
             prefs.edit().remove("title" + appWidgetId).commit();

@@ -24,7 +24,7 @@ import timber.log.Timber;
 /**
  * Created by georgelin on 10/19/14.
  */
-public class DayCounterMain extends ListActivity
+public class ConfigureSelectCounter extends ListActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     static final String[] PROJECTION = new String[]{CounterContract.Counter._ID,
@@ -61,7 +61,7 @@ public class DayCounterMain extends ListActivity
         bundle.putString("target_date", counters.get(position).getTargetDate());
         bundle.putString("title", counters.get(position).getTitle());
         intent.putExtras(bundle);
-        startActivityForResult(intent, UPDATE_COUNTER_REQUEST);
+//        startActivityForResult(intent, UPDATE_COUNTER_REQUEST);
     }
 
     @Override
@@ -86,6 +86,7 @@ public class DayCounterMain extends ListActivity
             ContentValues contentValues = new ContentValues();
             contentValues.put(CounterContract.Counter.COLUMN_NAME_TARGET_DATE, data.getStringExtra("target_date"));
             contentValues.put(CounterContract.Counter.COLUMN_NAME_TITLE, data.getStringExtra("title"));
+            contentValues.put(CounterContract.Counter.COLUMN_STYLE, 0); // Default is 0
             Calendar calendar = Calendar.getInstance();
             contentValues.put(CounterContract.Counter.COLUMN_NAME_CREATE_TIME, calendar.getTime().toString());
             getContentResolver().insert(Uri.parse(CounterContract.BASE_CONTENT_URI
@@ -150,23 +151,4 @@ public class DayCounterMain extends ListActivity
         mAdapter.clear();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.day_count_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if (id == R.id.action_create_counter) {
-            Intent intent = new Intent(this, DayCounterSet.class);
-            startActivityForResult(intent, CREATE_COUNTER_REQUEST);
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

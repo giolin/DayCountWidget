@@ -61,9 +61,9 @@ public class CounterContract {
         public static final String COLUMN_NAME_TITLE = "title";
 
         /**
-         * Detail of the counter
+         * Style of the counter
          */
-        public static final String COLUMN_NAME_DETAIL = "detail";
+        public static final String COLUMN_STYLE = "style";
 
         /**
          * Timestamp of the counter
