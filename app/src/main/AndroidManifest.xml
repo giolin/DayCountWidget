@@ -13,7 +13,7 @@
         android:icon="@drawable/widget_preview"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:name=".DayCounter">
+        android:name=".DayCounterApplication">
         <!--<activity android:name="mmpud.project.daycountwidget.DayCounterMain">-->
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->

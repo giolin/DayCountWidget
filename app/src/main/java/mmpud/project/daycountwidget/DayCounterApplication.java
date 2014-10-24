@@ -2,6 +2,8 @@ package mmpud.project.daycountwidget;
 
 import android.app.Application;
 
+import mortar.Mortar;
+import mortar.MortarScope;
 import timber.log.Timber;
 
 import static timber.log.Timber.DebugTree;
@@ -9,16 +11,24 @@ import static timber.log.Timber.DebugTree;
 /**
  * Created by georgelin on 10/10/14.
  */
-public class DayCounter extends Application {
+public class DayCounterApplication extends Application {
+    private MortarScope rootScope;
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        rootScope = Mortar.createRootScope(BuildConfig.DEBUG);
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new DebugTree());
         } else {
             Timber.plant(new CrashReportingTree());
         }
+    }
+
+    public MortarScope getRootScope() {
+        return rootScope;
     }
 
     /**

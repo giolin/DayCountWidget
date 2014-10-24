@@ -24,7 +24,7 @@ import timber.log.Timber;
 /**
  * Created by georgelin on 10/19/14.
  */
-public class DayCounterMain extends ListActivity
+public class DayCounterMain extends Activity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     static final String[] PROJECTION = new String[]{CounterContract.Counter._ID,
