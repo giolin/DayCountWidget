@@ -2,6 +2,7 @@ package mmpud.project.daycountwidget;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -9,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.IBinder;
 import android.widget.RemoteViews;
 
 import java.text.ParseException;
@@ -162,6 +164,19 @@ public class DayCountWidget extends AppWidgetProvider {
         views.setOnClickPendingIntent(R.id.widget, pender);
 
         return views;
+    }
+
+    public static class MyService extends Service {
+
+        @Override
+        public int onStartCommand(Intent intent, int flags, int startId) {
+            return super.onStartCommand(intent, flags, startId);
+        }
+
+        @Override
+        public IBinder onBind(Intent intent) {
+            return null;
+        }
     }
 
 }
