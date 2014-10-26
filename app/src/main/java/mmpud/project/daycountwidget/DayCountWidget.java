@@ -2,7 +2,6 @@ package mmpud.project.daycountwidget;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -10,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.IBinder;
 import android.widget.RemoteViews;
 
 import java.text.ParseException;
@@ -28,10 +26,6 @@ public class DayCountWidget extends AppWidgetProvider {
 
     private static final int ALARM_ID = 0;
 
-    private String targetDate;
-    private int styleNum;
-    private String title;
-
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
@@ -40,28 +34,29 @@ public class DayCountWidget extends AppWidgetProvider {
         AppWidgetManager manager = AppWidgetManager.getInstance(context);
 
         for (int appWidgetId : appWidgetIds) {
-            RemoteViews views = buildUpdate(context, appWidgetId);
+            RemoteViews views = buildRemoteViews(context, appWidgetId);
             manager.updateAppWidget(appWidgetId, views);
+            Timber.d("widget [" + appWidgetId + "] is updated");
         }
     }
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        // When Receiving the midnight alarm, update all the widgets so that one more day is counted
-        if (WIDGET_UPDATE_MIDNIGHT.equals(intent.getAction())) {
-            AppWidgetManager manager = AppWidgetManager.getInstance(context);
-            ComponentName widgetComponent = new ComponentName(context, DayCountWidget.class);
-
-            for (int appWidgetId : manager.getAppWidgetIds(widgetComponent)) {
-                RemoteViews views = buildUpdate(context, appWidgetId);
-                manager.updateAppWidget(appWidgetId, views);
-                Timber.d("widget [" + appWidgetId + "] updated at midnight");
-            }
-
-        }
-
-        super.onReceive(context, intent);
-    }
+//
+//    @Override
+//    public void onReceive(Context context, Intent intent) {
+//        // When Receiving the midnight alarm, update all the widgets so that one more day is counted
+//        if (WIDGET_UPDATE_MIDNIGHT.equals(intent.getAction())) {
+//            AppWidgetManager manager = AppWidgetManager.getInstance(context);
+//            ComponentName widgetComponent = new ComponentName(context, DayCountWidget.class);
+//
+//            for (int appWidgetId : manager.getAppWidgetIds(widgetComponent)) {
+//                RemoteViews views = buildRemoteViews(context, appWidgetId);
+//                manager.updateAppWidget(appWidgetId, views);
+//                Timber.d("widget [" + appWidgetId + "] updated at midnight");
+//            }
+//
+//        }
+//
+//        super.onReceive(context, intent);
+//    }
 
 
     @Override
@@ -81,8 +76,18 @@ public class DayCountWidget extends AppWidgetProvider {
         calendar.set(Calendar.AM_PM, Calendar.AM);
         calendar.add(Calendar.DAY_OF_MONTH, 1);
 
-        Intent alarmIntent = new Intent(WIDGET_UPDATE_MIDNIGHT);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        ComponentName thisAppWidget = new ComponentName(context, DayCountWidget.class);
+        Intent updateIntent = new Intent(context, DayCountWidget.class);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
+        updateIntent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+        updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+        context.sendBroadcast(updateIntent);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, updateIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+//        Intent alarmIntent = new Intent(WIDGET_UPDATE_MIDNIGHT);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         // RTC does not wake the device up
@@ -113,15 +118,15 @@ public class DayCountWidget extends AppWidgetProvider {
         Timber.d("[Alarm is deldeted]");
     }
 
-    public RemoteViews buildUpdate(Context context, int mAppWidgetId) {
+    public static RemoteViews buildRemoteViews(Context context, int mAppWidgetId) {
         // Get information: 1. YYYY/MM/DD
         //					2. widget style
         //					3. title
         // from shared preferences according to the appWidgetId
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        targetDate = prefs.getString("targetDate" + mAppWidgetId, "");
-        styleNum = prefs.getInt("styleNum" + mAppWidgetId, 1);
-        title = prefs.getString("title" + mAppWidgetId, "");
+        String targetDate = prefs.getString("targetDate" + mAppWidgetId, "");
+        String title = prefs.getString("title" + mAppWidgetId, "");
+        int styleNum = prefs.getInt("styleNum" + mAppWidgetId, 1);
 
         // Get the day difference
         Calendar calToday = Calendar.getInstance();
@@ -154,29 +159,16 @@ public class DayCountWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.widget_diffdays, Long.toString(-diffDays));
         }
 
-        // Click on the widget for editing
+        // Create intent for clicking on the widget for detail
         Intent intent = new Intent(context, DayCountDetailDialog.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
-        // No request code and no flags for this example
-        PendingIntent pender = PendingIntent.getActivity(context, 0, intent, 0);
-        views.setOnClickPendingIntent(R.id.widget, pender);
+        // No request code and no flags
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        views.setOnClickPendingIntent(R.id.widget, pendingIntent);
 
         return views;
-    }
-
-    public static class MyService extends Service {
-
-        @Override
-        public int onStartCommand(Intent intent, int flags, int startId) {
-            return super.onStartCommand(intent, flags, startId);
-        }
-
-        @Override
-        public IBinder onBind(Intent intent) {
-            return null;
-        }
     }
 
 }

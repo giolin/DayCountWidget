@@ -3,22 +3,20 @@ package mmpud.project.daycountwidget;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -28,18 +26,15 @@ import android.widget.HorizontalScrollView;
 import android.widget.RemoteViews;
 import android.widget.Spinner;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import mmpud.project.daycountwidget.util.Utils;
 import timber.log.Timber;
 
 public class DayCountConfigure extends Activity {
 
     private static final String PREFS_NAME = "mmpud.project.daycountwidget.DayCountWidget";
-    private static final String WIDGET_UPDATE_MIDNIGHT = "android.appwidget.action.WIDGET_UPDATE_MIDNIGHT";
+//    private static final String WIDGET_UPDATE_MIDNIGHT = "android.appwidget.action.WIDGET_UPDATE_MIDNIGHT";
 
     private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
@@ -87,56 +82,61 @@ public class DayCountConfigure extends Activity {
                     String targetDate = datePicker.getYear() + "-" + (datePicker.getMonth() + 1) + "-" + datePicker.getDayOfMonth();
                     Timber.d("Date: " + targetDate);
                     prefs.putString("targetDate" + mAppWidgetId, targetDate);
-                    prefs.putInt("styleNum" + mAppWidgetId, styleNum);
                     prefs.putString("title" + mAppWidgetId, edtTitle.getText().toString());
+                    prefs.putInt("styleNum" + mAppWidgetId, styleNum);
                     prefs.commit();
 
-                    // We gotta save it in the db (insert and replace on conflict)
 
                     // Get layout resource id with styleNum
-                    String layoutName = "widget_layout" + styleNum;
-                    int resourceIDStyle = context.getResources().getIdentifier(layoutName, "layout", "mmpud.project.daycountwidget");
+//                    String layoutName = "widget_layout" + styleNum;
+//                    int resourceIDStyle = context.getResources().getIdentifier(layoutName, "layout", "mmpud.project.daycountwidget");
+//
+//
+
                     // Start to build up the remote views
-                    RemoteViews views = new RemoteViews(context.getPackageName(), resourceIDStyle);
+//                    RemoteViews views = new RemoteViews(context.getPackageName(), resourceIDStyle);
+//
+//                    views.setTextViewText(R.id.widget_title, edtTitle.getText().toString());
+//
+//                    Calendar calToday = Calendar.getInstance();
+//                    Calendar calTarget = Calendar.getInstance();
+//                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+//                    try {
+//                        calTarget.setTime(sdf.parse(targetDate));
+//                    } catch (ParseException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    long diffDays = Utils.daysBetween(calToday, calTarget);
+//
+//                    Timber.d("Diff days: " + diffDays);
+//
+//                    // Adjust the digits' textSize according to the number of digits
+//                    float textSize = Utils.textSizeGenerator(diffDays);
+//                    views.setFloat(R.id.widget_diffdays, "setTextSize", textSize);
+//
+//                    // Put in day difference info
+//                    if (diffDays > 0) {
+//                        views.setTextViewText(R.id.widget_since_left, getResources().getString(R.string.days_left));
+//                        views.setTextViewText(R.id.widget_diffdays, Long.toString(diffDays));
+//                    } else {
+//                        views.setTextViewText(R.id.widget_since_left, getResources().getString(R.string.days_since));
+//                        views.setTextViewText(R.id.widget_diffdays, Long.toString(-diffDays));
+//                    }
 
-                    views.setTextViewText(R.id.widget_title, edtTitle.getText().toString());
 
-                    Calendar calToday = Calendar.getInstance();
-                    Calendar calTarget = Calendar.getInstance();
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                    try {
-                        calTarget.setTime(sdf.parse(targetDate));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+//                    // Click on the widget for editing
+//                    Intent intent = new Intent(context, DayCountDetailDialog.class);
+//                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+//                    intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+//
+//                    // No request code and no flags for this example
+//                    PendingIntent pending = PendingIntent.getActivity(context, 0, intent, 0);
+//                    views.setOnClickPendingIntent(R.id.widget, pending);
 
-                    long diffDays = Utils.daysBetween(calToday, calTarget);
-
-                    Timber.d("Diff days: " + diffDays);
-
-                    // Adjust the digits' textSize according to the number of digits
-                    float textSize = Utils.textSizeGenerator(diffDays);
-                    views.setFloat(R.id.widget_diffdays, "setTextSize", textSize);
-
-                    // Put in day difference info
-                    if (diffDays > 0) {
-                        views.setTextViewText(R.id.widget_since_left, getResources().getString(R.string.days_left));
-                        views.setTextViewText(R.id.widget_diffdays, Long.toString(diffDays));
-                    } else {
-                        views.setTextViewText(R.id.widget_since_left, getResources().getString(R.string.days_since));
-                        views.setTextViewText(R.id.widget_diffdays, Long.toString(-diffDays));
-                    }
+                    RemoteViews views = DayCountWidget.buildRemoteViews(context, mAppWidgetId);
 
                     Timber.d("The widget [" + mAppWidgetId + "] is set");
-
-                    // Click on the widget for editing
-                    Intent intent = new Intent(context, DayCountDetailDialog.class);
-                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-                    intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-
-                    // No request code and no flags for this example
-                    PendingIntent pending = PendingIntent.getActivity(context, 0, intent, 0);
-                    views.setOnClickPendingIntent(R.id.widget, pending);
 
                     // Push widget update to surface
                     AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -153,15 +153,13 @@ public class DayCountConfigure extends Activity {
     };
     private String selectedLan;
 
-    public DayCountConfigure() {
-        super();
-    }
-
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
 
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // Set the result to CANCELED.  This will cause the widget host to cancel
+        // out of the widget placement if they press the back button.
+        setResult(RESULT_CANCELED);
 
         // Get the widget id from the intent.
         Intent intent = getIntent();
@@ -172,9 +170,7 @@ public class DayCountConfigure extends Activity {
                     AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
-        // Set the result to CANCELED.  This will cause the widget host to cancel
-        // out of the widget placement if they press the back button.
-        setResult(RESULT_CANCELED);
+        Timber.d("mAppWidgetId: " + mAppWidgetId);
 
         // If they gave us an intent without the widget id, just bail.
         if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
@@ -189,30 +185,57 @@ public class DayCountConfigure extends Activity {
         btnOK = (Button) findViewById(R.id.btn_ok);
         hsvStyles = (HorizontalScrollView) findViewById(R.id.hsv_styles);
 
+        btnOK.setOnClickListener(mOnClickListener);
+
         for (int i = 0; i < btnWidget.length; i++) {
             // Set header and body color
             String strStyle = "style" + (i + 1);
             int resourceIDStyle = getResources().getIdentifier(strStyle, "id", "mmpud.project.daycountwidget");
             btnWidget[i] = (FrameLayout) findViewById(resourceIDStyle);
+            // set tag for the  widgets
             btnWidget[i].setTag(i + 1);
             btnWidget[i].setOnClickListener(widgetOnClickListener);
         }
 
-        btnOK.setOnClickListener(mOnClickListener);
-
         // Instantiate calendars for today and the target day
         Calendar calToday = Calendar.getInstance();
+        String strToday = calToday.get(Calendar.YEAR)
+                + "-" + (calToday.get(Calendar.MONTH) + 1)
+                + "-" + calToday.get(Calendar.DAY_OF_MONTH);
 
         // Get information: 1. YYYY-MM-DD
         //					2. widget style
         //					3. title
         // from shared preferences according to the appWidgetId
         SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, 0);
-        initTargetDate = prefs.getString("targetDate" + mAppWidgetId, calToday.get(Calendar.YEAR) + "-" + (calToday.get(Calendar.MONTH) + 1) + "-" + calToday.get(Calendar.DAY_OF_MONTH));
-        styleNum = prefs.getInt("styleNum" + mAppWidgetId, 1);
+        initTargetDate = prefs.getString("targetDate" + mAppWidgetId, strToday);
         initTitle = prefs.getString("title" + mAppWidgetId, "");
+        styleNum = prefs.getInt("styleNum" + mAppWidgetId, 1);
 
-        setConfigureView();
+        Timber.d("(initTargetDate, initTitle, styleNum): " + "(" + initTargetDate + ", " + initTitle + ", " + styleNum + ")");
+
+        // Set current date into datePicker
+        String[] ymd = initTargetDate.split("-");
+
+        datePicker.updateDate(Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1]) - 1, Integer.parseInt(ymd[2]));
+
+        // Set title
+        if (!initTitle.isEmpty()) {
+            edtTitle.setText(initTitle);
+        }
+
+        // Show the selected layout
+        btnWidget[styleNum - 1].setBackgroundColor(Color.parseColor("#FF6600"));
+
+        // Scroll the HorizontalScrollView to the selected position
+        float density = getApplicationContext().getResources().getDisplayMetrics().density;
+        final float unitWidth = Math.round((float) 80 * density);
+        hsvStyles.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hsvStyles.smoothScrollBy((int) unitWidth * (styleNum - 1), 0);
+            }
+        }, 100);
     }
 
     @Override
@@ -307,10 +330,20 @@ public class DayCountConfigure extends Activity {
                             res.updateConfiguration(conf, null);
                         }
                         // 1. Force to update the widgets
-                        Intent i = new Intent(WIDGET_UPDATE_MIDNIGHT);
-                        sendBroadcast(i);
+//                        Intent i = new Intent(WIDGET_UPDATE_MIDNIGHT);
+//                        sendBroadcast(i);
+
+                        Context context = DayCountConfigure.this;
+                        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                        ComponentName thisAppWidget = new ComponentName(context, DayCountWidget.class);
+                        Intent updateIntent = new Intent(context, DayCountWidget.class);
+                        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
+                        updateIntent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                        updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+                        context.sendBroadcast(updateIntent);
+
                         // 2. Restart the configure activity
-                        Intent intent = new Intent(DayCountConfigure.this, DayCountConfigure.class);
+                        Intent intent = new Intent(context, DayCountConfigure.class);
                         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
@@ -323,33 +356,6 @@ public class DayCountConfigure extends Activity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void setConfigureView() {
-        Timber.d("Set the configure view");
-        // Show the selected layout
-        btnWidget[styleNum - 1].setBackgroundColor(Color.parseColor("#FF6600"));
-
-        // Set current date into datePicker
-        String[] ymd = initTargetDate.split("-");
-
-        datePicker.updateDate(Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1]) - 2, Integer.parseInt(ymd[2]));
-
-        // Set title
-        if (!initTitle.isEmpty()) {
-            edtTitle.setText(initTitle);
-        }
-
-        // Scroll the HorizontalScrollView to the selected position
-        float density = getApplicationContext().getResources().getDisplayMetrics().density;
-        final float unitWidth = Math.round((float) 80 * density);
-        hsvStyles.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                hsvStyles.smoothScrollBy((int) unitWidth * (styleNum - 1), 0);
-            }
-        }, 100);
-
     }
 
 }

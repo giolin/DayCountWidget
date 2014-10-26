@@ -51,7 +51,8 @@ public class DayCountDetailDialog extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.day_count_detail_dialog);
 
-        // Get the widget id from the intent.
+        // Get the widget id from the intent. If is it new created Android will put the id
+        // in the intent with key AppWidgetManager.EXTRA_APPWIDGET_ID
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
