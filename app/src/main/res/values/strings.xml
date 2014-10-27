@@ -25,7 +25,7 @@
 
     <string name="sample_widget_title">event title</string>
     <string name="sample_widget_days">99</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="add_widget_instruction">No Widgets on the Home Screen. \n Please go to Home Screen > Add Widget > select \"Day Counter\" to add the widget.</string>
 
 </resources>

@@ -36,7 +36,7 @@ public class ListItemAdapter extends ArrayAdapter<Counter> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View row = convertView;
-        CounterLayoutHolder holder = null;
+        CounterLayoutHolder holder;
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
@@ -46,6 +46,7 @@ public class ListItemAdapter extends ArrayAdapter<Counter> {
             holder.tvTargetDate = (TextView) row.findViewById(R.id.list_item_tv_target_date);
             holder.tvTitle = (TextView) row.findViewById(R.id.list_item_tv_title);
             holder.tvDayDiff = (TextView) row.findViewById(R.id.list_item_tv_day_diff);
+            holder.tvSinceLeft = (TextView) row.findViewById(R.id.list_item_tv_day_since_left);
 
             row.setTag(holder);
         } else {
@@ -64,7 +65,17 @@ public class ListItemAdapter extends ArrayAdapter<Counter> {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        holder.tvDayDiff.setText(Long.toString(Utils.daysBetween(startDate, targetDate)));
+
+        Long diffDays = Utils.daysBetween(startDate, targetDate);
+
+        if (diffDays > 0) {
+            holder.tvSinceLeft.setText(getContext().getResources().getString(R.string.days_left));
+            holder.tvDayDiff.setText(Long.toString(diffDays));
+        } else {
+            holder.tvSinceLeft.setText(getContext().getResources().getString(R.string.days_since));
+            holder.tvDayDiff.setText(Long.toString(-diffDays));
+        }
+
         return row;
     }
 
@@ -72,5 +83,6 @@ public class ListItemAdapter extends ArrayAdapter<Counter> {
         TextView tvTargetDate;
         TextView tvTitle;
         TextView tvDayDiff;
+        TextView tvSinceLeft;
     }
 }

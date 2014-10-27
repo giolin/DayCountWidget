@@ -1,6 +1,7 @@
 package mmpud.project.daycountwidget;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -16,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -27,6 +29,7 @@ import timber.log.Timber;
 public class DayCountMainActivity extends Activity {
 
     ListView listViewDayCounter;
+    TextView tvNoWidgetMsg;
     ArrayList<Counter> counters;
     ListItemAdapter adapter;
 
@@ -41,12 +44,20 @@ public class DayCountMainActivity extends Activity {
 
         listViewDayCounter = (ListView) findViewById(R.id.lv_day_counter);
         listViewDayCounter.setAdapter(adapter);
+        listViewDayCounter.setClickable(false);
+        tvNoWidgetMsg = (TextView) findViewById(R.id.tv_no_widget_msg);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         updateAdapter();
+
+        if (counters.isEmpty()) {
+            tvNoWidgetMsg.setVisibility(View.VISIBLE);
+        } else {
+            tvNoWidgetMsg.setVisibility(View.GONE);
+        }
     }
 
     private void updateAdapter() {
@@ -175,9 +186,10 @@ public class DayCountMainActivity extends Activity {
                 });
 
                 dialogLanguageSettings.show();
-                return true;
+                break;
             default:
-                return super.onOptionsItemSelected(item);
+                break;
         }
+        return super.onOptionsItemSelected(item);
     }
 }
