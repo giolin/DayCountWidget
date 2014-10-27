@@ -7,6 +7,7 @@
     <string name="no_data">-</string>
     <string name="enter_title">(Tap here to edit title)</string>
     <string name="ok">OK</string>
+    <string name="date">Date</string>
     <string name="what">What</string>
     <string name="title_activity_day_count_detail_dialog">DayCountDetailDialog</string>
     <string name="edit">Edit</string>

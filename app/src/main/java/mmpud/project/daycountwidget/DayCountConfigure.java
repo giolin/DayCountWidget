@@ -2,6 +2,7 @@ package mmpud.project.daycountwidget;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.RemoteViews;
+import android.widget.TextView;
 
 import java.util.Calendar;
 
@@ -27,11 +29,13 @@ public class DayCountConfigure extends Activity {
 
     private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-    private DatePicker datePicker;
+    private TextView tvDate;
     private EditText edtTitle;
     private Button btnOK;
     private HorizontalScrollView hsvStyles;
     private FrameLayout[] btnWidget = new FrameLayout[15];
+
+    private DatePickerDialog datePickerDialog;
 
     private int styleNum;
 
@@ -58,14 +62,18 @@ public class DayCountConfigure extends Activity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-
+                case R.id.tv_date:
+                    if(datePickerDialog != null) {
+                        datePickerDialog.show();
+                    }
+                    break;
                 case R.id.btn_ok:
                     // Save information: 1. YYYY-MM-DD
                     //		    		 2. widget style
                     //					 3. title
                     // to shared preferences according to the appWidgetId
                     SharedPreferences.Editor prefs = context.getSharedPreferences(Utils.PREFS_NAME, 0).edit();
-                    String targetDate = datePicker.getYear() + "-" + (datePicker.getMonth() + 1) + "-" + datePicker.getDayOfMonth();
+                    String targetDate = tvDate.getText().toString();
                     Timber.d("Date: " + targetDate);
                     prefs.putString("targetDate" + mAppWidgetId, targetDate);
                     prefs.putString("title" + mAppWidgetId, edtTitle.getText().toString());
@@ -166,11 +174,12 @@ public class DayCountConfigure extends Activity {
         // Set up the view layout resource to use.
         setContentView(R.layout.day_count_configure_layout);
 
-        datePicker = (DatePicker) findViewById(R.id.date_picker);
+        tvDate = (TextView) findViewById(R.id.tv_date);
         edtTitle = (EditText) findViewById(R.id.edt_title);
         btnOK = (Button) findViewById(R.id.btn_ok);
         hsvStyles = (HorizontalScrollView) findViewById(R.id.hsv_styles);
 
+        tvDate.setOnClickListener(mOnClickListener);
         btnOK.setOnClickListener(mOnClickListener);
 
         for (int i = 0; i < btnWidget.length; i++) {
@@ -201,9 +210,14 @@ public class DayCountConfigure extends Activity {
         Timber.d("(initTargetDate, initTitle, styleNum): " + "(" + initTargetDate + ", " + initTitle + ", " + styleNum + ")");
 
         // Set current date into datePicker
+        tvDate.setText(initTargetDate);
         String[] ymd = initTargetDate.split("-");
-
-        datePicker.updateDate(Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1]) - 1, Integer.parseInt(ymd[2]));
+        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                tvDate.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+            }
+        }, Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1]), Integer.parseInt(ymd[2]));
 
         // Set title
         if (!initTitle.isEmpty()) {
