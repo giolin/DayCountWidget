@@ -18,7 +18,7 @@ import java.util.Locale;
 import mmpud.project.daycountwidget.util.Utils;
 import timber.log.Timber;
 
-public class DayCountDetailDialog extends Activity {
+public class DayCountDetail extends Activity {
 
     private static final String PREFS_NAME = "mmpud.project.daycountwidget.DayCountWidget";
 
@@ -36,7 +36,7 @@ public class DayCountDetailDialog extends Activity {
         public void onClick(View v) {
             if (v.getId() == R.id.btn_detail_edit) {
                 // Click to configure the widget
-                Intent intent = new Intent(DayCountDetailDialog.this, DayCountConfigure.class);
+                Intent intent = new Intent(DayCountDetail.this, DayCountConfigure.class);
                 intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -85,9 +85,9 @@ public class DayCountDetailDialog extends Activity {
     }
 
     private void updateLayoutInfo() {
-        // Get information: 1. YYYY/MM/DD
-        //					2. widget style (but body color only)
-        //					3. title
+        // Get information: 1. YYYY-MM-DD
+        //					2. title
+        //					3. widget style
         // from shared preferences according to the appWidgetId
         SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, 0);
         String targetDate = prefs.getString("targetDate" + mAppWidgetId, "0-0-0");
@@ -119,10 +119,4 @@ public class DayCountDetailDialog extends Activity {
 
     }
 
-    public long daysBetween(Calendar startDay, Calendar endDate) {
-        long startTime = startDay.getTime().getTime();
-        long endTime = endDate.getTime().getTime();
-        long diffTime = endTime - startTime;
-        return (diffTime / (1000 * 60 * 60 * 24));
-    }
 }

@@ -10,22 +10,9 @@ import timber.log.Timber;
  */
 public class Utils {
 
-//    public static int getScreenWidth(Context context) {
-//
-//        int screenWidth;
-//
-//        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-//        Display display = wm.getDefaultDisplay();
-//
-//        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-//            final Point point = new Point();
-//            display.getSize(point);
-//            screenWidth = point.x;
-//        } else { // For older version
-//            screenWidth = display.getWidth();
-//        }
-//        return screenWidth;
-//    }
+    public static final String PREFS_NAME = "mmpud.project.daycountwidget.DayCountWidget";
+
+    public static final String WIDGET_UPDATE_ALL = "android.appwidget.action.WIDGET_UPDATE_ALL";
 
     public static long daysBetween(Calendar startDate, Calendar endDate) {
         endDate.set(Calendar.HOUR_OF_DAY, 0);
@@ -38,9 +25,9 @@ public class Utils {
         startDate.set(Calendar.MILLISECOND, 0);
         long startTime = startDate.getTime().getTime();
         long endTime = endDate.getTime().getTime();
-        Timber.d("time" + startDate.getTime() + ", " + endDate.getTime());
+        Timber.d("time: " + startDate.getTime() + ", " + endDate.getTime());
         long diffTime = endTime - startTime;
-        Timber.d("miliseconds: " + diffTime + ", hours: " + diffTime / (1000 * 60 * 60));
+        Timber.d("milliseconds: " + diffTime + ", hours: " + diffTime / (1000 * 60 * 60));
         return TimeUnit.DAYS.convert(diffTime, TimeUnit.MILLISECONDS);
     }
 

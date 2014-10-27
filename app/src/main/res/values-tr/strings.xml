@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Compteur de jours</string>
+    <string name="app_name">gün sayacı</string>
     <string name="days_since">günler</string>
     <string name="days_left">kalan günler</string>
     <string name="no_data">-</string>

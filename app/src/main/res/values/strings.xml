@@ -13,6 +13,7 @@
     <string name="detail_days_since">days since</string>
     <string name="detail_days_left">days left until</string>
     <string name="language_settings">Language Settings</string>
+
     <string-array name="language_list">
         <item>English</item>
         <item>繁體中文</item>
@@ -21,7 +22,10 @@
         <item>Français</item>
         <item>Türkçe</item>
     </string-array>
+
     <string name="sample_widget_title">event title</string>
     <string name="sample_widget_days">99</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

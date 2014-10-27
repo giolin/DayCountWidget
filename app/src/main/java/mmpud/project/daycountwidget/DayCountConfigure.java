@@ -2,39 +2,28 @@ package mmpud.project.daycountwidget;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.RemoteViews;
-import android.widget.Spinner;
 
 import java.util.Calendar;
-import java.util.Locale;
 
+import mmpud.project.daycountwidget.util.Utils;
 import timber.log.Timber;
 
 public class DayCountConfigure extends Activity {
-
-    private static final String PREFS_NAME = "mmpud.project.daycountwidget.DayCountWidget";
-//    private static final String WIDGET_UPDATE_MIDNIGHT = "android.appwidget.action.WIDGET_UPDATE_MIDNIGHT";
 
     private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
@@ -43,9 +32,6 @@ public class DayCountConfigure extends Activity {
     private Button btnOK;
     private HorizontalScrollView hsvStyles;
     private FrameLayout[] btnWidget = new FrameLayout[15];
-
-    private String initTargetDate;
-    private String initTitle;
 
     private int styleNum;
 
@@ -78,7 +64,7 @@ public class DayCountConfigure extends Activity {
                     //		    		 2. widget style
                     //					 3. title
                     // to shared preferences according to the appWidgetId
-                    SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
+                    SharedPreferences.Editor prefs = context.getSharedPreferences(Utils.PREFS_NAME, 0).edit();
                     String targetDate = datePicker.getYear() + "-" + (datePicker.getMonth() + 1) + "-" + datePicker.getDayOfMonth();
                     Timber.d("Date: " + targetDate);
                     prefs.putString("targetDate" + mAppWidgetId, targetDate);
@@ -151,12 +137,12 @@ public class DayCountConfigure extends Activity {
             }
         }
     };
-    private String selectedLan;
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
 
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         // Set the result to CANCELED.  This will cause the widget host to cancel
         // out of the widget placement if they press the back button.
         setResult(RESULT_CANCELED);
@@ -204,12 +190,12 @@ public class DayCountConfigure extends Activity {
                 + "-" + calToday.get(Calendar.DAY_OF_MONTH);
 
         // Get information: 1. YYYY-MM-DD
-        //					2. widget style
-        //					3. title
+        //					2. title
+        //					3. widget style
         // from shared preferences according to the appWidgetId
-        SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, 0);
-        initTargetDate = prefs.getString("targetDate" + mAppWidgetId, strToday);
-        initTitle = prefs.getString("title" + mAppWidgetId, "");
+        SharedPreferences prefs = this.getSharedPreferences(Utils.PREFS_NAME, 0);
+        String initTargetDate = prefs.getString("targetDate" + mAppWidgetId, strToday);
+        String initTitle = prefs.getString("title" + mAppWidgetId, "");
         styleNum = prefs.getInt("styleNum" + mAppWidgetId, 1);
 
         Timber.d("(initTargetDate, initTitle, styleNum): " + "(" + initTargetDate + ", " + initTitle + ", " + styleNum + ")");
@@ -242,120 +228,6 @@ public class DayCountConfigure extends Activity {
     protected void onPause() {
         super.onPause();
         finish();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.day_count_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.language_settings:
-
-                final Dialog dialogLanguageSettings = new Dialog(DayCountConfigure.this);
-                dialogLanguageSettings.setContentView(R.layout.language_settings_dialog);
-                dialogLanguageSettings.setTitle(getResources().getString(R.string.language_settings));
-
-                Spinner spnLanguageSettings = (Spinner) dialogLanguageSettings.findViewById(R.id.spn_language_settings);
-                // Set initial selected item in the spinner according to the locale language
-                Locale current = getResources().getConfiguration().locale;
-                Timber.d("current language: " + current.getLanguage());
-                if (current.getLanguage().equals("en")) {
-                    spnLanguageSettings.setSelection(0);
-                } else if (current.getLanguage().equals("zh")) {
-                    spnLanguageSettings.setSelection(1);
-                } else if (current.getLanguage().equals("ja")) {
-                    spnLanguageSettings.setSelection(3);
-                } else if (current.getLanguage().equals("fr")) {
-                    spnLanguageSettings.setSelection(4);
-                } else if (current.getLanguage().equals("tr")) {
-                    spnLanguageSettings.setSelection(5);
-                }
-
-                Button btnLanguageSettings = (Button) dialogLanguageSettings.findViewById(R.id.btn_language_settings);
-
-                spnLanguageSettings.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent,
-                                               View view, int position, long id) {
-                        selectedLan = parent.getSelectedItem().toString();
-                        Timber.d("Language [" + selectedLan + "] selected");
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-
-                btnLanguageSettings.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        if (selectedLan.equals("English")) {
-                            // Set the language
-                            Resources res = getResources();
-                            Configuration conf = res.getConfiguration();
-                            conf.locale = Locale.ENGLISH;
-                            res.updateConfiguration(conf, null);
-                        } else if (selectedLan.equals("繁體中文")) {
-                            Resources res = getResources();
-                            Configuration conf = res.getConfiguration();
-                            conf.locale = Locale.TAIWAN;
-                            res.updateConfiguration(conf, null);
-                        } else if (selectedLan.equals("简体中文")) {
-                            Resources res = getResources();
-                            Configuration conf = res.getConfiguration();
-                            conf.locale = Locale.CHINA;
-                            res.updateConfiguration(conf, null);
-                        } else if (selectedLan.equals("日本語")) {
-                            Resources res = getResources();
-                            Configuration conf = res.getConfiguration();
-                            conf.locale = Locale.JAPAN;
-                            res.updateConfiguration(conf, null);
-                        } else if (selectedLan.equals("Français")) {
-                            Resources res = getResources();
-                            Configuration conf = res.getConfiguration();
-                            conf.locale = Locale.FRANCE;
-                            res.updateConfiguration(conf, null);
-                        } else if (selectedLan.equals("Türkçe")) {
-                            Resources res = getResources();
-                            Configuration conf = res.getConfiguration();
-                            conf.locale = new Locale("tr");
-                            res.updateConfiguration(conf, null);
-                        }
-                        // 1. Force to update the widgets
-//                        Intent i = new Intent(WIDGET_UPDATE_MIDNIGHT);
-//                        sendBroadcast(i);
-
-                        Context context = DayCountConfigure.this;
-                        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-                        ComponentName thisAppWidget = new ComponentName(context, DayCountWidget.class);
-                        Intent updateIntent = new Intent(context, DayCountWidget.class);
-                        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
-                        updateIntent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-                        updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-                        context.sendBroadcast(updateIntent);
-
-                        // 2. Restart the configure activity
-                        Intent intent = new Intent(context, DayCountConfigure.class);
-                        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        dialogLanguageSettings.dismiss();
-                    }
-                });
-
-                dialogLanguageSettings.show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
 }

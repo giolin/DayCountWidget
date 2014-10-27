@@ -21,11 +21,12 @@ import timber.log.Timber;
 
 public class DayCountWidget extends AppWidgetProvider {
 
-    private static final String PREFS_NAME = "mmpud.project.daycountwidget.DayCountWidget";
-    private static final String WIDGET_UPDATE_MIDNIGHT = "android.appwidget.action.WIDGET_UPDATE_MIDNIGHT";
+
 
     private static final int ALARM_ID = 0;
 
+    // is called when new widget is created
+    // change Language will also call this method with an intent
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
@@ -39,24 +40,25 @@ public class DayCountWidget extends AppWidgetProvider {
             Timber.d("widget [" + appWidgetId + "] is updated");
         }
     }
-//
-//    @Override
-//    public void onReceive(Context context, Intent intent) {
-//        // When Receiving the midnight alarm, update all the widgets so that one more day is counted
-//        if (WIDGET_UPDATE_MIDNIGHT.equals(intent.getAction())) {
-//            AppWidgetManager manager = AppWidgetManager.getInstance(context);
-//            ComponentName widgetComponent = new ComponentName(context, DayCountWidget.class);
-//
-//            for (int appWidgetId : manager.getAppWidgetIds(widgetComponent)) {
-//                RemoteViews views = buildRemoteViews(context, appWidgetId);
-//                manager.updateAppWidget(appWidgetId, views);
-//                Timber.d("widget [" + appWidgetId + "] updated at midnight");
-//            }
-//
-//        }
-//
-//        super.onReceive(context, intent);
-//    }
+
+    // Only receive the midnight broadcast
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        // When Receiving the midnight alarm, update all the widgets
+        if (Utils.WIDGET_UPDATE_ALL.equals(intent.getAction())) {
+            AppWidgetManager manager = AppWidgetManager.getInstance(context);
+            ComponentName widgetComponent = new ComponentName(context, DayCountWidget.class);
+
+            for (int appWidgetId : manager.getAppWidgetIds(widgetComponent)) {
+                RemoteViews views = buildRemoteViews(context, appWidgetId);
+                manager.updateAppWidget(appWidgetId, views);
+                Timber.d("widget [" + appWidgetId + "] updated at midnight");
+            }
+
+        }
+
+        super.onReceive(context, intent);
+    }
 
 
     @Override
@@ -76,29 +78,18 @@ public class DayCountWidget extends AppWidgetProvider {
         calendar.set(Calendar.AM_PM, Calendar.AM);
         calendar.add(Calendar.DAY_OF_MONTH, 1);
 
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        ComponentName thisAppWidget = new ComponentName(context, DayCountWidget.class);
-        Intent updateIntent = new Intent(context, DayCountWidget.class);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
-        updateIntent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-        updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-        context.sendBroadcast(updateIntent);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, updateIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-//        Intent alarmIntent = new Intent(WIDGET_UPDATE_MIDNIGHT);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        Intent alarmIntent = new Intent(Utils.WIDGET_UPDATE_ALL);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         // RTC does not wake the device up
         alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), INTERVAL_MILLIS, pendingIntent);
-
     }
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
-            SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences prefs = context.getSharedPreferences(Utils.PREFS_NAME, 0);
             prefs.edit().remove("targetDate" + appWidgetId).commit();
             prefs.edit().remove("styleNum" + appWidgetId).commit();
             prefs.edit().remove("title" + appWidgetId).commit();
@@ -110,7 +101,7 @@ public class DayCountWidget extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         // Delete the alarm
-        Intent alarmIntent = new Intent(WIDGET_UPDATE_MIDNIGHT);
+        Intent alarmIntent = new Intent(Utils.WIDGET_UPDATE_ALL);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -120,10 +111,10 @@ public class DayCountWidget extends AppWidgetProvider {
 
     public static RemoteViews buildRemoteViews(Context context, int mAppWidgetId) {
         // Get information: 1. YYYY/MM/DD
-        //					2. widget style
-        //					3. title
+        //					2. title
+        //					3. widget style
         // from shared preferences according to the appWidgetId
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences prefs = context.getSharedPreferences(Utils.PREFS_NAME, 0);
         String targetDate = prefs.getString("targetDate" + mAppWidgetId, "");
         String title = prefs.getString("title" + mAppWidgetId, "");
         int styleNum = prefs.getInt("styleNum" + mAppWidgetId, 1);
@@ -160,7 +151,7 @@ public class DayCountWidget extends AppWidgetProvider {
         }
 
         // Create intent for clicking on the widget for detail
-        Intent intent = new Intent(context, DayCountDetailDialog.class);
+        Intent intent = new Intent(context, DayCountDetail.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
