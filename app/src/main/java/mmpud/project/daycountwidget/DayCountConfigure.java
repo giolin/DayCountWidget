@@ -210,14 +210,15 @@ public class DayCountConfigure extends Activity {
         Timber.d("(initTargetDate, initTitle, styleNum): " + "(" + initTargetDate + ", " + initTitle + ", " + styleNum + ")");
 
         // Set current date into datePicker
+        // Set the date picker dialog
         tvDate.setText(initTargetDate);
         String[] ymd = initTargetDate.split("-");
         datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                tvDate.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                tvDate.setText(year + "-" + (monthOfYear+1) + "-" + dayOfMonth);
             }
-        }, Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1]), Integer.parseInt(ymd[2]));
+        }, Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1])-1, Integer.parseInt(ymd[2]));
 
         // Set title
         if (!initTitle.isEmpty()) {

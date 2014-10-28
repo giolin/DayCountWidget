@@ -22,5 +22,4 @@ android {
 
 dependencies {
     compile 'com.jakewharton.timber:timber:2.4.+'
-    compile 'com.android.support:support-v4:20.0.+'
 }
