@@ -63,7 +63,7 @@ public class DayCountConfigure extends Activity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.tv_date:
-                    if(datePickerDialog != null) {
+                    if (datePickerDialog != null) {
                         datePickerDialog.show();
                     }
                     break;
@@ -79,54 +79,6 @@ public class DayCountConfigure extends Activity {
                     prefs.putString("title" + mAppWidgetId, edtTitle.getText().toString());
                     prefs.putInt("styleNum" + mAppWidgetId, styleNum);
                     prefs.commit();
-
-
-                    // Get layout resource id with styleNum
-//                    String layoutName = "widget_layout" + styleNum;
-//                    int resourceIDStyle = context.getResources().getIdentifier(layoutName, "layout", "mmpud.project.daycountwidget");
-//
-//
-
-                    // Start to build up the remote views
-//                    RemoteViews views = new RemoteViews(context.getPackageName(), resourceIDStyle);
-//
-//                    views.setTextViewText(R.id.widget_title, edtTitle.getText().toString());
-//
-//                    Calendar calToday = Calendar.getInstance();
-//                    Calendar calTarget = Calendar.getInstance();
-//                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-//                    try {
-//                        calTarget.setTime(sdf.parse(targetDate));
-//                    } catch (ParseException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    long diffDays = Utils.daysBetween(calToday, calTarget);
-//
-//                    Timber.d("Diff days: " + diffDays);
-//
-//                    // Adjust the digits' textSize according to the number of digits
-//                    float textSize = Utils.textSizeGenerator(diffDays);
-//                    views.setFloat(R.id.widget_diffdays, "setTextSize", textSize);
-//
-//                    // Put in day difference info
-//                    if (diffDays > 0) {
-//                        views.setTextViewText(R.id.widget_since_left, getResources().getString(R.string.days_left));
-//                        views.setTextViewText(R.id.widget_diffdays, Long.toString(diffDays));
-//                    } else {
-//                        views.setTextViewText(R.id.widget_since_left, getResources().getString(R.string.days_since));
-//                        views.setTextViewText(R.id.widget_diffdays, Long.toString(-diffDays));
-//                    }
-
-
-//                    // Click on the widget for editing
-//                    Intent intent = new Intent(context, DayCountDetailDialog.class);
-//                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-//                    intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-//
-//                    // No request code and no flags for this example
-//                    PendingIntent pending = PendingIntent.getActivity(context, 0, intent, 0);
-//                    views.setOnClickPendingIntent(R.id.widget, pending);
 
                     RemoteViews views = DayCountWidget.buildRemoteViews(context, mAppWidgetId);
 
@@ -216,16 +168,16 @@ public class DayCountConfigure extends Activity {
         datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                tvDate.setText(year + "-" + (monthOfYear+1) + "-" + dayOfMonth);
+                tvDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
             }
-        }, Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1])-1, Integer.parseInt(ymd[2]));
+        }, Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1]) - 1, Integer.parseInt(ymd[2]));
 
         // Set title
         if (!initTitle.isEmpty()) {
             edtTitle.setText(initTitle);
         }
 
-        // Show the selected layout
+        // Highlight the selected layout
         btnWidget[styleNum - 1].setBackgroundColor(Color.parseColor("#FF6600"));
 
         // Scroll the HorizontalScrollView to the selected position

@@ -46,8 +46,6 @@ public class ListItemAdapter extends ArrayAdapter<Counter> {
             holder.tvTargetDate = (TextView) row.findViewById(R.id.list_item_tv_target_date);
             holder.tvTitle = (TextView) row.findViewById(R.id.list_item_tv_title);
             holder.tvDayDiff = (TextView) row.findViewById(R.id.list_item_tv_day_diff);
-            holder.tvSinceLeft = (TextView) row.findViewById(R.id.list_item_tv_day_since_left);
-
             row.setTag(holder);
         } else {
             holder = (CounterLayoutHolder) row.getTag();
@@ -56,6 +54,7 @@ public class ListItemAdapter extends ArrayAdapter<Counter> {
         Counter counter = counters.get(position);
         holder.tvTargetDate.setText(counter.getTargetDate());
         holder.tvTitle.setText(counter.getTitle());
+        // TODO - set background of each row
         // Get the target date
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Calendar startDate = Calendar.getInstance();
@@ -69,13 +68,16 @@ public class ListItemAdapter extends ArrayAdapter<Counter> {
         Long diffDays = Utils.daysBetween(startDate, targetDate);
 
         if (diffDays > 0) {
-            holder.tvSinceLeft.setText(getContext().getResources().getString(R.string.days_left));
-            holder.tvDayDiff.setText(Long.toString(diffDays));
+            int diffDaysInt = diffDays.intValue();
+            String strDaysLeft = mContext.getResources().getQuantityString(R.plurals.list_days_left, diffDaysInt, (int) diffDaysInt);
+            holder.tvDayDiff.setText(strDaysLeft);
         } else {
-            holder.tvSinceLeft.setText(getContext().getResources().getString(R.string.days_since));
-            holder.tvDayDiff.setText(Long.toString(-diffDays));
+            int diffDaysInt = -diffDays.intValue();
+            String strDaysSince = mContext.getResources().getQuantityString(R.plurals.list_days_since, diffDaysInt, (int) diffDaysInt);
+            holder.tvDayDiff.setText(strDaysSince);
         }
-
+        counter.getStyleNum();
+        // TODO - set row's background!
         return row;
     }
 
@@ -83,6 +85,5 @@ public class ListItemAdapter extends ArrayAdapter<Counter> {
         TextView tvTargetDate;
         TextView tvTitle;
         TextView tvDayDiff;
-        TextView tvSinceLeft;
     }
 }

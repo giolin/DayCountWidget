@@ -13,5 +13,11 @@
     <string name="detail_days_left">天　直到</string>
     <string name="language_settings">語言選擇</string>
     <string name="sample_widget_title">事件主題</string>
+    <plurals name="list_days_since">
+        <item quantity="other">已過 %d 天</item>
+    </plurals>
+    <plurals name="list_days_left">
+        <item quantity="other">還有 %d 天</item>
+    </plurals>
 
 </resources>

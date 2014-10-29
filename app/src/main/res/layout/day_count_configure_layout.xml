@@ -4,18 +4,7 @@
     android:layout_height="match_parent"
     android:background="#DDDDDD"
     android:orientation="vertical" >
- 
-    <!--<DatePicker-->
-        <!--android:id="@+id/date_picker"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="4dp"-->
-        <!--android:layout_marginRight="4dp"-->
-        <!--android:layout_marginTop="4dp"-->
-        <!--android:layout_marginBottom="2dp"-->
-        <!--android:background="#F5F1DE"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:calendarViewShown="false" />-->
+
     <LinearLayout style="@style/ItemRow">
 
         <TextView
