@@ -3,11 +3,13 @@ package mmpud.project.daycountwidget;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -34,6 +36,7 @@ public class DayCountConfigure extends Activity {
     private Button btnOK;
     private HorizontalScrollView hsvStyles;
     private FrameLayout[] btnWidget = new FrameLayout[15];
+    private FrameLayout sampleWidget;
 
     private DatePickerDialog datePickerDialog;
 
@@ -98,6 +101,7 @@ public class DayCountConfigure extends Activity {
         }
     };
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -130,6 +134,15 @@ public class DayCountConfigure extends Activity {
         edtTitle = (EditText) findViewById(R.id.edt_title);
         btnOK = (Button) findViewById(R.id.btn_ok);
         hsvStyles = (HorizontalScrollView) findViewById(R.id.hsv_styles);
+        sampleWidget = (FrameLayout) findViewById(R.id.sample_widget);
+
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
+        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            sampleWidget.setBackground(wallpaperDrawable);
+        } else {
+            sampleWidget.setBackgroundDrawable(wallpaperDrawable);
+        }
 
         tvDate.setOnClickListener(mOnClickListener);
         btnOK.setOnClickListener(mOnClickListener);
