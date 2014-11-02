@@ -3,11 +3,13 @@ package mmpud.project.daycountwidget;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -35,6 +37,7 @@ public class DayCountConfigure extends Activity {
     private Button btnOK;
     private HorizontalScrollView hsvStyles;
     private FrameLayout[] btnWidget = new FrameLayout[15];
+    private FrameLayout sampleWidget;
 
     private HListView mHlvSelectHeader;
     private HListView mHlvSelectBody;
@@ -70,7 +73,7 @@ public class DayCountConfigure extends Activity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.tv_date:
-                    if(datePickerDialog != null) {
+                    if (datePickerDialog != null) {
                         datePickerDialog.show();
                     }
                     break;
@@ -87,54 +90,6 @@ public class DayCountConfigure extends Activity {
                     prefs.putString(Utils.KEY_STYLE_HEADER + mAppWidgetId, styleHeader);
                     prefs.putString(Utils.KEY_STYLE_BODY + mAppWidgetId, styleBody);
                     prefs.commit();
-
-
-                    // Get layout resource id with styleNum
-//                    String layoutName = "widget_layout" + styleNum;
-//                    int resourceIDStyle = context.getResources().getIdentifier(layoutName, "layout", "mmpud.project.daycountwidget");
-//
-//
-
-                    // Start to build up the remote views
-//                    RemoteViews views = new RemoteViews(context.getPackageName(), resourceIDStyle);
-//
-//                    views.setTextViewText(R.id.widget_title, edtTitle.getText().toString());
-//
-//                    Calendar calToday = Calendar.getInstance();
-//                    Calendar calTarget = Calendar.getInstance();
-//                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-//                    try {
-//                        calTarget.setTime(sdf.parse(targetDate));
-//                    } catch (ParseException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    long diffDays = Utils.daysBetween(calToday, calTarget);
-//
-//                    Timber.d("Diff days: " + diffDays);
-//
-//                    // Adjust the digits' textSize according to the number of digits
-//                    float textSize = Utils.textSizeGenerator(diffDays);
-//                    views.setFloat(R.id.widget_diffdays, "setTextSize", textSize);
-//
-//                    // Put in day difference info
-//                    if (diffDays > 0) {
-//                        views.setTextViewText(R.id.widget_since_left, getResources().getString(R.string.days_left));
-//                        views.setTextViewText(R.id.widget_diffdays, Long.toString(diffDays));
-//                    } else {
-//                        views.setTextViewText(R.id.widget_since_left, getResources().getString(R.string.days_since));
-//                        views.setTextViewText(R.id.widget_diffdays, Long.toString(-diffDays));
-//                    }
-
-
-//                    // Click on the widget for editing
-//                    Intent intent = new Intent(context, DayCountDetailDialog.class);
-//                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-//                    intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-//
-//                    // No request code and no flags for this example
-//                    PendingIntent pending = PendingIntent.getActivity(context, 0, intent, 0);
-//                    views.setOnClickPendingIntent(R.id.widget, pending);
 
                     RemoteViews views = DayCountWidget.buildRemoteViews(context, mAppWidgetId);
 
@@ -154,6 +109,7 @@ public class DayCountConfigure extends Activity {
         }
     };
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -186,6 +142,15 @@ public class DayCountConfigure extends Activity {
         edtTitle = (EditText) findViewById(R.id.edt_title);
         btnOK = (Button) findViewById(R.id.btn_ok);
         hsvStyles = (HorizontalScrollView) findViewById(R.id.hsv_styles);
+        sampleWidget = (FrameLayout) findViewById(R.id.sample_widget);
+
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
+        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            sampleWidget.setBackground(wallpaperDrawable);
+        } else {
+            sampleWidget.setBackgroundDrawable(wallpaperDrawable);
+        }
 
         mHlvSelectHeader = new HListView(this);
         mHlvSelectBody = new HListView(this);
@@ -222,14 +187,15 @@ public class DayCountConfigure extends Activity {
         Timber.d("(initTargetDate, initTitle, styleNum): " + "(" + initTargetDate + ", " + initTitle + ", " + styleNum + ")");
 
         // Set current date into datePicker
+        // Set the date picker dialog
         tvDate.setText(initTargetDate);
         String[] ymd = initTargetDate.split("-");
         datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                tvDate.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                tvDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
             }
-        }, Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1]), Integer.parseInt(ymd[2]));
+        }, Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1]) - 1, Integer.parseInt(ymd[2]));
 
         // Set title
         if (!initTitle.isEmpty()) {

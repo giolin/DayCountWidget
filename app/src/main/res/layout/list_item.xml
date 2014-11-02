@@ -1,34 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent" android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp">
+
     <TextView
         android:id="@+id/list_item_tv_target_date"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="18sp"/>
+
     <TextView
         android:id="@+id/list_item_tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/list_item_tv_target_date" />
-    <LinearLayout
+        android:textSize="24sp"
+        android:layout_below="@+id/list_item_tv_target_date"/>
+
+    <TextView
+        android:id="@+id/list_item_tv_day_diff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="5dp" >
-        <TextView
-            android:id="@+id/list_item_tv_day_diff"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp" />
-        <TextView
-            android:id="@+id/list_item_tv_day_since_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text= "DAYS" />
-    </LinearLayout>
+        android:layout_marginRight="5dp"
+        android:textSize="24sp"/>
 
 
 </RelativeLayout>

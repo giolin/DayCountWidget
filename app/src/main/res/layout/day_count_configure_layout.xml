@@ -1,38 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#DDDDDD"
-    android:orientation="vertical" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#DDDDDD">
 
-    <LinearLayout style="@style/ItemRow">
+    <LinearLayout
+        android:id="@+id/row1"
+        style="@style/ItemRow">
 
         <TextView
             style="@style/TextTitle"
-            android:text="@string/date" />
+            android:text="@string/date"/>
 
         <TextView
             android:id="@+id/tv_date"
             style="@style/TextContent"
-            android:text="@string/no_data"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:text="@string/no_data"/>
 
     </LinearLayout>
-    
-    <LinearLayout style="@style/ItemRow">
-        
+
+    <LinearLayout
+        android:id="@+id/row2"
+        style="@style/ItemRow"
+        android:layout_below="@+id/row1">
+
         <TextView
-        	style="@style/TextTitle"
-        	android:text="@string/what" />
-        
-        <EditText 
-        	android:id="@+id/edt_title"
-        	style="@style/TextContent"
-        	android:textColorHint="#FFFFFF"
-        	android:hint="@string/enter_title"
-        	android:singleLine="true"
-        	android:imeOptions="actionDone" />
-        
+            style="@style/TextTitle"
+            android:text="@string/what"/>
+
+        <EditText
+            android:id="@+id/edt_title"
+            style="@style/TextContent"
+            android:hint="@string/enter_title"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:textColorHint="#FFFFFF"/>
+
     </LinearLayout>
 
     <it.sephiroth.android.library.widget.HListView
@@ -49,196 +53,223 @@
 
     </it.sephiroth.android.library.widget.HListView>
 
-    <HorizontalScrollView 
-        android:id="@+id/hsv_styles"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none">
-        <LinearLayout 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <FrameLayout 
-                android:id="@+id/style1"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:padding="5dp">
-            	<include 
-            	layout="@layout/widget_layout1"
-            	android:layout_width="70dp"
-            	android:layout_height="80dp" />
-            </FrameLayout>
-            
-            <FrameLayout 
-                android:id="@+id/style2"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:padding="5dp">
-            	<include 
-            	layout="@layout/widget_layout2"
-            	android:layout_width="70dp"
-            	android:layout_height="80dp" />
-            </FrameLayout>
-            
-            <FrameLayout 
-                android:id="@+id/style3"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:padding="5dp">
-            	<include 
-            	layout="@layout/widget_layout3"
-            	android:layout_width="70dp"
-            	android:layout_height="80dp" />
-            </FrameLayout>
-            
-            <FrameLayout 
-                android:id="@+id/style4"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:padding="5dp">
-            	<include 
-            	layout="@layout/widget_layout4"
-            	android:layout_width="70dp"
-            	android:layout_height="80dp" />
-            </FrameLayout>
-            
-            <FrameLayout 
-                android:id="@+id/style5"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:padding="5dp">
-            	<include 
-            	layout="@layout/widget_layout5"
-            	android:layout_width="70dp"
-            	android:layout_height="80dp" />
-            </FrameLayout>
-            
-            <FrameLayout 
-                android:id="@+id/style6"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:padding="5dp">
-            	<include 
-            	layout="@layout/widget_layout6"
-            	android:layout_width="70dp"
-            	android:layout_height="80dp" />
-            </FrameLayout>
-            
-            <FrameLayout 
-                android:id="@+id/style7"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:padding="5dp">
-            	<include 
-            	layout="@layout/widget_layout7"
-            	android:layout_width="70dp"
-            	android:layout_height="80dp" />
-            </FrameLayout>
-            
-            <FrameLayout 
-                android:id="@+id/style8"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:padding="5dp">
-            	<include 
-            	layout="@layout/widget_layout8"
-            	android:layout_width="70dp"
-            	android:layout_height="80dp" />
-            </FrameLayout>
-            
-            <FrameLayout 
-                android:id="@+id/style9"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:padding="5dp">
-            	<include 
-            	layout="@layout/widget_layout9"
-            	android:layout_width="70dp"
-            	android:layout_height="80dp" />
-            </FrameLayout>
-            
-            <FrameLayout 
-                android:id="@+id/style10"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:padding="5dp">
-            	<include 
-            	layout="@layout/widget_layout10"
-            	android:layout_width="70dp"
-            	android:layout_height="80dp" />
-            </FrameLayout>
-            
-            <FrameLayout 
-                android:id="@+id/style11"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:padding="5dp">
-            	<include 
-            	layout="@layout/widget_layout11"
-            	android:layout_width="70dp"
-            	android:layout_height="80dp" />
-            </FrameLayout>
-            
-            <FrameLayout 
-                android:id="@+id/style12"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:padding="5dp">
-            	<include 
-            	layout="@layout/widget_layout12"
-            	android:layout_width="70dp"
-            	android:layout_height="80dp" />
-            </FrameLayout>
-            
-            <FrameLayout 
-                android:id="@+id/style13"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:padding="5dp">
-            	<include 
-            	layout="@layout/widget_layout13"
-            	android:layout_width="70dp"
-            	android:layout_height="80dp" />
-            </FrameLayout>
-            
-            <FrameLayout 
-                android:id="@+id/style14"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:padding="5dp">
-            	<include 
-            	layout="@layout/widget_layout14"
-            	android:layout_width="70dp"
-            	android:layout_height="80dp" />
-            </FrameLayout>
-            
-            <FrameLayout 
-                android:id="@+id/style15"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:padding="5dp">
-            	<include 
-            	layout="@layout/widget_layout15"
-            	android:layout_width="70dp"
-            	android:layout_height="80dp" />
-            </FrameLayout>
-            
-        </LinearLayout>
-        
-            
-    </HorizontalScrollView >
-    
-    <RelativeLayout 
+    <FrameLayout
+        android:id="@+id/sample_widget"
+        android:layout_above="@+id/hsv_styles"
+        android:layout_below="@+id/row2"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        
-        <Button 
-        	android:id="@+id/btn_ok"
-        	style="@style/ButtonConfirm"
-        	android:layout_alignParentBottom="true"
-        	android:text="@string/ok" />
-    </RelativeLayout>
-    
-</LinearLayout>
+        <include
+            layout="@layout/widget_layout1"
+            android:layout_gravity="center"
+            android:layout_width="70dp"
+            android:layout_height="80dp"/>
+    </FrameLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/hsv_styles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_ok"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="10dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:id="@+id/style1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <include
+                    layout="@layout/widget_layout1"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/style2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <include
+                    layout="@layout/widget_layout2"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/style3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <include
+                    layout="@layout/widget_layout3"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/style4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <include
+                    layout="@layout/widget_layout4"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/style5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <include
+                    layout="@layout/widget_layout5"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/style6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <include
+                    layout="@layout/widget_layout6"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/style7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <include
+                    layout="@layout/widget_layout7"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/style8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <include
+                    layout="@layout/widget_layout8"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/style9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <include
+                    layout="@layout/widget_layout9"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/style10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <include
+                    layout="@layout/widget_layout10"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/style11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <include
+                    layout="@layout/widget_layout11"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/style12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <include
+                    layout="@layout/widget_layout12"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/style13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <include
+                    layout="@layout/widget_layout13"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/style14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <include
+                    layout="@layout/widget_layout14"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/style15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <include
+                    layout="@layout/widget_layout15"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp"/>
+            </FrameLayout>
+
+        </LinearLayout>
+
+
+    </HorizontalScrollView>
+
+
+    <Button
+        android:id="@+id/btn_ok"
+        style="@style/ButtonConfirm"
+        android:layout_alignParentBottom="true"
+        android:text="@string/ok"/>
+
+</RelativeLayout>
