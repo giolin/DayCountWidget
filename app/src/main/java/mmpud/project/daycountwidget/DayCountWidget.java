@@ -90,9 +90,11 @@ public class DayCountWidget extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
             SharedPreferences prefs = context.getSharedPreferences(Utils.PREFS_NAME, 0);
-            prefs.edit().remove("targetDate" + appWidgetId).commit();
-            prefs.edit().remove("styleNum" + appWidgetId).commit();
-            prefs.edit().remove("title" + appWidgetId).commit();
+            prefs.edit().remove(Utils.KEY_TARGET_DATE + appWidgetId).commit();
+            prefs.edit().remove(Utils.KEY_TITLE + appWidgetId).commit();
+            prefs.edit().remove(Utils.KEY_STYLE_HEADER + appWidgetId).commit();
+            prefs.edit().remove(Utils.KEY_STYLE_BODY + appWidgetId).commit();
+
             Timber.d("The widget [" + appWidgetId + "] onDelete!");
         }
 
@@ -115,9 +117,10 @@ public class DayCountWidget extends AppWidgetProvider {
         //					3. widget style
         // from shared preferences according to the appWidgetId
         SharedPreferences prefs = context.getSharedPreferences(Utils.PREFS_NAME, 0);
-        String targetDate = prefs.getString("targetDate" + mAppWidgetId, "");
-        String title = prefs.getString("title" + mAppWidgetId, "");
-        int styleNum = prefs.getInt("styleNum" + mAppWidgetId, 1);
+        String targetDate = prefs.getString(Utils.KEY_TARGET_DATE + mAppWidgetId, "");
+        String title = prefs.getString(Utils.KEY_TITLE + mAppWidgetId, "");
+        String styleHeader = prefs.getString(Utils.KEY_STYLE_HEADER + mAppWidgetId, "");
+        String styleBody = prefs.getString(Utils.KEY_STYLE_BODY + mAppWidgetId, "");
 
         // Get the day difference
         Calendar calToday = Calendar.getInstance();
@@ -131,10 +134,19 @@ public class DayCountWidget extends AppWidgetProvider {
 
         long diffDays = Utils.daysBetween(calToday, calTarget);
 
-        String layoutName = "widget_layout" + styleNum;
-        int resourceIDStyle = context.getResources().getIdentifier(layoutName, "layout", "mmpud.project.daycountwidget");
+//        String layoutName = "widget_layout" + styleNum;
+//        int resourceIDStyle = context.getResources().getIdentifier(layoutName, "layout", "mmpud.project.daycountwidget");
 
-        RemoteViews views = new RemoteViews(context.getPackageName(), resourceIDStyle);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+
+        // Set up the style
+        int resourceIdStyleHeader = context.getResources().getIdentifier(styleHeader, "drawable", "mmpud.project.daycountwidget");
+
+        int resourceIdStyleBody = context.getResources().getIdentifier(styleBody, "drawable", "mmpud.project.daycountwidget");
+
+        views.setInt(R.id.widget_title, "setBackgroundResource", resourceIdStyleHeader);
+
+        views.setInt(R.id.widget, "setBackgroundResource", resourceIdStyleBody);
 
         views.setTextViewText(R.id.widget_title, title);
 

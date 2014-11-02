@@ -10,7 +10,19 @@ import timber.log.Timber;
  */
 public class Utils {
 
+    private Utils() {
+        throw new RuntimeException("Utils is not instantiable.");
+    }
+
     public static final String PREFS_NAME = "mmpud.project.daycountwidget.DayCountWidget";
+
+    public static final String KEY_TARGET_DATE = "target_date";
+
+    public static final String KEY_TITLE = "title";
+
+    public static final String KEY_STYLE_HEADER = "style_header";
+
+    public static final String KEY_STYLE_BODY = "style_body";
 
     public static final String WIDGET_UPDATE_ALL = "android.appwidget.action.WIDGET_UPDATE_ALL";
 

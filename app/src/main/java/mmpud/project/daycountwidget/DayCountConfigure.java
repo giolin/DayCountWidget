@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 
+import it.sephiroth.android.library.widget.HListView;
 import mmpud.project.daycountwidget.util.Utils;
 import timber.log.Timber;
 
@@ -35,9 +36,15 @@ public class DayCountConfigure extends Activity {
     private HorizontalScrollView hsvStyles;
     private FrameLayout[] btnWidget = new FrameLayout[15];
 
+    private HListView mHlvSelectHeader;
+    private HListView mHlvSelectBody;
+
     private DatePickerDialog datePickerDialog;
 
-    private int styleNum;
+//    private int styleNum;
+
+    private String styleHeader;
+    private String styleBody;
 
     View.OnClickListener widgetOnClickListener = new View.OnClickListener() {
 
@@ -75,9 +82,10 @@ public class DayCountConfigure extends Activity {
                     SharedPreferences.Editor prefs = context.getSharedPreferences(Utils.PREFS_NAME, 0).edit();
                     String targetDate = tvDate.getText().toString();
                     Timber.d("Date: " + targetDate);
-                    prefs.putString("targetDate" + mAppWidgetId, targetDate);
-                    prefs.putString("title" + mAppWidgetId, edtTitle.getText().toString());
-                    prefs.putInt("styleNum" + mAppWidgetId, styleNum);
+                    prefs.putString(Utils.KEY_TARGET_DATE + mAppWidgetId, targetDate);
+                    prefs.putString(Utils.KEY_TITLE + mAppWidgetId, edtTitle.getText().toString());
+                    prefs.putString(Utils.KEY_STYLE_HEADER + mAppWidgetId, styleHeader);
+                    prefs.putString(Utils.KEY_STYLE_BODY + mAppWidgetId, styleBody);
                     prefs.commit();
 
 
@@ -179,6 +187,9 @@ public class DayCountConfigure extends Activity {
         btnOK = (Button) findViewById(R.id.btn_ok);
         hsvStyles = (HorizontalScrollView) findViewById(R.id.hsv_styles);
 
+        mHlvSelectHeader = new HListView(this);
+        mHlvSelectBody = new HListView(this);
+
         tvDate.setOnClickListener(mOnClickListener);
         btnOK.setOnClickListener(mOnClickListener);
 
@@ -203,9 +214,10 @@ public class DayCountConfigure extends Activity {
         //					3. widget style
         // from shared preferences according to the appWidgetId
         SharedPreferences prefs = this.getSharedPreferences(Utils.PREFS_NAME, 0);
-        String initTargetDate = prefs.getString("targetDate" + mAppWidgetId, strToday);
-        String initTitle = prefs.getString("title" + mAppWidgetId, "");
-        styleNum = prefs.getInt("styleNum" + mAppWidgetId, 1);
+        String initTargetDate = prefs.getString(Utils.KEY_TARGET_DATE + mAppWidgetId, strToday);
+        String initTitle = prefs.getString(Utils.KEY_TITLE + mAppWidgetId, "");
+        String initStyleHeader = prefs.getString(Utils.KEY_STYLE_HEADER + mAppWidgetId, "");
+        String initStyleBody = prefs.getString(Utils.KEY_STYLE_BODY + mAppWidgetId, "");
 
         Timber.d("(initTargetDate, initTitle, styleNum): " + "(" + initTargetDate + ", " + initTitle + ", " + styleNum + ")");
 
@@ -225,17 +237,17 @@ public class DayCountConfigure extends Activity {
         }
 
         // Show the selected layout
-        btnWidget[styleNum - 1].setBackgroundColor(Color.parseColor("#FF6600"));
+//        btnWidget[styleNum - 1].setBackgroundColor(Color.parseColor("#FF6600"));
 
         // Scroll the HorizontalScrollView to the selected position
-        float density = getApplicationContext().getResources().getDisplayMetrics().density;
-        final float unitWidth = Math.round((float) 80 * density);
-        hsvStyles.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                hsvStyles.smoothScrollBy((int) unitWidth * (styleNum - 1), 0);
-            }
-        }, 100);
+//        float density = getApplicationContext().getResources().getDisplayMetrics().density;
+//        final float unitWidth = Math.round((float) 80 * density);
+//        hsvStyles.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                hsvStyles.smoothScrollBy((int) unitWidth * (styleNum - 1), 0);
+//            }
+//        }, 100);
     }
 
     @Override
