@@ -90,8 +90,8 @@ public class DayCountDetail extends Activity {
         //					3. widget style
         // from shared preferences according to the appWidgetId
         SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, 0);
-        String targetDate = prefs.getString("targetDate" + mAppWidgetId, "0-0-0");
-        String targetTitle = prefs.getString("title" + mAppWidgetId, "");
+        String targetDate = prefs.getString(Utils.KEY_TARGET_DATE + mAppWidgetId, "0-0-0");
+        String targetTitle = prefs.getString(Utils.KEY_TITLE + mAppWidgetId, "");
 
         Calendar calToday = Calendar.getInstance();
         Calendar calTarget = Calendar.getInstance();

@@ -26,6 +26,31 @@
         <item>Français</item>
         <item>Türkçe</item>
     </string-array>
+    <string-array name="header_style_list">
+        <item>header_black</item>
+        <item>header_blue</item>
+        <item>header_green</item>
+        <item>header_indigo</item>
+        <item>header_navy</item>
+        <item>header_orange</item>'
+        <item>header_purple</item>
+        <item>header_red</item>
+        <item>header_yellow</item>
+    </string-array>
+    <string-array name="body_style_list">
+        <item>body_black</item>
+        <item>body_blue</item>
+        <item>body_green</item>
+        <item>body_navy</item>
+        <item>body_orange</item>
+        <item>body_pink</item>
+        <item>body_purple</item>
+        <item>body_red</item>
+        <item>body_yellow</item>
+        <item>body_camouflage</item>
+        <item>body_denin</item>
+        <item>body_wood</item>
+    </string-array>
     <plurals name="list_days_since">
         <item quantity="one">%d day</item>
         <item quantity="other">%d days</item>

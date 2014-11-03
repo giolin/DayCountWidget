@@ -134,9 +134,6 @@ public class DayCountWidget extends AppWidgetProvider {
 
         long diffDays = Utils.daysBetween(calToday, calTarget);
 
-//        String layoutName = "widget_layout" + styleNum;
-//        int resourceIDStyle = context.getResources().getIdentifier(layoutName, "layout", "mmpud.project.daycountwidget");
-
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
         // Set up the style
@@ -144,6 +141,7 @@ public class DayCountWidget extends AppWidgetProvider {
 
         int resourceIdStyleBody = context.getResources().getIdentifier(styleBody, "drawable", "mmpud.project.daycountwidget");
 
+        // TODO use views.setBitmap instead to put the drawable inside
         views.setInt(R.id.widget_title, "setBackgroundResource", resourceIdStyleHeader);
 
         views.setInt(R.id.widget, "setBackgroundResource", resourceIdStyleBody);

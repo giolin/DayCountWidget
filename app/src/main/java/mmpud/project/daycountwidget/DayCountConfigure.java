@@ -8,7 +8,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,12 +17,16 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
+import it.sephiroth.android.library.widget.AdapterView;
 import it.sephiroth.android.library.widget.HListView;
 import mmpud.project.daycountwidget.util.Utils;
 import timber.log.Timber;
@@ -35,36 +38,25 @@ public class DayCountConfigure extends Activity {
     private TextView tvDate;
     private EditText edtTitle;
     private Button btnOK;
-    private HorizontalScrollView hsvStyles;
+//    private HorizontalScrollView hsvStyles;
     private FrameLayout[] btnWidget = new FrameLayout[15];
     private FrameLayout sampleWidget;
+    private LinearLayout sampleWidgetBody;
+    private TextView sampleWidgetHeader;
 
     private HListView mHlvSelectHeader;
+    private SelectStyleAdapter mHeaderAdapter;
+    private List<String> mHeaderStyleList;
     private HListView mHlvSelectBody;
+    private SelectStyleAdapter mBodyAdapter;
+    private List<String> mBodyStyleList;
 
     private DatePickerDialog datePickerDialog;
 
 //    private int styleNum;
 
-    private String styleHeader;
-    private String styleBody;
-
-    View.OnClickListener widgetOnClickListener = new View.OnClickListener() {
-
-        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-        @Override
-        public void onClick(View v) {
-            for (int i = 0; i < btnWidget.length; i++) {
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                    btnWidget[i].setBackgroundDrawable(null);
-                } else {
-                    btnWidget[i].setBackground(null);
-                }
-            }
-            v.setBackgroundColor(Color.parseColor("#FF6600"));
-            styleNum = Integer.parseInt(v.getTag().toString());
-        }
-    };
+    private String styleHeader = "header_red";
+    private String styleBody = "body_red";
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
         final Context context = DayCountConfigure.this;
@@ -135,44 +127,11 @@ public class DayCountConfigure extends Activity {
             finish();
         }
 
-        // Set up the view layout resource to use.
-        setContentView(R.layout.day_count_configure_layout);
-
-        tvDate = (TextView) findViewById(R.id.tv_date);
-        edtTitle = (EditText) findViewById(R.id.edt_title);
-        btnOK = (Button) findViewById(R.id.btn_ok);
-        hsvStyles = (HorizontalScrollView) findViewById(R.id.hsv_styles);
-        sampleWidget = (FrameLayout) findViewById(R.id.sample_widget);
-
-        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
-        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            sampleWidget.setBackground(wallpaperDrawable);
-        } else {
-            sampleWidget.setBackgroundDrawable(wallpaperDrawable);
-        }
-
-        mHlvSelectHeader = new HListView(this);
-        mHlvSelectBody = new HListView(this);
-
-        tvDate.setOnClickListener(mOnClickListener);
-        btnOK.setOnClickListener(mOnClickListener);
-
-        for (int i = 0; i < btnWidget.length; i++) {
-            // Set header and body color
-            String strStyle = "style" + (i + 1);
-            int resourceIDStyle = getResources().getIdentifier(strStyle, "id", "mmpud.project.daycountwidget");
-            btnWidget[i] = (FrameLayout) findViewById(resourceIDStyle);
-            // set tag for the  widgets
-            btnWidget[i].setTag(i + 1);
-            btnWidget[i].setOnClickListener(widgetOnClickListener);
-        }
-
         // Instantiate calendars for today and the target day
         Calendar calToday = Calendar.getInstance();
         String strToday = calToday.get(Calendar.YEAR)
-                + "-" + (calToday.get(Calendar.MONTH) + 1)
-                + "-" + calToday.get(Calendar.DAY_OF_MONTH);
+            + "-" + (calToday.get(Calendar.MONTH) + 1)
+            + "-" + calToday.get(Calendar.DAY_OF_MONTH);
 
         // Get information: 1. YYYY-MM-DD
         //					2. title
@@ -184,7 +143,66 @@ public class DayCountConfigure extends Activity {
         String initStyleHeader = prefs.getString(Utils.KEY_STYLE_HEADER + mAppWidgetId, "");
         String initStyleBody = prefs.getString(Utils.KEY_STYLE_BODY + mAppWidgetId, "");
 
-        Timber.d("(initTargetDate, initTitle, styleNum): " + "(" + initTargetDate + ", " + initTitle + ", " + styleNum + ")");
+        Timber.d("(initTargetDate, initTitle): " + "(" + initTargetDate + ", " + initTitle + ")");
+
+        // Set up the view layout resource to use.
+        setContentView(R.layout.day_count_configure_layout);
+
+        tvDate = (TextView) findViewById(R.id.tv_date);
+        tvDate.setOnClickListener(mOnClickListener);
+        edtTitle = (EditText) findViewById(R.id.edt_title);
+        btnOK = (Button) findViewById(R.id.btn_ok);
+        btnOK.setOnClickListener(mOnClickListener);
+        sampleWidget = (FrameLayout) findViewById(R.id.sample_widget_bg);
+
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
+        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            sampleWidget.setBackground(wallpaperDrawable);
+        } else {
+            sampleWidget.setBackgroundDrawable(wallpaperDrawable);
+        }
+
+
+        // TODO d should use round corner
+        sampleWidgetHeader = (TextView) findViewById(R.id.sample_widget_title);
+        int resourceIdStyleHeader = getResources().getIdentifier(initStyleHeader, "drawable", "mmpud.project.daycountwidget");
+        Drawable dH = getResources().getDrawable(resourceIdStyleHeader);
+        sampleWidgetHeader.setBackground(dH);
+        sampleWidgetBody = (LinearLayout) findViewById(R.id.sample_widget);
+        int resourceIdStyleBody = getResources().getIdentifier(initStyleBody, "drawable", "mmpud.project.daycountwidget");
+        Drawable dB = getResources().getDrawable(resourceIdStyleBody);
+        sampleWidgetBody.setBackground(dB);
+
+        mHlvSelectHeader = (HListView) findViewById(R.id.hlv_style_select_header);
+        mHeaderStyleList = new ArrayList<String>();
+        mHeaderStyleList = Arrays.asList(getResources().getStringArray(R.array.header_style_list));
+        mHeaderAdapter = new SelectStyleAdapter(this, R.layout.list_item_style, mHeaderStyleList);
+        mHlvSelectHeader.setAdapter(mHeaderAdapter);
+        mHlvSelectHeader.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                styleHeader = mHeaderStyleList.get(i);
+                int resourceIdStyleHeader = getResources().getIdentifier(styleHeader, "drawable", "mmpud.project.daycountwidget");
+                Drawable d = getResources().getDrawable(resourceIdStyleHeader);
+                sampleWidgetHeader.setBackground(d);
+            }
+        });
+
+        mHlvSelectBody = (HListView) findViewById(R.id.hlv_style_select_body);
+        mBodyStyleList = new ArrayList<String>();
+        mBodyStyleList = Arrays.asList(getResources().getStringArray(R.array.body_style_list));
+        mBodyAdapter = new SelectStyleAdapter(this, R.layout.list_item_style, mBodyStyleList);
+        mHlvSelectBody.setAdapter(mBodyAdapter);
+        mHlvSelectBody.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                styleBody = mBodyStyleList.get(i);
+                int resourceIdStyleHeader = getResources().getIdentifier(styleBody, "drawable", "mmpud.project.daycountwidget");
+                Drawable d = getResources().getDrawable(resourceIdStyleHeader);
+                sampleWidgetBody.setBackground(d);
+            }
+        });
 
         // Set current date into datePicker
         // Set the date picker dialog
@@ -201,19 +219,6 @@ public class DayCountConfigure extends Activity {
         if (!initTitle.isEmpty()) {
             edtTitle.setText(initTitle);
         }
-
-        // Show the selected layout
-//        btnWidget[styleNum - 1].setBackgroundColor(Color.parseColor("#FF6600"));
-
-        // Scroll the HorizontalScrollView to the selected position
-//        float density = getApplicationContext().getResources().getDisplayMetrics().density;
-//        final float unitWidth = Math.round((float) 80 * density);
-//        hsvStyles.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                hsvStyles.smoothScrollBy((int) unitWidth * (styleNum - 1), 0);
-//            }
-//        }, 100);
     }
 
     @Override

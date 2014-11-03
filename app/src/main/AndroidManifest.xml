@@ -53,6 +53,7 @@
             android:label="@string/title_activity_day_count_detail_dialog"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
+
     </application>
 
 </manifest>
