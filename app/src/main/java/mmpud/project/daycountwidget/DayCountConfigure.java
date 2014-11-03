@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -140,8 +142,8 @@ public class DayCountConfigure extends Activity {
         SharedPreferences prefs = this.getSharedPreferences(Utils.PREFS_NAME, 0);
         String initTargetDate = prefs.getString(Utils.KEY_TARGET_DATE + mAppWidgetId, strToday);
         String initTitle = prefs.getString(Utils.KEY_TITLE + mAppWidgetId, "");
-        String initStyleHeader = prefs.getString(Utils.KEY_STYLE_HEADER + mAppWidgetId, "");
-        String initStyleBody = prefs.getString(Utils.KEY_STYLE_BODY + mAppWidgetId, "");
+        String initStyleHeader = prefs.getString(Utils.KEY_STYLE_HEADER + mAppWidgetId, "header_red");
+        String initStyleBody = prefs.getString(Utils.KEY_STYLE_BODY + mAppWidgetId, "body_red");
 
         Timber.d("(initTargetDate, initTitle): " + "(" + initTargetDate + ", " + initTitle + ")");
 
@@ -163,8 +165,6 @@ public class DayCountConfigure extends Activity {
             sampleWidget.setBackgroundDrawable(wallpaperDrawable);
         }
 
-
-        // TODO d should use round corner
         sampleWidgetHeader = (TextView) findViewById(R.id.sample_widget_title);
         int resourceIdStyleHeader = getResources().getIdentifier(initStyleHeader, "drawable", "mmpud.project.daycountwidget");
         Drawable dH = getResources().getDrawable(resourceIdStyleHeader);
