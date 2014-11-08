@@ -7,6 +7,7 @@
     <string name="no_data">-</string>
     <string name="enter_title">(點選新增事件名稱)</string>
     <string name="ok">確認</string>
+    <string name="date">日期</string>
     <string name="what">事件</string>
     <string name="edit">編輯</string>
     <string name="detail_days_since">天　自從</string>
@@ -19,5 +20,8 @@
     <plurals name="list_days_left">
         <item quantity="other">還有 %d 天</item>
     </plurals>
+    <string name="edit_your_day_counter">編輯你的日子</string>
+    <string name="select_header_style">選擇標題樣式</string>
+    <string name="select_body_style">選擇內容樣式</string>
 
 </resources>

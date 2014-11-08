@@ -3,10 +3,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#DDDDDD">
+    <TextView
+        android:id="@+id/tv_configure_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        android:text="@string/edit_your_day_counter"/>
 
     <LinearLayout
         android:id="@+id/row1"
-        style="@style/ItemRow">
+        style="@style/ItemRow"
+        android:layout_below="@+id/tv_configure_title">
 
         <TextView
             style="@style/TextTitle"
@@ -39,14 +48,13 @@
 
     </LinearLayout>
 
-
-
     <FrameLayout
         android:id="@+id/sample_widget_bg"
-        android:layout_above="@+id/hlv_style_select_header"
+        android:layout_above="@+id/tv_select_header_style"
         android:layout_below="@+id/row2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
         <LinearLayout
             android:id="@+id/sample_widget"
             android:layout_width="70dp"
@@ -93,19 +101,42 @@
         </LinearLayout>
     </FrameLayout>
 
+    <TextView
+        android:id="@+id/tv_select_header_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/hlv_style_select_header"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:textColor="#000000"
+        android:text="@string/select_header_style"/>
+
     <it.sephiroth.android.library.widget.HListView
         android:id="@+id/hlv_style_select_header"
-        android:layout_above="@+id/hlv_style_select_body"
+        android:layout_above="@+id/tv_select_body_style"
         android:layout_width="match_parent"
-        android:layout_height="60dp" >
+        android:layout_height="60dp"
+        android:choiceMode="singleChoice">
 
     </it.sephiroth.android.library.widget.HListView>
+
+    <TextView
+        android:id="@+id/tv_select_body_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/hlv_style_select_body"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:textColor="#000000"
+        android:text="@string/select_body_style"/>
 
     <it.sephiroth.android.library.widget.HListView
         android:layout_above="@+id/btn_ok"
         android:id="@+id/hlv_style_select_body"
         android:layout_width="match_parent"
-        android:layout_height="60dp" >
+        android:layout_height="60dp"
+        android:choiceMode="singleChoice">
 
     </it.sephiroth.android.library.widget.HListView>
 

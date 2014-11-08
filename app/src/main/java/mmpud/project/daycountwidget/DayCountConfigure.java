@@ -57,8 +57,8 @@ public class DayCountConfigure extends Activity {
 
 //    private int styleNum;
 
-    private String styleHeader = "header_red";
-    private String styleBody = "body_red";
+    private String mStyleHeader;
+    private String mStyleBody;
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
         final Context context = DayCountConfigure.this;
@@ -81,8 +81,8 @@ public class DayCountConfigure extends Activity {
                     Timber.d("Date: " + targetDate);
                     prefs.putString(Utils.KEY_TARGET_DATE + mAppWidgetId, targetDate);
                     prefs.putString(Utils.KEY_TITLE + mAppWidgetId, edtTitle.getText().toString());
-                    prefs.putString(Utils.KEY_STYLE_HEADER + mAppWidgetId, styleHeader);
-                    prefs.putString(Utils.KEY_STYLE_BODY + mAppWidgetId, styleBody);
+                    prefs.putString(Utils.KEY_STYLE_HEADER + mAppWidgetId, mStyleHeader);
+                    prefs.putString(Utils.KEY_STYLE_BODY + mAppWidgetId, mStyleBody);
                     prefs.commit();
 
                     RemoteViews views = DayCountWidget.buildRemoteViews(context, mAppWidgetId);
@@ -142,8 +142,8 @@ public class DayCountConfigure extends Activity {
         SharedPreferences prefs = this.getSharedPreferences(Utils.PREFS_NAME, 0);
         String initTargetDate = prefs.getString(Utils.KEY_TARGET_DATE + mAppWidgetId, strToday);
         String initTitle = prefs.getString(Utils.KEY_TITLE + mAppWidgetId, "");
-        String initStyleHeader = prefs.getString(Utils.KEY_STYLE_HEADER + mAppWidgetId, "header_red");
-        String initStyleBody = prefs.getString(Utils.KEY_STYLE_BODY + mAppWidgetId, "body_red");
+        mStyleHeader = prefs.getString(Utils.KEY_STYLE_HEADER + mAppWidgetId, "header_black");
+        mStyleBody = prefs.getString(Utils.KEY_STYLE_BODY + mAppWidgetId, "body_black");
 
         Timber.d("(initTargetDate, initTitle): " + "(" + initTargetDate + ", " + initTitle + ")");
 
@@ -165,12 +165,14 @@ public class DayCountConfigure extends Activity {
             sampleWidget.setBackgroundDrawable(wallpaperDrawable);
         }
 
+
+
         sampleWidgetHeader = (TextView) findViewById(R.id.sample_widget_title);
-        int resourceIdStyleHeader = getResources().getIdentifier(initStyleHeader, "drawable", "mmpud.project.daycountwidget");
+        int resourceIdStyleHeader = getResources().getIdentifier(mStyleHeader, "drawable", "mmpud.project.daycountwidget");
         Drawable dH = getResources().getDrawable(resourceIdStyleHeader);
         sampleWidgetHeader.setBackground(dH);
         sampleWidgetBody = (LinearLayout) findViewById(R.id.sample_widget);
-        int resourceIdStyleBody = getResources().getIdentifier(initStyleBody, "drawable", "mmpud.project.daycountwidget");
+        int resourceIdStyleBody = getResources().getIdentifier(mStyleBody, "drawable", "mmpud.project.daycountwidget");
         Drawable dB = getResources().getDrawable(resourceIdStyleBody);
         sampleWidgetBody.setBackground(dB);
 
@@ -179,11 +181,12 @@ public class DayCountConfigure extends Activity {
         mHeaderStyleList = Arrays.asList(getResources().getStringArray(R.array.header_style_list));
         mHeaderAdapter = new SelectStyleAdapter(this, R.layout.list_item_style, mHeaderStyleList);
         mHlvSelectHeader.setAdapter(mHeaderAdapter);
+        mHlvSelectHeader.setSelection(mHeaderStyleList.indexOf(mStyleHeader));
         mHlvSelectHeader.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                styleHeader = mHeaderStyleList.get(i);
-                int resourceIdStyleHeader = getResources().getIdentifier(styleHeader, "drawable", "mmpud.project.daycountwidget");
+                mStyleHeader = mHeaderStyleList.get(i);
+                int resourceIdStyleHeader = getResources().getIdentifier(mStyleHeader, "drawable", "mmpud.project.daycountwidget");
                 Drawable d = getResources().getDrawable(resourceIdStyleHeader);
                 sampleWidgetHeader.setBackground(d);
             }
@@ -194,11 +197,12 @@ public class DayCountConfigure extends Activity {
         mBodyStyleList = Arrays.asList(getResources().getStringArray(R.array.body_style_list));
         mBodyAdapter = new SelectStyleAdapter(this, R.layout.list_item_style, mBodyStyleList);
         mHlvSelectBody.setAdapter(mBodyAdapter);
+        mHlvSelectBody.setSelection(mBodyStyleList.indexOf(mStyleBody));
         mHlvSelectBody.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                styleBody = mBodyStyleList.get(i);
-                int resourceIdStyleHeader = getResources().getIdentifier(styleBody, "drawable", "mmpud.project.daycountwidget");
+                mStyleBody = mBodyStyleList.get(i);
+                int resourceIdStyleHeader = getResources().getIdentifier(mStyleBody, "drawable", "mmpud.project.daycountwidget");
                 Drawable d = getResources().getDrawable(resourceIdStyleHeader);
                 sampleWidgetBody.setBackground(d);
             }

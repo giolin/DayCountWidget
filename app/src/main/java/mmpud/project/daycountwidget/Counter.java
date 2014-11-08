@@ -6,9 +6,9 @@ package mmpud.project.daycountwidget;
 public class Counter {
     private String targetDate;
     private String title;
-    private int styleNum;
+    private String styleNum;
 
-    public Counter(String targetDate, String title, int styleNum) {
+    public Counter(String targetDate, String title, String styleNum) {
         this.targetDate = targetDate;
         this.title = title;
         this.styleNum = styleNum;
@@ -22,7 +22,7 @@ public class Counter {
         return title;
     }
 
-    public int getStyleNum() {
+    public String getStyleNum() {
         return styleNum;
     }
 
@@ -34,7 +34,7 @@ public class Counter {
         this.title = title;
     }
 
-    public void setStyleNum(int styleNum) {
+    public void setStyleNum(String styleNum) {
         this.styleNum = styleNum;
     }
 }

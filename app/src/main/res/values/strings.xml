@@ -10,6 +10,9 @@
     <string name="date">Date</string>
     <string name="what">What</string>
     <string name="title_activity_day_count_detail_dialog">DayCountDetailDialog</string>
+    <string name="edit_your_day_counter">Edit Your Day Counter</string>
+    <string name="select_header_style">Select Header Style</string>
+    <string name="select_body_style">Select Body Style</string>
     <string name="edit">Edit</string>
     <string name="detail_days_since">days since</string>
     <string name="detail_days_left">days left until</string>

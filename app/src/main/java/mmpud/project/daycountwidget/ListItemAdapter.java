@@ -2,10 +2,14 @@ package mmpud.project.daycountwidget;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -33,9 +37,8 @@ public class ListItemAdapter extends ArrayAdapter<Counter> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View row, ViewGroup parent) {
 
-        View row = convertView;
         CounterLayoutHolder holder;
 
         if (row == null) {
@@ -46,6 +49,7 @@ public class ListItemAdapter extends ArrayAdapter<Counter> {
             holder.tvTargetDate = (TextView) row.findViewById(R.id.list_item_tv_target_date);
             holder.tvTitle = (TextView) row.findViewById(R.id.list_item_tv_title);
             holder.tvDayDiff = (TextView) row.findViewById(R.id.list_item_tv_day_diff);
+            holder.rlCounter = (RelativeLayout) row.findViewById(R.id.list_item_counter);
             row.setTag(holder);
         } else {
             holder = (CounterLayoutHolder) row.getTag();
@@ -55,6 +59,13 @@ public class ListItemAdapter extends ArrayAdapter<Counter> {
         holder.tvTargetDate.setText(counter.getTargetDate());
         holder.tvTitle.setText(counter.getTitle());
         // TODO - set background of each row
+        int resourceIdStyle = mContext.getResources().getIdentifier(counter.getStyleNum() + "_config", "drawable", "mmpud.project.daycountwidget");
+//        Drawable d = mContext.getResources().getDrawable(resourceIdStyle);
+        Bitmap bitmapBg = BitmapFactory.decodeResource(mContext.getResources(),
+                resourceIdStyle);
+        Bitmap onePixelBitmap = Bitmap.createScaledBitmap(bitmapBg, 1, 1, true);
+        int pixel = onePixelBitmap.getPixel(0,0);
+        holder.rlCounter.setBackgroundColor(pixel);
         // Get the target date
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Calendar startDate = Calendar.getInstance();
@@ -82,6 +93,7 @@ public class ListItemAdapter extends ArrayAdapter<Counter> {
     }
 
     private static class CounterLayoutHolder {
+        RelativeLayout rlCounter;
         TextView tvTargetDate;
         TextView tvTitle;
         TextView tvDayDiff;

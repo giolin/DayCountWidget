@@ -72,12 +72,12 @@ public class DayCountMainActivity extends Activity {
             Timber.d("appWidgetId: " + appWidgetId);
             // Get information: 1. YYYY-MM-DD
             //					2. title
-            //					3. widget style
+            //					3. widget body style
             // from shared preferences according to the appWidgetId
             SharedPreferences prefs = this.getSharedPreferences(Utils.PREFS_NAME, 0);
-            counters.add(new Counter(prefs.getString("targetDate" + appWidgetId, ""),
-                    prefs.getString("title" + appWidgetId, ""),
-                    prefs.getInt("styleNum" + appWidgetId, 1)));
+            counters.add(new Counter(prefs.getString(Utils.KEY_TARGET_DATE + appWidgetId, ""),
+                    prefs.getString(Utils.KEY_TITLE + appWidgetId, ""),
+                    prefs.getString(Utils.KEY_STYLE_BODY + appWidgetId, "")));
         }
         adapter.notifyDataSetChanged();
     }
