@@ -21,12 +21,9 @@ import timber.log.Timber;
 
 public class DayCountWidget extends AppWidgetProvider {
 
-
-
     private static final int ALARM_ID = 0;
 
-    // is called when new widget is created
-    // change Language will also call this method with an intent
+    // Called when new widget is created
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
@@ -41,7 +38,8 @@ public class DayCountWidget extends AppWidgetProvider {
         }
     }
 
-    // Only receive the midnight broadcast
+    // The midnight alarm will call this method with a WIDGET_UPDATE_ALL intent
+    // Change Language will also call this method with a WIDGET_UPDATE_ALL intent
     @Override
     public void onReceive(Context context, Intent intent) {
         // When Receiving the midnight alarm, update all the widgets
@@ -54,19 +52,14 @@ public class DayCountWidget extends AppWidgetProvider {
                 manager.updateAppWidget(appWidgetId, views);
                 Timber.d("widget [" + appWidgetId + "] updated at midnight");
             }
-
         }
-
         super.onReceive(context, intent);
     }
-
 
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
-
         // Start the alarm when the first widget is added
-
         // One day in milliseconds
         int INTERVAL_MILLIS = 1000 * 60 * 60 * 24;
         // Set the calendar to midnight on the next day
@@ -79,22 +72,23 @@ public class DayCountWidget extends AppWidgetProvider {
         calendar.add(Calendar.DAY_OF_MONTH, 1);
 
         Intent alarmIntent = new Intent(Utils.WIDGET_UPDATE_ALL);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, alarmIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         // RTC does not wake the device up
-        alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), INTERVAL_MILLIS, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), INTERVAL_MILLIS,
+                pendingIntent);
     }
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
             SharedPreferences prefs = context.getSharedPreferences(Utils.PREFS_NAME, 0);
-            prefs.edit().remove(Utils.KEY_TARGET_DATE + appWidgetId).commit();
-            prefs.edit().remove(Utils.KEY_TITLE + appWidgetId).commit();
-            prefs.edit().remove(Utils.KEY_STYLE_HEADER + appWidgetId).commit();
-            prefs.edit().remove(Utils.KEY_STYLE_BODY + appWidgetId).commit();
-
+            prefs.edit().remove(Utils.KEY_TARGET_DATE + appWidgetId).apply();
+            prefs.edit().remove(Utils.KEY_TITLE + appWidgetId).apply();
+            prefs.edit().remove(Utils.KEY_STYLE_HEADER + appWidgetId).apply();
+            prefs.edit().remove(Utils.KEY_STYLE_BODY + appWidgetId).apply();
             Timber.d("The widget [" + appWidgetId + "] onDelete!");
         }
 
@@ -104,7 +98,8 @@ public class DayCountWidget extends AppWidgetProvider {
     public void onDisabled(Context context) {
         // Delete the alarm
         Intent alarmIntent = new Intent(Utils.WIDGET_UPDATE_ALL);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, alarmIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
@@ -114,7 +109,7 @@ public class DayCountWidget extends AppWidgetProvider {
     public static RemoteViews buildRemoteViews(Context context, int mAppWidgetId) {
         // Get information: 1. YYYY/MM/DD
         //					2. title
-        //					3. widget style
+        //					3. header and body style
         // from shared preferences according to the appWidgetId
         SharedPreferences prefs = context.getSharedPreferences(Utils.PREFS_NAME, 0);
         String targetDate = prefs.getString(Utils.KEY_TARGET_DATE + mAppWidgetId, "");
@@ -132,16 +127,17 @@ public class DayCountWidget extends AppWidgetProvider {
             e.printStackTrace();
         }
 
-        long diffDays = Utils.daysBetween(calToday, calTarget);
+        int diffDays = Utils.daysBetween(calToday, calTarget);
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
         // Set up the style
-        int resourceIdStyleHeader = context.getResources().getIdentifier(styleHeader, "drawable", "mmpud.project.daycountwidget");
+        int resourceIdStyleHeader = context.getResources().getIdentifier(styleHeader,
+                "drawable", "mmpud.project.daycountwidget");
 
-        int resourceIdStyleBody = context.getResources().getIdentifier(styleBody, "drawable", "mmpud.project.daycountwidget");
+        int resourceIdStyleBody = context.getResources().getIdentifier(styleBody,
+                "drawable", "mmpud.project.daycountwidget");
 
-        // TODO use views.setBitmap instead to put the drawable inside
         views.setInt(R.id.widget_title, "setBackgroundResource", resourceIdStyleHeader);
 
         views.setInt(R.id.widget, "setBackgroundResource", resourceIdStyleBody);
@@ -153,11 +149,18 @@ public class DayCountWidget extends AppWidgetProvider {
         views.setFloat(R.id.widget_diffdays, "setTextSize", textSize);
 
         if (diffDays > 0) {
-            views.setTextViewText(R.id.widget_since_left, context.getResources().getString(R.string.days_left));
-            views.setTextViewText(R.id.widget_diffdays, Long.toString(diffDays));
+//            String strDaysLeft = context.getResources().getQuantityString(R.plurals.days_left,
+//                    diffDays, null);
+            views.setTextViewText(R.id.widget_since_left,
+                    context.getResources().getText(R.string.days_left));
+            views.setTextViewText(R.id.widget_diffdays, Integer.toString(diffDays));
         } else {
-            views.setTextViewText(R.id.widget_since_left, context.getResources().getString(R.string.days_since));
-            views.setTextViewText(R.id.widget_diffdays, Long.toString(-diffDays));
+            diffDays = -diffDays;
+//            String strDaysSince = context.getResources().getQuantityString(R.plurals.days_since,
+//                    diffDays, null);
+            views.setTextViewText(R.id.widget_since_left,
+                    context.getResources().getText(R.string.days_since));
+            views.setTextViewText(R.id.widget_diffdays, Integer.toString(diffDays));
         }
 
         // Create intent for clicking on the widget for detail

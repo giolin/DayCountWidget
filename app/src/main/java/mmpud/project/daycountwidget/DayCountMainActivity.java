@@ -22,16 +22,17 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import mmpud.project.daycountwidget.util.Counter;
 import mmpud.project.daycountwidget.util.Utils;
 import timber.log.Timber;
 
 
 public class DayCountMainActivity extends Activity {
 
-    ListView listViewDayCounter;
-    TextView tvNoWidgetMsg;
-    ArrayList<Counter> counters;
-    ListItemAdapter adapter;
+    ListView mLvDayCounter;
+    TextView mTvNoWidgetMsg;
+    ArrayList<Counter> mCounters;
+    ListItemAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +40,14 @@ public class DayCountMainActivity extends Activity {
         setContentView(R.layout.activity_day_count_main);
         setTitle(getResources().getString(R.string.app_name));
 
-        counters = new ArrayList<Counter>();
-        adapter = new ListItemAdapter(this, R.layout.list_item, counters);
+        mCounters = new ArrayList<Counter>();
+        mAdapter = new ListItemAdapter(this, R.layout.list_item, mCounters);
 
-        listViewDayCounter = (ListView) findViewById(R.id.lv_day_counter);
-        listViewDayCounter.setAdapter(adapter);
-        listViewDayCounter.setClickable(false);
-        tvNoWidgetMsg = (TextView) findViewById(R.id.tv_no_widget_msg);
+        mLvDayCounter = (ListView) findViewById(R.id.lv_day_counter);
+        mLvDayCounter.setAdapter(mAdapter);
+
+        mTvNoWidgetMsg = (TextView) findViewById(R.id.tv_no_widget_msg);
+        mTvNoWidgetMsg.setVisibility(View.GONE);
     }
 
     @Override
@@ -53,33 +55,33 @@ public class DayCountMainActivity extends Activity {
         super.onResume();
         updateAdapter();
 
-        if (counters.isEmpty()) {
-            tvNoWidgetMsg.setVisibility(View.VISIBLE);
+        if (mCounters.isEmpty()) {
+            mTvNoWidgetMsg.setVisibility(View.VISIBLE);
         } else {
-            tvNoWidgetMsg.setVisibility(View.GONE);
+            mTvNoWidgetMsg.setVisibility(View.GONE);
         }
     }
 
     private void updateAdapter() {
-        counters.clear();
+        mCounters.clear();
         // Get all available day count widget ids
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         ComponentName thisAppWidget = new ComponentName(this, DayCountWidget.class);
 
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
-
+        // Add all the current day counter widget info to the list
         for (int appWidgetId : appWidgetIds) {
             Timber.d("appWidgetId: " + appWidgetId);
             // Get information: 1. YYYY-MM-DD
             //					2. title
-            //					3. widget body style
+            //					3. body style
             // from shared preferences according to the appWidgetId
             SharedPreferences prefs = this.getSharedPreferences(Utils.PREFS_NAME, 0);
-            counters.add(new Counter(prefs.getString(Utils.KEY_TARGET_DATE + appWidgetId, ""),
+            mCounters.add(new Counter(prefs.getString(Utils.KEY_TARGET_DATE + appWidgetId, ""),
                     prefs.getString(Utils.KEY_TITLE + appWidgetId, ""),
                     prefs.getString(Utils.KEY_STYLE_BODY + appWidgetId, "")));
         }
-        adapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

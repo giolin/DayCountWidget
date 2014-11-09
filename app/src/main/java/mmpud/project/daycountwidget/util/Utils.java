@@ -34,7 +34,7 @@ public class Utils {
 
     public static final String WIDGET_UPDATE_ALL = "android.appwidget.action.WIDGET_UPDATE_ALL";
 
-    public static long daysBetween(Calendar startDate, Calendar endDate) {
+    public static int daysBetween(Calendar startDate, Calendar endDate) {
         endDate.set(Calendar.HOUR_OF_DAY, 0);
         endDate.set(Calendar.MINUTE, 0);
         endDate.set(Calendar.SECOND, 0);
@@ -48,7 +48,8 @@ public class Utils {
         Timber.d("time: " + startDate.getTime() + ", " + endDate.getTime());
         long diffTime = endTime - startTime;
         Timber.d("milliseconds: " + diffTime + ", hours: " + diffTime / (1000 * 60 * 60));
-        return TimeUnit.DAYS.convert(diffTime, TimeUnit.MILLISECONDS);
+        Long result = TimeUnit.DAYS.convert(diffTime, TimeUnit.MILLISECONDS);
+        return result.intValue();
     }
 
     public static float textSizeGenerator(long num) {

@@ -7,7 +7,8 @@
     <ListView
         android:id="@+id/lv_day_counter"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent"
+        android:clickable="false"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -18,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="20dp"
-            android:gravity="center"
+            android:textColor="#aaaaaa"
             android:text="@string/add_widget_instruction"/>
     </FrameLayout>
 

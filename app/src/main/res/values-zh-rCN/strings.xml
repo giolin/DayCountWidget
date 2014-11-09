@@ -10,18 +10,26 @@
     <string name="date">日期</string>
     <string name="what">事件</string>
     <string name="edit">编辑</string>
-    <string name="detail_days_since">天　自从</string>
-    <string name="detail_days_left">天　直到</string>
     <string name="language_settings">语言选择</string>
     <string name="sample_widget_title">事件主题</string>
     <string name="edit_your_day_counter">编辑你的日子</string>
     <string name="select_header_style">选择标题样式</string>
     <string name="select_body_style">选择内容样式</string>
+
     <plurals name="list_days_since">
-        <item quantity="other">已过 %d 天</item>
+        <item quantity="other">已過 %d 天</item>
     </plurals>
+
     <plurals name="list_days_left">
-        <item quantity="other">还有 %d 天</item>
+        <item quantity="other">還有 %d 天</item>
+    </plurals>
+
+    <plurals name="detail_days_since">
+        <item quantity="other">已過 %d 天</item>
+    </plurals>
+
+    <plurals name="detail_days_left">
+        <item quantity="other">還有 %d 天</item>
     </plurals>
 
 </resources>

@@ -15,17 +15,19 @@
         android:gravity="center" >
         
         <TextView 
-        	android:id="@+id/txt_detail_diffdays"
+        	android:id="@+id/tv_detail_diffdays"
             style="@style/DetailTextBlock"
+            android:background="#55000000"
             android:textSize="20sp" />
         
         <TextView 
-            android:id="@+id/txt_detail_targetday"
+            android:id="@+id/tv_detail_targetday"
             style="@style/DetailTextBlock"
+            android:background="#33000000"
             android:textSize="30sp" />
         
         <TextView 
-            android:id="@+id/txt_detail_title"
+            android:id="@+id/tv_detail_title"
 			style="@style/DetailTextBlock"
             android:textSize="40sp" />
     </LinearLayout>

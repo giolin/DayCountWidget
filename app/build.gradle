@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 20
     buildToolsVersion "20.0.0"
 
     defaultConfig {
         applicationId "mmpud.project.daycountwidget"
-        minSdkVersion 9
+        minSdkVersion 11
         targetSdkVersion 20
     }
     lintOptions {
@@ -21,7 +21,7 @@ android {
 }
 
 dependencies {
-    compile 'com.jakewharton.timber:timber:2.4.+'
-    compile 'com.android.support:support-v4:20.0.+'
+    compile 'com.jakewharton.timber:timber:2.4.1'
+    compile 'com.android.support:support-v4:20.0.0'
     compile 'it.sephiroth.android.library.horizontallistview:hlistview:1.2.2'
 }

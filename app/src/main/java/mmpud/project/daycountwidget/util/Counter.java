@@ -1,4 +1,4 @@
-package mmpud.project.daycountwidget;
+package mmpud.project.daycountwidget.util;
 
 /**
  * Created by george on 2014/10/27.
@@ -6,12 +6,12 @@ package mmpud.project.daycountwidget;
 public class Counter {
     private String targetDate;
     private String title;
-    private String styleNum;
+    private String bodyStyle;
 
     public Counter(String targetDate, String title, String styleNum) {
         this.targetDate = targetDate;
         this.title = title;
-        this.styleNum = styleNum;
+        this.bodyStyle = styleNum;
     }
 
     public String getTargetDate() {
@@ -22,8 +22,8 @@ public class Counter {
         return title;
     }
 
-    public String getStyleNum() {
-        return styleNum;
+    public String getBodyStyle() {
+        return bodyStyle;
     }
 
     public void setTargetDate(String targetDate) {
@@ -34,7 +34,7 @@ public class Counter {
         this.title = title;
     }
 
-    public void setStyleNum(String styleNum) {
-        this.styleNum = styleNum;
+    public void setBodyStyle(String bodyStyle) {
+        this.bodyStyle = bodyStyle;
     }
 }

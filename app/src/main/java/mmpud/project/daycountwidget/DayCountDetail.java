@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,16 +23,15 @@ import timber.log.Timber;
 
 public class DayCountDetail extends Activity {
 
-    private static final String PREFS_NAME = "mmpud.project.daycountwidget.DayCountWidget";
-
-    private RelativeLayout rlDetailPage;
-    //	private LinearLayout llDetailbox;
-    private TextView txtDetailDiffDays;
-    private TextView txtDetailTargetDay;
-    private TextView txtDetailTitle;
-    private Button btnEdit;
+    private RelativeLayout mRlDetailPage;
+    private LinearLayout mLlDetailbox;
+    private TextView mTvDetailDiffDays;
+    private TextView mTvDetailTargetDay;
+    private TextView mTvDetailTitle;
+    private Button mBtnEdit;
 
     private int mAppWidgetId;
+
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
 
         @Override
@@ -60,15 +62,16 @@ public class DayCountDetail extends Activity {
                     AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
         Timber.d("Widget [" + mAppWidgetId + "]'s detail is shown");
-        txtDetailDiffDays = (TextView) findViewById(R.id.txt_detail_diffdays);
-        txtDetailTargetDay = (TextView) findViewById(R.id.txt_detail_targetday);
-        txtDetailTitle = (TextView) findViewById(R.id.txt_detail_title);
+        mLlDetailbox = (LinearLayout) findViewById(R.id.ll_detailbox);
+        mTvDetailDiffDays = (TextView) findViewById(R.id.tv_detail_diffdays);
+        mTvDetailTargetDay = (TextView) findViewById(R.id.tv_detail_targetday);
+        mTvDetailTitle = (TextView) findViewById(R.id.tv_detail_title);
 
-        rlDetailPage = (RelativeLayout) findViewById(R.id.rl_detail_page);
-        rlDetailPage.setOnClickListener(mOnClickListener);
+        mRlDetailPage = (RelativeLayout) findViewById(R.id.rl_detail_page);
+        mRlDetailPage.setOnClickListener(mOnClickListener);
 
-        btnEdit = (Button) findViewById(R.id.btn_detail_edit);
-        btnEdit.setOnClickListener(mOnClickListener);
+        mBtnEdit = (Button) findViewById(R.id.btn_detail_edit);
+        mBtnEdit.setOnClickListener(mOnClickListener);
     }
 
     @Override
@@ -87,12 +90,25 @@ public class DayCountDetail extends Activity {
     private void updateLayoutInfo() {
         // Get information: 1. YYYY-MM-DD
         //					2. title
-        //					3. widget style
+        //					3. body style
         // from shared preferences according to the appWidgetId
-        SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences prefs = this.getSharedPreferences(Utils.PREFS_NAME, 0);
         String targetDate = prefs.getString(Utils.KEY_TARGET_DATE + mAppWidgetId, "0-0-0");
         String targetTitle = prefs.getString(Utils.KEY_TITLE + mAppWidgetId, "");
+        String bodyStyle = prefs.getString(Utils.KEY_STYLE_BODY + mAppWidgetId, "body_black");
 
+        mTvDetailTargetDay.setText(targetDate);
+        mTvDetailTitle.setText(targetTitle);
+
+        // Set the background color of the detail box
+        int resourceIdStyle = getResources().getIdentifier(bodyStyle + "_config",
+                "drawable", "mmpud.project.daycountwidget");
+        Bitmap bitmapBg = BitmapFactory.decodeResource(getResources(), resourceIdStyle);
+        Bitmap onePixelBitmap = Bitmap.createScaledBitmap(bitmapBg, 1, 1, true);
+        int pixel = onePixelBitmap.getPixel(0,0);
+        mLlDetailbox.setBackgroundColor(pixel);
+
+        // Evaluate the day difference
         Calendar calToday = Calendar.getInstance();
         Calendar calTarget = Calendar.getInstance();
 
@@ -103,20 +119,18 @@ public class DayCountDetail extends Activity {
             e.printStackTrace();
         }
 
-        // Update the day difference
-        long diffDays = Utils.daysBetween(calToday, calTarget);
+        int diffDays = Utils.daysBetween(calToday, calTarget);
 
         if (diffDays > 0) {
-            txtDetailDiffDays.setText(diffDays + " " + getResources().getString(R.string.detail_days_left));
-            // Better if different types of day format can be shown according to the local habit of use
-            txtDetailTargetDay.setText(targetDate);
-            txtDetailTitle.setText(targetTitle);
+            String strDaysLeft = getResources().getQuantityString(R.plurals.detail_days_left,
+                    diffDays, diffDays);
+            mTvDetailDiffDays.setText(strDaysLeft);
         } else {
-            txtDetailDiffDays.setText(-diffDays + " " + getResources().getString(R.string.detail_days_since));
-            txtDetailTargetDay.setText(targetDate);
-            txtDetailTitle.setText(targetTitle);
+            diffDays = -diffDays;
+            String strDaysLeft = getResources().getQuantityString(R.plurals.detail_days_since,
+                    diffDays, diffDays);
+            mTvDetailDiffDays.setText(strDaysLeft);
         }
-
     }
 
 }

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import mmpud.project.daycountwidget.util.Counter;
 import mmpud.project.daycountwidget.util.Utils;
 
 /**
@@ -59,7 +59,7 @@ public class ListItemAdapter extends ArrayAdapter<Counter> {
         holder.tvTargetDate.setText(counter.getTargetDate());
         holder.tvTitle.setText(counter.getTitle());
         // TODO - set background of each row
-        int resourceIdStyle = mContext.getResources().getIdentifier(counter.getStyleNum() + "_config", "drawable", "mmpud.project.daycountwidget");
+        int resourceIdStyle = mContext.getResources().getIdentifier(counter.getBodyStyle() + "_config", "drawable", "mmpud.project.daycountwidget");
 //        Drawable d = mContext.getResources().getDrawable(resourceIdStyle);
         Bitmap bitmapBg = BitmapFactory.decodeResource(mContext.getResources(),
                 resourceIdStyle);
@@ -76,18 +76,17 @@ public class ListItemAdapter extends ArrayAdapter<Counter> {
             e.printStackTrace();
         }
 
-        Long diffDays = Utils.daysBetween(startDate, targetDate);
+        int diffDays = Utils.daysBetween(startDate, targetDate);
 
         if (diffDays > 0) {
-            int diffDaysInt = diffDays.intValue();
-            String strDaysLeft = mContext.getResources().getQuantityString(R.plurals.list_days_left, diffDaysInt, (int) diffDaysInt);
+            String strDaysLeft = mContext.getResources().getQuantityString(R.plurals.list_days_left, diffDays, diffDays);
             holder.tvDayDiff.setText(strDaysLeft);
         } else {
-            int diffDaysInt = -diffDays.intValue();
-            String strDaysSince = mContext.getResources().getQuantityString(R.plurals.list_days_since, diffDaysInt, (int) diffDaysInt);
+            diffDays = -diffDays;
+            String strDaysSince = mContext.getResources().getQuantityString(R.plurals.list_days_since, diffDays, (int) diffDays);
             holder.tvDayDiff.setText(strDaysSince);
         }
-        counter.getStyleNum();
+        counter.getBodyStyle();
         // TODO - set row's background!
         return row;
     }

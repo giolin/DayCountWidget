@@ -7,11 +7,33 @@
     <string name="no_data">-</string>
     <string name="enter_title">(Appuyez ici pour modifier le nom)</string>
     <string name="ok">OK</string>
-    <string name="what">Quoi</string>
+    <string name="what">Évènement</string>
     <string name="edit">Modifier</string>
-    <string name="detail_days_since">jours depuis</string>
-    <string name="detail_days_left">jours restants avant</string>
     <string name="language_settings">paramètres de langue</string>
     <string name="sample_widget_title">nom</string>
+    <string name="date">Date</string>
+
+    <plurals name="list_days_since">
+        <item quantity="one">%d jour</item>
+        <item quantity="other">%d jours</item>
+    </plurals>
+
+    <plurals name="list_days_left">
+        <item quantity="one">%d jour restant</item>
+        <item quantity="other">%d jours restants</item>
+    </plurals>
+
+    <plurals name="detail_days_since">
+        <item quantity="one">%d jour depuis</item>
+        <item quantity="other">%d jours depuis</item>
+    </plurals>
+
+    <plurals name="detail_days_left">
+        <item quantity="one">%d jour restant jusqu\'à</item>
+        <item quantity="other">%d jours restants jusqu\'à</item>
+    </plurals>
+    <string name="edit_your_day_counter">Modifier Votre Compte à Rebours</string>
+    <string name="select_body_style">Choisir le type de carrosserie</string>
+    <string name="select_header_style">Choisir le style d\'en-tête</string>
 
 </resources>
