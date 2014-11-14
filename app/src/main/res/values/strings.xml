@@ -15,8 +15,7 @@
     <string name="edit">Edit</string>
     <string name="language_settings">Language Settings</string>
     <string name="sample_widget_title">event title</string>
-    <string name="sample_widget_days" translatable="false">99</string>
-    <string name="add_widget_instruction" translatable="false">No Widgets on the Home Screen. \nGo to Home Screen > Add Widget > select \"Day Counter\" to add the widget.</string>
+    <string name="add_widget_instruction">No Widgets added to the Home Screen. \nGo to Home Screen > Add Widget > select \"Day Counter\" to add the widget.</string>
 
     <plurals name="list_days_since">
         <item quantity="one">%d day</item>

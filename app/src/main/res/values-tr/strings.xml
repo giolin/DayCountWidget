@@ -37,5 +37,6 @@
     <string name="select_body_style">Gövde Biçimini Seç</string>
     <string name="select_header_style">Başlık Biçimini Seç</string>
     <string name="edit_your_day_counter">Gün Sayacını Düzenle</string>
+    <string name="add_widget_instruction">Ana ekrana Widget ekli değil.\nEklemek için: Ana Ekran> Widget Ekle >  Widget\'ı eklemek için \'Gün Sayacı\' nı seç.</string>
 
 </resources>

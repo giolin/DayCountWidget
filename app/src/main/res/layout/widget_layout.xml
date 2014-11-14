@@ -29,8 +29,7 @@
 		android:layout_weight="3"
 		android:gravity="center"
 		android:textColor="#FFFFFF"
-		android:textSize= "36sp"
-		android:text="@string/sample_widget_days" />
+		android:textSize= "36sp" />
     
     <TextView
         android:id="@+id/widget_since_left" 

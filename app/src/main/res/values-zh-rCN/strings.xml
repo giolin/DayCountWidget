@@ -31,5 +31,6 @@
     <plurals name="detail_days_left">
         <item quantity="other">還有 %d 天</item>
     </plurals>
+    <string name="add_widget_instruction">目前桌面上还没有任何数日子小工具\n请回到桌面在设定或是在桌面长按，进入新增小工具，就可以找到数日子小工具啰！</string>
 
 </resources>

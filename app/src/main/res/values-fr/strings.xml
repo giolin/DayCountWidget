@@ -35,5 +35,6 @@
     <string name="edit_your_day_counter">Modifier Votre Compte à Rebours</string>
     <string name="select_body_style">Choisir le type de carrosserie</string>
     <string name="select_header_style">Choisir le style d\'en-tête</string>
+    <string name="add_widget_instruction">Aucun Widget ajouté à la page d\'accueil.\nAller à la page d\'accueil > Ajouter un Widget > sélectionner \" Compteur de jours \" pour ajouter le widget .</string>
 
 </resources>

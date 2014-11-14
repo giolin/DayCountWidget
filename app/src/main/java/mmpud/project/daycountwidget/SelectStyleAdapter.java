@@ -5,26 +5,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mmpud.project.daycountwidget.util.Utils;
-import timber.log.Timber;
 
 /**
  * Created by george on 2014/11/3.
@@ -34,12 +25,22 @@ public class SelectStyleAdapter extends ArrayAdapter<String> {
     private Context mContext;
     private int mResource;
     private List<String> mStringList = null;
+    private List<Bitmap> mStyleIcon;
 
     public SelectStyleAdapter(Context context, int resource, List<String> stringList) {
         super(context, resource, stringList);
         mContext = context;
         mResource = resource;
         mStringList = stringList;
+        mStyleIcon = new ArrayList<Bitmap>();
+        for (int i = 0; i < mStringList.size(); i++) {
+            String strStyle = mStringList.get(i);
+            int resourceIDStyle = mContext.getResources().getIdentifier(strStyle + "_config", "drawable", "mmpud.project.daycountwidget");
+            Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), resourceIDStyle);
+            if (bitmap != null) {
+                mStyleIcon.add(Utils.getRoundedCornerBitmap(bitmap, 40));
+            }
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -59,14 +60,9 @@ public class SelectStyleAdapter extends ArrayAdapter<String> {
         } else {
             holder = (CounterLayoutHolder) view.getTag();
         }
-        String strStyle = mStringList.get(position);
 
-        Timber.d("style: " + strStyle);
-        int resourceIDStyle = mContext.getResources().getIdentifier(strStyle + "_config", "drawable", "mmpud.project.daycountwidget");
-        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), resourceIDStyle);
-        if(bitmap != null) {
-            holder.ivStyle.setImageBitmap(Utils.getRoundedCornerBitmap(bitmap, 40));
-        }
+        holder.ivStyle.setImageBitmap(mStyleIcon.get(position));
+
         return view;
     }
 

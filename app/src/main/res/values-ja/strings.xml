@@ -31,5 +31,6 @@
     <plurals name="detail_days_left">
         <item quantity="other">あと %d 日</item>
     </plurals>
+    <string name="add_widget_instruction">No Widgets added to the Home Screen. \nGo to Home Screen > Add Widget > select \"Day Counter\" to add the widget.</string>
 
 </resources>
