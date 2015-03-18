@@ -63,8 +63,11 @@ public class ListItemAdapter extends ArrayAdapter<Counter> {
 //        Drawable d = mContext.getResources().getDrawable(resourceIdStyle);
         Bitmap bitmapBg = BitmapFactory.decodeResource(mContext.getResources(),
                 resourceIdStyle);
-        Bitmap onePixelBitmap = Bitmap.createScaledBitmap(bitmapBg, 1, 1, true);
-        int pixel = onePixelBitmap.getPixel(0,0);
+        int pixel = 0;
+        if (bitmapBg != null) {
+            Bitmap onePixelBitmap = Bitmap.createScaledBitmap(bitmapBg, 1, 1, true);
+            pixel = onePixelBitmap.getPixel(0, 0);
+        }
         holder.rlCounter.setBackgroundColor(pixel);
         // Get the target date
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
