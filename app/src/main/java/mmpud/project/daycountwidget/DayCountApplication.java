@@ -6,9 +6,6 @@ import timber.log.Timber;
 
 import static timber.log.Timber.DebugTree;
 
-/**
- * Created by georgelin on 10/10/14.
- */
 public class DayCountApplication extends Application {
     @Override
     public void onCreate() {

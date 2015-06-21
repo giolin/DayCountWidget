@@ -1,27 +1,40 @@
 package mmpud.project.daycountwidget;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.google.common.collect.Lists;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import mmpud.project.daycountwidget.misc.ClickableRecyclerAdapter;
 import mmpud.project.daycountwidget.util.Counter;
 import mmpud.project.daycountwidget.util.Utils;
 import timber.log.Timber;
@@ -29,41 +42,36 @@ import timber.log.Timber;
 
 public class DayCountMainActivity extends Activity {
 
-    ListView mLvDayCounter;
-    TextView mTvNoWidgetMsg;
-    ArrayList<Counter> mCounters;
-    ListItemAdapter mAdapter;
+    @InjectView(android.R.id.list) RecyclerView mList;
+    @InjectView(android.R.id.text1) TextView mNoWidgetMsg;
+
+    private DayCounterAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day_count_main);
         setTitle(getResources().getString(R.string.app_name));
-
-        mCounters = new ArrayList<Counter>();
-        mAdapter = new ListItemAdapter(this, R.layout.list_item, mCounters);
-
-        mLvDayCounter = (ListView) findViewById(R.id.lv_day_counter);
-        mLvDayCounter.setAdapter(mAdapter);
-
-        mTvNoWidgetMsg = (TextView) findViewById(R.id.tv_no_widget_msg);
-        mTvNoWidgetMsg.setVisibility(View.GONE);
+        ButterKnife.inject(this);
+        mAdapter = new DayCounterAdapter(this);
+        mList.setHasFixedSize(true);
+        mList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mList.setAdapter(mAdapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         updateAdapter();
-
-        if (mCounters.isEmpty()) {
-            mTvNoWidgetMsg.setVisibility(View.VISIBLE);
+        if (mAdapter.getItemCount() == 0) {
+            mNoWidgetMsg.setVisibility(View.VISIBLE);
         } else {
-            mTvNoWidgetMsg.setVisibility(View.GONE);
+            mNoWidgetMsg.setVisibility(View.GONE);
         }
     }
 
     private void updateAdapter() {
-        mCounters.clear();
+        mAdapter.clear();
         // Get all available day count widget ids
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         ComponentName thisAppWidget = new ComponentName(this, DayCountWidget.class);
@@ -77,12 +85,117 @@ public class DayCountMainActivity extends Activity {
             //					3. body style
             // from shared preferences according to the appWidgetId
             SharedPreferences prefs = this.getSharedPreferences(Utils.PREFS_NAME, 0);
-            mCounters.add(new Counter(prefs.getString(Utils.KEY_TARGET_DATE + appWidgetId, ""),
+            mAdapter.add(new Counter(prefs.getString(Utils.KEY_TARGET_DATE + appWidgetId, ""),
                     prefs.getString(Utils.KEY_TITLE + appWidgetId, ""),
                     prefs.getString(Utils.KEY_STYLE_BODY + appWidgetId, "")));
         }
-        mAdapter.notifyDataSetChanged();
     }
+
+    public static class DayCounterAdapter extends ClickableRecyclerAdapter<DayCounterViewHolder> {
+
+        final private List<Counter> mItems;
+        private Context mContext;
+        private LayoutInflater mInflater;
+
+        public DayCounterAdapter(Context context) {
+            this.mContext = context;
+            this.mInflater = LayoutInflater.from(context);
+            this.mItems = Lists.newArrayList();
+        }
+
+        public void add(Counter item) {
+            synchronized (mItems) {
+                mItems.add(item);
+            }
+            notifyItemInserted(getItemCount() - 1);
+        }
+
+        public void addAll(List<Counter> items) {
+            int oldSize = getItemCount();
+            synchronized (mItems) {
+                mItems.addAll(items);
+            }
+            notifyItemRangeInserted(oldSize, items.size());
+        }
+
+        public void clear() {
+            synchronized (mItems) {
+                mItems.clear();
+            }
+            notifyDataSetChanged();
+        }
+
+        public Counter getItem(int position) {
+            synchronized (mItems) {
+                return mItems.get(position);
+            }
+        }
+
+        @Override public int getItemCount() {
+            synchronized (mItems) {
+                return mItems.size();
+            }
+        }
+
+        @Override
+        public DayCounterViewHolder onCreateClickableViewHolder(ViewGroup parent, int viewType) {
+            return new DayCounterViewHolder(mInflater.inflate(R.layout.list_item, parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(DayCounterViewHolder holder, int position) {
+            Counter counter = getItem(position);
+
+            holder.title.setText(counter.getTitle());
+            holder.targetDay.setText(counter.getTargetDate());
+
+            int resourceIdStyle = mContext.getResources().getIdentifier(
+                counter.getBodyStyle() + "_config", "drawable", "mmpud.project.daycountwidget");
+            Bitmap bg = BitmapFactory.decodeResource(mContext.getResources(), resourceIdStyle);
+            int bgColor = 0;
+            if (bg != null) {
+                Bitmap onePixBg = Bitmap.createScaledBitmap(bg, 1, 1, true);
+                bgColor = onePixBg.getPixel(0, 0);
+            }
+            holder.itemView.setBackgroundColor(bgColor);
+            // Get the target date
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            Calendar startDate = Calendar.getInstance();
+            Calendar targetDate = Calendar.getInstance();
+            try {
+                targetDate.setTime(sdf.parse(counter.getTargetDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            int diffDays = Utils.daysBetween(startDate, targetDate);
+
+            if (diffDays > 0) {
+                String strDaysLeft = mContext.getResources().getQuantityString(
+                    R.plurals.list_days_left, diffDays, diffDays);
+                holder.dayDiff.setText(strDaysLeft);
+            } else {
+                diffDays = -diffDays;
+                String strDaysSince = mContext.getResources().getQuantityString(
+                    R.plurals.list_days_since, diffDays, (int) diffDays);
+                holder.dayDiff.setText(strDaysSince);
+            }
+        }
+
+    }
+
+    static class DayCounterViewHolder extends ClickableRecyclerAdapter.ClickableViewHolder {
+
+        @InjectView(R.id.list_item_tv_title) TextView title;
+        @InjectView(R.id.list_item_tv_target_date) TextView targetDay;
+        @InjectView(R.id.list_item_tv_day_diff) TextView dayDiff;
+
+        public DayCounterViewHolder(View view) {
+            super(view);
+            ButterKnife.inject(this, view);
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -194,4 +307,5 @@ public class DayCountMainActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
