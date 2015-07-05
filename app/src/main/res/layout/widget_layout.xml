@@ -6,10 +6,9 @@
   	android:layout_height="80dp"
   	android:focusable="true"
   	android:background="@drawable/body_black"
-  	android:orientation="vertical"
-  	android:padding="@dimen/widget_margin" >
-  	
-  	<TextView 
+  	android:orientation="vertical" >
+
+  	<TextView
   	    android:id="@+id/widget_title"
   	    android:layout_width="match_parent"
   	    android:layout_height="0dp"
@@ -19,26 +18,24 @@
   	    android:textColor="#FFFFFF"
   	    android:singleLine="true"
   	    android:textSize="12sp"
-  	    android:paddingLeft="2dp"
-  	    android:text="@string/sample_widget_title" />
-  	
+  	    android:paddingLeft="2dp" />
+
     <TextView
-        android:id="@+id/widget_diffdays" 
-		android:layout_width="match_parent" 
+        android:id="@+id/widget_diffdays"
+		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:layout_weight="3"
 		android:gravity="center"
 		android:textColor="#FFFFFF"
 		android:textSize= "36sp" />
-    
+
     <TextView
-        android:id="@+id/widget_since_left" 
-		android:layout_width="match_parent" 
+        android:id="@+id/widget_since_left"
+		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:layout_weight="1.2"
 		android:gravity="center"
 		android:textColor="#FFFFFF"
-		android:textSize= "12sp"
-		android:text="@string/days_left" />
+		android:textSize= "12sp" />
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 package mmpud.project.daycountwidget;
 
 import android.app.Application;
+import android.util.Log;
 
 import timber.log.Timber;
 
@@ -18,30 +19,20 @@ public class DayCountApplication extends Application {
         }
     }
 
-    /**
-     * A tree which logs important information for crash reporting.
-     */
-    private static class CrashReportingTree extends Timber.HollowTree {
-        @Override
-        public void i(String message, Object... args) {
-            // TODO e.g., Crashlytics.log(String.format(message, args));
-        }
-
-        @Override
-        public void i(Throwable t, String message, Object... args) {
-            i(message, args); // Just add to the log.
-        }
-
-        @Override
-        public void e(String message, Object... args) {
-            i("ERROR: " + message, args); // Just add to the log.
-        }
-
-        @Override
-        public void e(Throwable t, String message, Object... args) {
-            e(message, args);
-
-            // TODO e.g., Crashlytics.logException(t);
+    /** A tree which logs important information for crash reporting. */
+    private static class CrashReportingTree extends Timber.Tree {
+        @Override protected void log(int priority, String tag, String message, Throwable t) {
+            if (priority == Log.VERBOSE || priority == Log.DEBUG) {
+                return;
+            }
+            if (t != null) {
+                if (priority == Log.ERROR) {
+                    // TODO log error
+                } else if (priority == Log.WARN) {
+                    // TODO log warning
+                }
+            }
         }
     }
+
 }
