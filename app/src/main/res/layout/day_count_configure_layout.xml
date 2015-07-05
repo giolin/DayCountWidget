@@ -1,82 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#DDDDDD">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DDDDDD">
+
     <TextView
         android:id="@+id/tv_configure_title"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
+        android:text="@string/edit_your_day_counter"
         android:textColor="#000000"
-        android:textSize="30sp"
-        android:text="@string/edit_your_day_counter"/>
+        android:textSize="30sp" />
 
     <LinearLayout
         android:id="@+id/row1"
-        style="@style/ItemRow"
-        android:layout_below="@+id/tv_configure_title">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_configure_title"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="2dp"
+        android:background="#1ABC9C"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <TextView
-            style="@style/TextTitle"
-            android:text="@string/date"/>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#16A085"
+            android:gravity="center"
+            android:minHeight="50dp"
+            android:text="@string/date"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tv_date"
-            style="@style/TextContent"
-            android:singleLine="true"
-            android:text="@string/no_data"/>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:minHeight="50dp"
+            android:text="@string/no_data"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/row2"
-        style="@style/ItemRow"
-        android:layout_below="@+id/row1">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/row1"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="2dp"
+        android:background="#1ABC9C"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <TextView
-            style="@style/TextTitle"
-            android:text="@string/what"/>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#16A085"
+            android:gravity="center"
+            android:minHeight="50dp"
+            android:text="@string/what"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/edt_title"
-            style="@style/TextContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="#1ABC9C"
+            android:gravity="center"
             android:hint="@string/enter_title"
             android:imeOptions="actionDone"
+            android:minHeight="50dp"
             android:singleLine="true"
-            android:textColorHint="#FFFFFF"/>
+            android:textColor="@android:color/white"
+            android:textColorHint="#FFFFFF"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/sample_widget_bg"
-        android:layout_above="@+id/tv_select_header_style"
-        android:layout_below="@+id/row2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/tv_select_header_style"
+        android:layout_below="@+id/row2"
         android:layout_marginTop="10dp">
+
         <LinearLayout
             android:id="@+id/sample_widget"
             android:layout_width="70dp"
             android:layout_height="80dp"
-            android:focusable="true"
+            android:layout_gravity="center"
             android:background="@drawable/body_black"
-            android:orientation="vertical"
-            android:padding="@dimen/widget_margin"
-            android:layout_gravity="center" >
+            android:focusable="true"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/sample_widget_title"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1.2"
-                android:gravity="center"
                 android:background="@drawable/header_black"
-                android:textColor="#FFFFFF"
-                android:singleLine="true"
-                android:textSize="12sp"
+                android:gravity="center"
                 android:paddingLeft="2dp"
-                android:text="@string/sample_widget_title" />
+                android:singleLine="true"
+                android:text="@string/sample_widget_title"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/sample_widget_diffdays"
@@ -85,7 +132,7 @@
                 android:layout_weight="3"
                 android:gravity="center"
                 android:textColor="#FFFFFF"
-                android:textSize= "36sp" />
+                android:textSize="36sp" />
 
             <TextView
                 android:id="@+id/sample_widget_since_left"
@@ -93,9 +140,9 @@
                 android:layout_height="0dp"
                 android:layout_weight="1.2"
                 android:gravity="center"
+                android:text="@string/days_left"
                 android:textColor="#FFFFFF"
-                android:textSize= "12sp"
-                android:text="@string/days_left" />
+                android:textSize="12sp" />
 
         </LinearLayout>
     </FrameLayout>
@@ -107,18 +154,15 @@
         android:layout_above="@+id/hlv_style_select_header"
         android:layout_marginTop="2dp"
         android:gravity="center"
-        android:textSize="15sp"
+        android:text="@string/select_header_style"
         android:textColor="#000000"
-        android:text="@string/select_header_style"/>
+        android:textSize="15sp" />
 
-    <it.sephiroth.android.library.widget.HListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/hlv_style_select_header"
-        android:layout_above="@+id/tv_select_body_style"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:choiceMode="singleChoice">
-
-    </it.sephiroth.android.library.widget.HListView>
+        android:layout_above="@+id/tv_select_body_style" />
 
     <TextView
         android:id="@+id/tv_select_body_style"
@@ -126,23 +170,31 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/hlv_style_select_body"
         android:gravity="center"
-        android:textSize="15sp"
+        android:text="@string/select_body_style"
         android:textColor="#000000"
-        android:text="@string/select_body_style"/>
+        android:textSize="15sp" />
 
-    <it.sephiroth.android.library.widget.HListView
-        android:layout_above="@+id/btn_ok"
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/hlv_style_select_body"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:choiceMode="singleChoice">
-
-    </it.sephiroth.android.library.widget.HListView>
+        android:layout_above="@+id/btn_ok"
+        android:choiceMode="singleChoice" />
 
     <Button
         android:id="@+id/btn_ok"
-        style="@style/ButtonConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:text="@string/ok"/>
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/btn_common"
+        android:text="@string/ok"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
 
 </RelativeLayout>
