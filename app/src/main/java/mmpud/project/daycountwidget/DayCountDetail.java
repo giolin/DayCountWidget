@@ -37,7 +37,7 @@ public class DayCountDetail extends Activity {
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.btn_detail_edit) {
-                // Click to configure the widget
+                // click to configure the widget
                 Intent intent = new Intent(DayCountDetail.this, DayCountConfigure.class);
                 intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -53,7 +53,7 @@ public class DayCountDetail extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.day_count_detail_dialog);
 
-        // Get the widget id from the intent. If is it new created Android will put the id
+        // get the widget id from the intent. If is it new created Android will put the id
         // in the intent with key AppWidgetManager.EXTRA_APPWIDGET_ID
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -83,12 +83,12 @@ public class DayCountDetail extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Update the layout info when resuming
+        // update the layout info when resuming
         updateLayoutInfo();
     }
 
     private void updateLayoutInfo() {
-        // Get information: 1. YYYY-MM-DD
+        // get information: 1. YYYY-MM-DD
         //					2. title
         //					3. body style
         // from shared preferences according to the appWidgetId
@@ -100,7 +100,7 @@ public class DayCountDetail extends Activity {
         mTvDetailTargetDay.setText(targetDate);
         mTvDetailTitle.setText(targetTitle);
 
-        // Set the background color of the detail box
+        // set the background color of the detail box
         int resourceIdStyle = getResources().getIdentifier(bodyStyle + "_config",
                 "drawable", "mmpud.project.daycountwidget");
         Bitmap bitmapBg = BitmapFactory.decodeResource(getResources(), resourceIdStyle);
@@ -108,7 +108,7 @@ public class DayCountDetail extends Activity {
         int pixel = onePixelBitmap.getPixel(0,0);
         mLlDetailbox.setBackgroundColor(pixel);
 
-        // Evaluate the day difference
+        // evaluate the day difference
         Calendar calToday = Calendar.getInstance();
         Calendar calTarget = Calendar.getInstance();
 

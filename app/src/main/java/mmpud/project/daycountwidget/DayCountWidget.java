@@ -23,7 +23,7 @@ public class DayCountWidget extends AppWidgetProvider {
 
     private static final int ALARM_ID = 0;
 
-    // Called when new widget is created
+    // called when new widget is created
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
@@ -38,7 +38,7 @@ public class DayCountWidget extends AppWidgetProvider {
         }
     }
 
-    // The midnight alarm will call this method with a WIDGET_UPDATE_ALL intent
+    // the midnight alarm will call this method with a WIDGET_UPDATE_ALL intent
     // Change Language will also call this method with a WIDGET_UPDATE_ALL intent
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -59,10 +59,10 @@ public class DayCountWidget extends AppWidgetProvider {
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
-        // Start the alarm when the first widget is added
-        // One day in milliseconds
+        // start the alarm when the first widget is added
+        // one day in milliseconds
         int INTERVAL_MILLIS = 1000 * 60 * 60 * 24;
-        // Set the calendar to midnight on the next day
+        // set the calendar to midnight on the next day
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.SECOND, 0);
@@ -96,7 +96,7 @@ public class DayCountWidget extends AppWidgetProvider {
 
     @Override
     public void onDisabled(Context context) {
-        // Delete the alarm
+        // delete the alarm
         Intent alarmIntent = new Intent(Utils.WIDGET_UPDATE_ALL);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, alarmIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT);
@@ -107,7 +107,7 @@ public class DayCountWidget extends AppWidgetProvider {
     }
 
     public static RemoteViews buildRemoteViews(Context context, int mAppWidgetId) {
-        // Get information: 1. YYYY/MM/DD
+        // get information: 1. YYYY/MM/DD
         //					2. title
         //					3. header and body style
         // from shared preferences according to the appWidgetId
@@ -117,7 +117,7 @@ public class DayCountWidget extends AppWidgetProvider {
         String styleHeader = prefs.getString(Utils.KEY_STYLE_HEADER + mAppWidgetId, "");
         String styleBody = prefs.getString(Utils.KEY_STYLE_BODY + mAppWidgetId, "");
 
-        // Get the day difference
+        // get the day difference
         Calendar calToday = Calendar.getInstance();
         Calendar calTarget = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -131,7 +131,7 @@ public class DayCountWidget extends AppWidgetProvider {
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
-        // Set up the style
+        // set up the style
         int resourceIdStyleHeader = context.getResources().getIdentifier(styleHeader,
                 "drawable", "mmpud.project.daycountwidget");
 
@@ -144,7 +144,7 @@ public class DayCountWidget extends AppWidgetProvider {
 
         views.setTextViewText(R.id.widget_title, title);
 
-        // Adjust the digits' textSize according to the number of digits
+        // adjust the digits' textSize according to the number of digits
         float textSize = Utils.textSizeGenerator(diffDays);
         views.setFloat(R.id.widget_diffdays, "setTextSize", textSize);
 
@@ -163,12 +163,12 @@ public class DayCountWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.widget_diffdays, Integer.toString(diffDays));
         }
 
-        // Create intent for clicking on the widget for detail
+        // create intent for clicking on the widget for detail
         Intent intent = new Intent(context, DayCountDetail.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
-        // No request code and no flags
+        // no request code and no flags
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.widget, pendingIntent);
 

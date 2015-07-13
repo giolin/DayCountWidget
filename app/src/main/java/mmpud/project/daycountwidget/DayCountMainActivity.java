@@ -69,15 +69,15 @@ public class DayCountMainActivity extends AppCompatActivity
 
     private void updateAdapter() {
         mAdapter.clear();
-        // Get all available day count widget ids
+        // get all available day count widget ids
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         ComponentName thisAppWidget = new ComponentName(this, DayCountWidget.class);
 
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
-        // Add all the current day counter widget info to the list
+        // add all the current day counter widget info to the list
         for (int appWidgetId : appWidgetIds) {
             Timber.d("appWidgetId: " + appWidgetId);
-            // Get information: 1. YYYY-MM-DD
+            // get information: 1. YYYY-MM-DD
             //					2. title
             //					3. body style
             // from shared preferences according to the appWidgetId

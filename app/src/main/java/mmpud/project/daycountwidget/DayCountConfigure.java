@@ -75,7 +75,7 @@ public class DayCountConfigure extends Activity {
                 }
                 break;
             case R.id.btn_ok:
-                // Save information: 1. YYYY-MM-DD
+                // save information: 1. YYYY-MM-DD
                 //		    		 2. title
                 //					 3. header and body style
                 // to shared preferences according to the appWidgetId
@@ -107,32 +107,31 @@ public class DayCountConfigure extends Activity {
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setResult(RESULT_CANCELED); // Set the result to CANCELED.
-        // This will cause the widget host to cancel out of the
+        setResult(RESULT_CANCELED); // set the result to CANCELED.
+        // this will cause the widget host to cancel out of the
         // widget placement if they press the back button.
         setContentView(R.layout.day_count_configure_layout);
         ButterKnife.bind(this);
-        // Get the widget id from the intent.
+        // get the widget id from the intent.
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
             mAppWidgetId = extras.getInt(
-                // INVALID_APPWIDGET_ID is 0
                 AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
         Timber.d("mAppWidgetId: " + mAppWidgetId);
-        // If they gave us an intent without the widget id, just bail.
+        // if they gave us an intent without the widget id, just bail.
         if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
         }
 
-        // Instantiate calendars for today
+        // instantiate calendars for today
         Calendar calToday = Calendar.getInstance();
         String strToday = calToday.get(Calendar.YEAR)
             + "-" + (calToday.get(Calendar.MONTH) + 1)
             + "-" + calToday.get(Calendar.DAY_OF_MONTH);
 
-        // Get information: 1. YYYY-MM-DD
+        // get information: 1. YYYY-MM-DD
         //					2. title
         //					3. header and body style
         // from shared preferences according to the appWidgetId
@@ -151,8 +150,8 @@ public class DayCountConfigure extends Activity {
         mTvDate.setOnClickListener(mOnClickListener);
         mBtnOK.setOnClickListener(mOnClickListener);
 
-        // Set current date into datePicker
-        // Set the date picker dialog
+        // set current date into datePicker
+        // set the date picker dialog
         mTvDate.setText(initTargetDate);
         String[] ymd = initTargetDate.split("-");
         mDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -165,7 +164,7 @@ public class DayCountConfigure extends Activity {
         }, Integer.parseInt(ymd[0]), Integer.parseInt(ymd[1]) - 1, Integer.parseInt(ymd[2]));
         setSampleWidgetDayDiff(initTargetDate);
 
-        // Set title and sample widget title
+        // set title and sample widget title
         if (!initTitle.isEmpty()) {
             mEdtTitle.setText(initTitle);
             mTvSampleWidgetHeader.setText(initTitle);
@@ -174,12 +173,12 @@ public class DayCountConfigure extends Activity {
         mEdtTitle.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // Do nothing intended
+                // do nothing intended
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Do nothing intended
+                // do nothing intended
             }
 
             @Override
@@ -188,7 +187,7 @@ public class DayCountConfigure extends Activity {
             }
         });
 
-        // Set the home screen wallpaper to the sample widget
+        // set the home screen wallpaper to the sample widget
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
         final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -197,7 +196,7 @@ public class DayCountConfigure extends Activity {
             mFlSampleWidget.setBackgroundDrawable(wallpaperDrawable);
         }
 
-        // Initialize the header and body style of the sample widget
+        // initialize the header and body style of the sample widget
         int resourceIdStyleHeader = getResources().getIdentifier(mStyleHeader,
             "drawable", "mmpud.project.daycountwidget");
         Drawable dH = getResources().getDrawable(resourceIdStyleHeader);
@@ -207,7 +206,7 @@ public class DayCountConfigure extends Activity {
         Drawable dB = getResources().getDrawable(resourceIdStyleBody);
         mLlSampleWidgetBody.setBackground(dB);
 
-        // Set up the horizontal list for header style selection
+        // set up the horizontal list for header style selection
         Timber.d("set up the horizontal scroll recycler view");
         mHeaderAdapter = new MyAdapter(
             Arrays.asList(getResources().getStringArray(R.array.header_style_list)));
@@ -225,7 +224,7 @@ public class DayCountConfigure extends Activity {
         mHlvSelectHeader.setLayoutManager(new LinearLayoutManager(this,
             LinearLayoutManager.HORIZONTAL, false));
         mHlvSelectHeader.setAdapter(mHeaderAdapter);
-        // Set up the horizontal list for body style selection
+        // set up the horizontal list for body style selection
         mBAdapter = new MyAdapter(
             Arrays.asList(getResources().getStringArray(R.array.body_style_list))
         );
@@ -252,7 +251,7 @@ public class DayCountConfigure extends Activity {
     }
 
     private void setSampleWidgetDayDiff(String strTargetDate) {
-        // Get the day difference
+        // get the day difference
         Calendar calToday = Calendar.getInstance();
         Calendar calTarget = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -263,7 +262,7 @@ public class DayCountConfigure extends Activity {
         }
 
         int diffDays = Utils.daysBetween(calToday, calTarget);
-        // Adjust the digits' textSize according to the number of digits
+        // adjust the digits' textSize according to the number of digits
         float textSize = Utils.textSizeGenerator(diffDays);
         mTvSampleWidgetDiffDays.setTextSize(textSize);
 
