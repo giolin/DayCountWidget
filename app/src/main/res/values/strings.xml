@@ -17,6 +17,13 @@
     <string name="sample_widget_title">event title</string>
     <string name="add_widget_instruction">No Widgets added to the Home Screen. \nGo to Home Screen > Add Widget > select \"Day Counter\" to add the widget.</string>
 
+    <string name="english">English</string>
+    <string name="chinese">繁體中文</string>
+    <string name="chinese_sim">简体中文</string>
+    <string name="japanese">日本語</string>
+    <string name="french">Français</string>
+    <string name="turkish">Türkçe</string>
+
     <plurals name="list_days_since">
         <item quantity="one">%d day</item>
         <item quantity="other">%d days</item>
@@ -37,22 +44,13 @@
         <item quantity="other">%d days left until</item>
     </plurals>
 
-    <string-array name="language_list" translatable="false">
-        <item>English</item>
-        <item>繁體中文</item>
-        <item>简体中文</item>
-        <item>日本語</item>
-        <item>Français</item>
-        <item>Türkçe</item>
-    </string-array>
-
     <string-array name="header_style_list" translatable="false">
         <item>header_black</item>
         <item>header_blue</item>
         <item>header_green</item>
         <item>header_indigo</item>
         <item>header_navy</item>
-        <item>header_orange</item>'
+        <item>header_orange</item>
         <item>header_purple</item>
         <item>header_red</item>
         <item>header_yellow</item>

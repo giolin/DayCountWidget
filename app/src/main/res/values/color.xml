@@ -11,4 +11,24 @@
     <color name="card_view_background">#f9f9f9</color>
     <color name="banner_title_bg">#ffc107</color>
     <color name="banner_description_bg">#ffecb3</color>
+
+    <color name="header_red">#c0392b</color>
+    <color name="header_orange">#d35400</color>
+    <color name="header_yellow">#f39c12</color>
+    <color name="header_green">#16a085</color>
+    <color name="header_blue">#2980b9</color>
+    <color name="header_navy">#2c3e50</color>
+    <color name="header_indigo">#143054</color>
+    <color name="header_purple">#451054</color>
+    <color name="header_black">#1b1f1f</color>
+
+    <color name="body_red">#e74c3c</color>
+    <color name="body_orange">#e67e22</color>
+    <color name="body_yellow">#f1c40f</color>
+    <color name="body_green">#1abc9c</color>
+    <color name="body_blue">#3498db</color>
+    <color name="body_navy">#34495e</color>
+    <color name="body_purple">#7d498c</color>
+    <color name="body_pink">#ff9c8c</color>
+    <color name="body_black">#323839</color>
 </resources>

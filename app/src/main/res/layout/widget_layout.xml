@@ -1,41 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout android:id="@+id/widget"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/widget"
-  	android:layout_width="70dp"
-  	android:layout_height="80dp"
-  	android:focusable="true"
-  	android:background="@drawable/body_black"
-  	android:orientation="vertical" >
+    android:layout_width="@dimen/widget_width"
+    android:layout_height="@dimen/widget_height"
+    android:focusable="true">
 
-  	<TextView
-  	    android:id="@+id/widget_title"
-  	    android:layout_width="match_parent"
-  	    android:layout_height="0dp"
-  	    android:layout_weight="1.2"
-  	    android:gravity="center"
-  	    android:background="@drawable/header_black"
-  	    android:textColor="#FFFFFF"
-  	    android:singleLine="true"
-  	    android:textSize="12sp"
-  	    android:paddingLeft="2dp" />
+    <ImageView
+        android:id="@+id/widget_header_bg"
+        android:layout_width="@dimen/widget_width"
+        android:layout_height="@dimen/widget_header_height"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:id="@+id/widget_body_bg"
+        android:layout_width="@dimen/widget_width"
+        android:layout_height="@dimen/widget_body_height"
+        android:layout_below="@+id/widget_header_bg"
+        android:scaleType="fitXY" />
 
     <TextView
-        android:id="@+id/widget_diffdays"
-		android:layout_width="match_parent"
-		android:layout_height="0dp"
-		android:layout_weight="3"
-		android:gravity="center"
-		android:textColor="#FFFFFF"
-		android:textSize= "36sp" />
+        android:id="@+id/widget_title"
+        android:layout_width="@dimen/widget_width"
+        android:layout_height="@dimen/widget_header_height"
+        android:gravity="center"
+        android:paddingLeft="2dp"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/widget_diff_days"
+        android:layout_width="@dimen/widget_width"
+        android:layout_height="@dimen/widget_content_height"
+        android:layout_below="@+id/widget_title"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="30dp" />
 
     <TextView
         android:id="@+id/widget_since_left"
-		android:layout_width="match_parent"
-		android:layout_height="0dp"
-		android:layout_weight="1.2"
-		android:gravity="center"
-		android:textColor="#FFFFFF"
-		android:textSize= "12sp" />
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/widget_header_height"
+        android:layout_below="@+id/widget_diff_days"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="12sp" />
 
-</LinearLayout>
+</RelativeLayout>
