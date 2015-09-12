@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +28,8 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
@@ -34,9 +37,14 @@ import com.google.common.collect.Lists;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.Months;
+import org.joda.time.Weeks;
+import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 import butterknife.Bind;
@@ -56,13 +64,24 @@ import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 
-public class DayCountConfigure extends AppCompatActivity {
+public class DayCountConfigure extends AppCompatActivity
+    implements RadioGroup.OnCheckedChangeListener {
+
+    @IntDef({COUNT_BY_DAY, COUNT_BY_WEEK, COUNT_BY_MONTH, COUNT_BY_YEAR})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface CountBy {}
+
+    public static final int COUNT_BY_DAY = 0;
+    public static final int COUNT_BY_WEEK = 1;
+    public static final int COUNT_BY_MONTH = 2;
+    public static final int COUNT_BY_YEAR = 3;
 
     private final DateTimeFormatter mDateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     @Bind(R.id.toolbar) Toolbar mToolbar;
     @Bind(R.id.tv_date) TextView mDateText;
     @Bind(R.id.edt_title) EditText mTitleText;
+    @Bind(R.id.radio_group) RadioGroup mRadioGroup;
     @Bind(R.id.preview_window_bg) ImageView mPreviewWindowBg;
     @Bind(R.id.widget_body_bg) ImageView mPreviewWidgetBody;
     @Bind(R.id.widget_title) TextView mPreviewWidgetHeader;
@@ -83,6 +102,7 @@ public class DayCountConfigure extends AppCompatActivity {
     private DatePickerDialog mDatePickerDialog;
     private int mAppWidgetId;
     private long mTimestamp;
+    @CountBy private int mCountBy;
     private String mHeaderStyle;
     private String mBodyStyle;
 
@@ -127,6 +147,7 @@ public class DayCountConfigure extends AppCompatActivity {
                     values.put(DayCountWidget.EVENT_TITLE, mTitleText.getText().toString());
                     values.put(DayCountWidget.EVENT_DESCRIPTION, "");
                     values.put(DayCountWidget.TARGET_DATE, mTimestamp);
+                    values.put(DayCountWidget.COUNT_BY, mCountBy);
                     values.put(DayCountWidget.HEADER_STYLE, mHeaderStyle);
                     values.put(DayCountWidget.BODY_STYLE, mBodyStyle);
                     SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -166,11 +187,14 @@ public class DayCountConfigure extends AppCompatActivity {
             mHeaderStyle = cursor.getString(cursor.getColumnIndexOrThrow(DayCountWidget
                 .HEADER_STYLE));
             mBodyStyle = cursor.getString(cursor.getColumnIndexOrThrow(DayCountWidget.BODY_STYLE));
+            //noinspection ResourceType
+            mCountBy = cursor.getInt(cursor.getColumnIndexOrThrow(DayCountWidget.COUNT_BY));
         } else {
             mTimestamp = DateTime.now().getMillis();
             initTitle = "";
             mHeaderStyle = String.valueOf(initHeaderColor);
             mBodyStyle = String.valueOf(initBodyColor);
+            mCountBy = COUNT_BY_DAY;
         }
         cursor.close();
         db.close();
@@ -194,6 +218,10 @@ public class DayCountConfigure extends AppCompatActivity {
                 setSampleWidgetDayDiff(dateTime);
             }
         }, dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
+
+        // set count by radio group
+        mRadioGroup.setOnCheckedChangeListener(this);
+        ((RadioButton) mRadioGroup.getChildAt(mCountBy)).setChecked(true);
 
         // set title and sample widget title
         if (!TextUtils.isEmpty(initTitle)) {
@@ -272,13 +300,43 @@ public class DayCountConfigure extends AppCompatActivity {
         }
     }
 
+    @Override public void onCheckedChanged(RadioGroup group, int checkedId) {
+        int position = group.indexOfChild(group.findViewById(checkedId));
+        Timber.d("checked position %d", position);
+        //noinspection ResourceType
+        mCountBy = position;
+        setSampleWidgetDayDiff(new DateTime(mTimestamp));
+    }
+
     private void setSampleWidgetDayDiff(DateTime targetDate) {
-        int diffDays = Days.daysBetween(DateTime.now().withTimeAtStartOfDay(),
-            targetDate.withTimeAtStartOfDay()).getDays();
-        mPreviewWidgetDiffDays.setText(Integer.toString(Math.abs(diffDays)));
+        int diff;
+        DateTime today = DateTime.now().withTimeAtStartOfDay();
+        targetDate = targetDate.withTimeAtStartOfDay();
+        switch (mCountBy) {
+        case COUNT_BY_DAY: {
+            diff = Days.daysBetween(today, targetDate).getDays();
+            break;
+        }
+        case COUNT_BY_WEEK: {
+            diff = Weeks.weeksBetween(today, targetDate).getWeeks();
+            break;
+        }
+        case COUNT_BY_MONTH: {
+            diff = Months.monthsBetween(today, targetDate).getMonths();
+            break;
+        }
+        case COUNT_BY_YEAR: {
+            diff = Years.yearsBetween(today, targetDate).getYears();
+            break;
+        }
+        default: {
+            diff = Days.daysBetween(today, targetDate).getDays();
+        }
+        }
+        mPreviewWidgetDiffDays.setText(Integer.toString(Math.abs(diff)));
         mPreviewWidgetDiffDays.setTextSize(TypedValue.COMPLEX_UNIT_DIP,
-            Texts.getTextSizeDpByDigits(diffDays));
-        mPreviewSinceLeft.setText(diffDays > 0 ? daysLeft : daysSince);
+            Texts.getTextSizeDpByDigits(diff));
+        mPreviewSinceLeft.setText(diff > 0 ? daysLeft : daysSince);
     }
 
     public static class HeaderColorAdapter extends ClickableRecyclerAdapter<ColorViewHolder> {

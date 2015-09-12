@@ -20,12 +20,19 @@ import android.widget.RemoteViews;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.Months;
+import org.joda.time.Weeks;
+import org.joda.time.Years;
 
 import mmpud.project.daycountwidget.data.db.DayCountDbHelper;
 import mmpud.project.daycountwidget.util.Texts;
 
 import static mmpud.project.daycountwidget.data.db.DayCountContract.DayCountWidget;
 import static org.joda.time.DateTimeConstants.MILLIS_PER_DAY;
+import static mmpud.project.daycountwidget.DayCountConfigure.COUNT_BY_DAY;
+import static mmpud.project.daycountwidget.DayCountConfigure.COUNT_BY_WEEK;
+import static mmpud.project.daycountwidget.DayCountConfigure.COUNT_BY_MONTH;
+import static mmpud.project.daycountwidget.DayCountConfigure.COUNT_BY_YEAR;
 
 public class DayCountWidgetProvider extends AppWidgetProvider {
 
@@ -120,6 +127,7 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
 
         long targetDateMillis;
         String title;
+        @DayCountConfigure.CountBy int countBy;
         String headerStyle;
         String bodyStyle;
         if (cursor.moveToFirst()) {
@@ -127,6 +135,8 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
                 cursor.getColumnIndexOrThrow(DayCountWidget.TARGET_DATE));
             title = cursor.getString(
                 cursor.getColumnIndexOrThrow(DayCountWidget.EVENT_TITLE));
+            //noinspection ResourceType
+            countBy = cursor.getInt(cursor.getColumnIndexOrThrow(DayCountWidget.COUNT_BY));
             headerStyle = cursor.getString(
                 cursor.getColumnIndexOrThrow(DayCountWidget.HEADER_STYLE));
             bodyStyle = cursor.getString(
@@ -134,15 +144,37 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         } else {
             targetDateMillis = DateTime.now().getMillis();
             title = "";
+            countBy = COUNT_BY_DAY;
             headerStyle = String.valueOf(ContextCompat.getColor(context, R.color.header_black));
             bodyStyle = String.valueOf(ContextCompat.getColor(context, R.color.body_black));
         }
         cursor.close();
         db.close();
 
+        int diff;
+        DateTime today = DateTime.now().withTimeAtStartOfDay();
         DateTime targetDate = new DateTime(targetDateMillis);
-        int diffDays = Days.daysBetween(targetDate.withTimeAtStartOfDay(),
-            DateTime.now().withTimeAtStartOfDay()).getDays();
+        switch (countBy) {
+        case COUNT_BY_DAY: {
+            diff = Days.daysBetween(today, targetDate).getDays();
+            break;
+        }
+        case COUNT_BY_WEEK: {
+            diff = Weeks.weeksBetween(today, targetDate).getWeeks();
+            break;
+        }
+        case COUNT_BY_MONTH: {
+            diff = Months.monthsBetween(today, targetDate).getMonths();
+            break;
+        }
+        case COUNT_BY_YEAR: {
+            diff = Years.yearsBetween(today, targetDate).getYears();
+            break;
+        }
+        default: {
+            diff = Days.daysBetween(today, targetDate).getDays();
+        }
+        }
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
@@ -175,11 +207,11 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         // set view's title
         views.setTextViewText(R.id.widget_title, title);
         // set view's diff days
-        views.setTextViewText(R.id.widget_since_left, diffDays > 0
+        views.setTextViewText(R.id.widget_since_left, diff > 0
             ? context.getString(R.string.days_left) : context.getString(R.string.days_since));
-        views.setTextViewText(R.id.widget_diff_days, Integer.toString(Math.abs(diffDays)));
+        views.setTextViewText(R.id.widget_diff_days, Integer.toString(Math.abs(diff)));
         views.setTextViewTextSize(R.id.widget_diff_days, TypedValue.COMPLEX_UNIT_DIP,
-            Texts.getTextSizeDpByDigits(diffDays));
+            Texts.getTextSizeDpByDigits(diff));
 
         // create intent for clicking on the widget for detail
         Intent intent = new Intent(context, DayCountDetail.class);

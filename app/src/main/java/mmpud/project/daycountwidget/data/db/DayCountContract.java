@@ -17,6 +17,8 @@ public class DayCountContract {
 
         public static final String TARGET_DATE = "td";
 
+        public static final String COUNT_BY = "count_by";
+
         public static final String HEADER_STYLE = "header";
 
         public static final String BODY_STYLE = "body";
