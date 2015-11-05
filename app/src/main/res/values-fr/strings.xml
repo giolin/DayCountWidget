@@ -12,29 +12,95 @@
     <string name="language_settings">paramètres de langue</string>
     <string name="sample_widget_title">nom</string>
     <string name="date">Date</string>
+    <string name="edit_your_day_counter">Modifier Votre Compte à Rebours</string>
+    <string name="select_header_style">Choisir le style d\'en-tête</string>
+    <string name="select_body_style">Choisir le type de carrosserie</string>
 
-    <plurals name="list_days_since">
-        <item quantity="one">%d jour</item>
-        <item quantity="other">%d jours</item>
-    </plurals>
+    <string name="count_day">Jour</string>
+    <string name="count_week">Semaine</string>
+    <string name="count_month">Mois</string>
+    <string name="count_year">Année</string>
 
-    <plurals name="list_days_left">
+    <plurals name="list_day_left">
         <item quantity="one">%d jour restant</item>
         <item quantity="other">%d jours restants</item>
     </plurals>
 
-    <plurals name="detail_days_since">
-        <item quantity="one">%d jour depuis</item>
-        <item quantity="other">%d jours depuis</item>
+    <plurals name="list_day_since">
+        <item quantity="one">%d jour</item>
+        <item quantity="other">%d jours</item>
     </plurals>
 
-    <plurals name="detail_days_left">
-        <item quantity="one">%d jour restant jusqu\'à</item>
-        <item quantity="other">%d jours restants jusqu\'à</item>
+    <plurals name="list_week_left">
+        <item quantity="one">%d semaine restante</item>
+        <item quantity="other">%d semaines restantes</item>
     </plurals>
-    <string name="edit_your_day_counter">Modifier Votre Compte à Rebours</string>
-    <string name="select_body_style">Choisir le type de carrosserie</string>
-    <string name="select_header_style">Choisir le style d\'en-tête</string>
+
+    <plurals name="list_week_since">
+        <item quantity="one">%d semaine</item>
+        <item quantity="other">%d semaines</item>
+    </plurals>
+
+    <plurals name="list_month_left">
+        <item quantity="one">%d mois restant</item>
+        <item quantity="other">%d mois restants</item>
+    </plurals>
+
+    <plurals name="list_month_since">
+        <item quantity="one">%d mois</item>
+        <item quantity="other">%d mois</item>
+    </plurals>
+
+    <plurals name="list_year_left">
+        <item quantity="one">%d année restante</item>
+        <item quantity="other">%d années restantes</item>
+    </plurals>
+
+    <plurals name="list_year_since">
+        <item quantity="one">%d année</item>
+        <item quantity="other">%d années</item>
+    </plurals>
+
+    <plurals name="widget_day_left">
+        <item quantity="one">%d\njour restant</item>
+        <item quantity="other">%d\njours restants</item>
+    </plurals>
+
+    <plurals name="widget_day_since">
+        <item quantity="one">%d\njour</item>
+        <item quantity="other">%d\njours</item>
+    </plurals>
+
+    <plurals name="widget_week_left">
+        <item quantity="one">%d\nsemaine restante</item>
+        <item quantity="other">%d\nsemaines restantes</item>
+    </plurals>
+
+    <plurals name="widget_week_since">
+        <item quantity="one">%d\nsemaine</item>
+        <item quantity="other">%d\nsemaines</item>
+    </plurals>
+
+    <plurals name="widget_month_left">
+        <item quantity="one">%d\nmois restant</item>
+        <item quantity="other">%d\nmois restants</item>
+    </plurals>
+
+    <plurals name="widget_month_since">
+        <item quantity="one">%d\nmois</item>
+        <item quantity="other">%d\nmois</item>
+    </plurals>
+
+    <plurals name="widget_year_left">
+        <item quantity="one">%d\nannée restante</item>
+        <item quantity="other">%d\nannées restantes</item>
+    </plurals>
+
+    <plurals name="widget_year_since">
+        <item quantity="one">%d\nannée</item>
+        <item quantity="other">%d\nannées</item>
+    </plurals>
+
     <string name="add_widget_instruction">Aucun Widget ajouté à la page d\'accueil.\nAller à la page d\'accueil > Ajouter un Widget > sélectionner \" Compteur de jours \" pour ajouter le widget .</string>
 
 </resources>

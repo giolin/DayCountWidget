@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.google.common.collect.Lists;
 
 import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -29,10 +28,17 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import mmpud.project.daycountwidget.data.db.DayCountContract;
+import mmpud.project.daycountwidget.data.db.Contract;
 import mmpud.project.daycountwidget.data.db.DayCountDbHelper;
 import mmpud.project.daycountwidget.misc.ClickableRecyclerAdapter;
+import mmpud.project.daycountwidget.util.Dates;
 
+import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_DAY;
+import static mmpud.project.daycountwidget.data.db.Contract.CountBy;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.BODY_STYLE;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.COUNT_BY;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.EVENT_TITLE;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.TARGET_DATE;
 
 public class DayCountMainActivity extends AppCompatActivity
     implements Toolbar.OnMenuItemClickListener {
@@ -53,7 +59,6 @@ public class DayCountMainActivity extends AppCompatActivity
         mList.setHasFixedSize(true);
         mList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mList.setAdapter(mAdapter);
-        mToolbar.setTitle(R.string.app_name);
         mToolbar.inflateMenu(R.menu.day_count_menu);
         mToolbar.setOnMenuItemClickListener(this);
         // query the data, ok we need to use sqlite to query
@@ -78,25 +83,26 @@ public class DayCountMainActivity extends AppCompatActivity
         ComponentName component = new ComponentName(this, DayCountWidgetProvider.class);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(component);
         for (int appWidgetId : appWidgetIds) {
-            Cursor cursor = db.query(DayCountContract.DayCountWidget.TABLE_NAME, null,
-                DayCountContract.DayCountWidget.WIDGET_ID + "=?",
+            Cursor cursor = db.query(Contract.Widget.TABLE_NAME, null,
+                Contract.Widget.WIDGET_ID + "=?",
                 new String[] {String.valueOf(appWidgetId)}, null, null, null);
             long targetDateMillis;
             String title;
             String bodyStyle;
+            @CountBy int countBy;
             if (cursor.moveToFirst()) {
-                targetDateMillis = cursor.getLong(cursor.getColumnIndexOrThrow(DayCountContract
-                    .DayCountWidget.TARGET_DATE));
-                title = cursor.getString(cursor.getColumnIndexOrThrow(DayCountContract.DayCountWidget
-                    .EVENT_TITLE));
-                bodyStyle = cursor.getString(cursor.getColumnIndexOrThrow(DayCountContract
-                    .DayCountWidget.BODY_STYLE));
+                targetDateMillis = cursor.getLong(cursor.getColumnIndexOrThrow(TARGET_DATE));
+                title = cursor.getString(cursor.getColumnIndexOrThrow(EVENT_TITLE));
+                bodyStyle = cursor.getString(cursor.getColumnIndexOrThrow(BODY_STYLE));
+                //noinspection ResourceType
+                countBy = cursor.getInt(cursor.getColumnIndexOrThrow(COUNT_BY));
             } else {
                 targetDateMillis = DateTime.now().getMillis();
                 title = "";
                 bodyStyle = String.valueOf(ContextCompat.getColor(this, R.color.body_black));
+                countBy = COUNT_BY_DAY;
             }
-            mAdapter.add(new Counter(targetDateMillis, title, bodyStyle));
+            mAdapter.add(new Counter(targetDateMillis, title, bodyStyle, countBy));
             cursor.close();
         }
         db.close();
@@ -131,14 +137,6 @@ public class DayCountMainActivity extends AppCompatActivity
             notifyItemInserted(getItemCount() - 1);
         }
 
-        public void addAll(List<Counter> items) {
-            int oldSize = getItemCount();
-            synchronized (mItems) {
-                mItems.addAll(items);
-            }
-            notifyItemRangeInserted(oldSize, items.size());
-        }
-
         public void clear() {
             synchronized (mItems) {
                 mItems.clear();
@@ -169,26 +167,12 @@ public class DayCountMainActivity extends AppCompatActivity
         @Override
         public void onBindViewHolder(DayCounterViewHolder holder, int position) {
             Counter counter = getItem(position);
-
             holder.title.setText(counter.getTitle());
             holder.targetDay.setText(mFormatter.print(counter.getTargetDate()));
-
-            holder.itemView.setBackgroundColor(Integer.parseInt(counter.bodyStyle));
-
-            DateTime targetDate = new DateTime(counter.getTargetDate());
-            int diffDays = Days.daysBetween(DateTime.now().withTimeAtStartOfDay(),
-                targetDate.withTimeAtStartOfDay()).getDays();
-
-            if (diffDays > 0) {
-                String strDaysLeft = mContext.getResources().getQuantityString(
-                    R.plurals.list_days_left, diffDays, diffDays);
-                holder.dayDiff.setText(strDaysLeft);
-            } else {
-                diffDays = -diffDays;
-                String strDaysSince = mContext.getResources().getQuantityString(
-                    R.plurals.list_days_since, diffDays, (int) diffDays);
-                holder.dayDiff.setText(strDaysSince);
-            }
+            holder.itemView.setBackgroundColor(Integer.parseInt(counter.getBodyStyle()));
+            DateTime targetDate = new DateTime(counter.getTargetDate()).withTimeAtStartOfDay();
+            holder.dayDiff.setText(Dates.getDiffDaysString(mContext, counter.getCountBy(),
+                targetDate));
         }
 
     }
@@ -211,11 +195,13 @@ public class DayCountMainActivity extends AppCompatActivity
         private long targetDate;
         private String title;
         private String bodyStyle;
+        @CountBy private int countBy;
 
-        public Counter(long targetDate, String title, String bodyStyle) {
+        public Counter(long targetDate, String title, String bodyStyle, @CountBy int countBy) {
             this.targetDate = targetDate;
             this.title = title;
             this.bodyStyle = bodyStyle;
+            this.countBy = countBy;
         }
 
         public long getTargetDate() {
@@ -228,6 +214,10 @@ public class DayCountMainActivity extends AppCompatActivity
 
         public String getBodyStyle() {
             return bodyStyle;
+        }
+
+        @CountBy public int getCountBy() {
+            return countBy;
         }
 
     }

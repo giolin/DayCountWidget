@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.squareup.phrase.Phrase;
 
-import static mmpud.project.daycountwidget.data.db.DayCountContract.DayCountWidget;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget;
 
 /**
  * Database helper.
@@ -26,18 +26,18 @@ public class DayCountDbHelper extends SQLiteOpenHelper {
         + "{header_style} TEXT,"
         + "{body_style} TEXT"
         + ")")
-        .put("table", DayCountWidget.TABLE_NAME)
-        .put("widget_id", DayCountWidget.WIDGET_ID)
-        .put("title", DayCountWidget.EVENT_TITLE)
-        .put("description", DayCountWidget.EVENT_DESCRIPTION)
-        .put("target_date", DayCountWidget.TARGET_DATE)
-        .put("count_by", DayCountWidget.COUNT_BY)
-        .put("header_style", DayCountWidget.HEADER_STYLE)
-        .put("body_style", DayCountWidget.BODY_STYLE)
+        .put("table", Widget.TABLE_NAME)
+        .put("widget_id", Widget.WIDGET_ID)
+        .put("title", Widget.EVENT_TITLE)
+        .put("description", Widget.EVENT_DESCRIPTION)
+        .put("target_date", Widget.TARGET_DATE)
+        .put("count_by", Widget.COUNT_BY)
+        .put("header_style", Widget.HEADER_STYLE)
+        .put("body_style", Widget.BODY_STYLE)
         .format().toString();
 
     private static final String DELETE_TABLE_WIDGETS =
-        "DROP TABLE IF EXISTS " + DayCountWidget.TABLE_NAME;
+        "DROP TABLE IF EXISTS " + Widget.TABLE_NAME;
 
     public DayCountDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

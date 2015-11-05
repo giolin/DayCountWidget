@@ -9,34 +9,23 @@
     <string name="ok">Tamam</string>
     <string name="what">Gün başlığı</string>
     <string name="edit">Düzenle</string>
-    <!--<string name="detail_days_since">günler</string>-->
-    <!--<string name="detail_days_left">kalan günler</string>-->
     <string name="language_settings">Dil ayarları</string>
     <string name="sample_widget_title">Başlığı</string>
     <string name="date">Tarih</string>
-
-    <plurals name="list_days_since">
-        <item quantity="one">%d günler</item>
-        <item quantity="other">%d günler</item>
-    </plurals>
-
-    <plurals name="list_days_left">
-        <item quantity="one">%d kalan günler</item>
-        <item quantity="other">%d kalan günler</item>
-    </plurals>
-
-    <plurals name="detail_days_since">
-        <item quantity="one">%d günler</item>
-        <item quantity="other">%d günler</item>
-    </plurals>
-
-    <plurals name="detail_days_left">
-        <item quantity="one">%d kalan günler</item>
-        <item quantity="other">%d kalan günler</item>
-    </plurals>
-    <string name="select_body_style">Gövde Biçimini Seç</string>
-    <string name="select_header_style">Başlık Biçimini Seç</string>
     <string name="edit_your_day_counter">Gün Sayacını Düzenle</string>
+    <string name="select_header_style">Başlık Biçimini Seç</string>
+    <string name="select_body_style">Gövde Biçimini Seç</string>
+
+    <plurals name="list_day_since">
+        <item quantity="one">%d günler</item>
+        <item quantity="other">%d günler</item>
+    </plurals>
+
+    <plurals name="list_day_left">
+        <item quantity="one">%d kalan günler</item>
+        <item quantity="other">%d kalan günler</item>
+    </plurals>
+
     <string name="add_widget_instruction">Ana ekrana Widget ekli değil.\nEklemek için: Ana Ekran> Widget Ekle >  Widget\'ı eklemek için \'Gün Sayacı\' nı seç.</string>
 
 </resources>

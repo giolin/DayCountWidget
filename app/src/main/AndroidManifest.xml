@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
     package="mmpud.project.daycountwidget"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:versionCode="6"
-    android:versionName="1.6" >
+    android:versionName="1.6">
 
     <application
         android:name="mmpud.project.daycountwidget.DayCountApplication"
         android:allowBackup="true"
         android:icon="@drawable/widget_preview"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <!--android:allowBackup="false"-->
         <!--android:debuggable="false"-->
 
         <activity
             android:name="mmpud.project.daycountwidget.DayCountMainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <receiver
             android:name=".DayCountWidgetProvider"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -39,7 +39,8 @@
         </receiver>
 
         <activity
-            android:name="mmpud.project.daycountwidget.DayCountConfigure" >
+            android:name="mmpud.project.daycountwidget.DayCountConfigure"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -50,7 +51,8 @@
             android:excludeFromRecents="true" />
 
         <activity
-            android:name="mmpud.project.daycountwidget.LanguageActivity" />
+            android:name="mmpud.project.daycountwidget.LanguageActivity"
+            android:configChanges="locale" />
 
     </application>
 

@@ -11,22 +11,28 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import mmpud.project.daycountwidget.data.db.DayCountContract;
+import mmpud.project.daycountwidget.data.db.Contract;
 import mmpud.project.daycountwidget.data.db.DayCountDbHelper;
+import mmpud.project.daycountwidget.util.Dates;
+
+import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_DAY;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.BODY_STYLE;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.COUNT_BY;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.EVENT_TITLE;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.TARGET_DATE;
 
 public class DayCountDetail extends AppCompatActivity {
 
-    @Bind(R.id.ll_detailbox) LinearLayout mLlDetailbox;
-    @Bind(R.id.tv_detail_diffdays) TextView mTvDetailDiffDays;
-    @Bind(R.id.tv_detail_targetday) TextView mTvDetailTargetDay;
-    @Bind(R.id.tv_detail_title) TextView mTvDetailTitle;
+    @Bind(R.id.ll_detailbox) LinearLayout mDetailBox;
+    @Bind(R.id.tv_detail_diffdays) TextView mDiffDays;
+    @Bind(R.id.tv_detail_targetday) TextView mDate;
+    @Bind(R.id.tv_detail_title) TextView mTitle;
 
     private DayCountDbHelper mDbHelper;
     private int mAppWidgetId;
@@ -65,49 +71,34 @@ public class DayCountDetail extends AppCompatActivity {
             mDbHelper = new DayCountDbHelper(this);
         }
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DayCountContract.DayCountWidget.TABLE_NAME, null,
-            DayCountContract.DayCountWidget.WIDGET_ID + "=?",
+        Cursor cursor = db.query(Contract.Widget.TABLE_NAME, null,
+            Contract.Widget.WIDGET_ID + "=?",
             new String[] {String.valueOf(mAppWidgetId)}, null, null, null);
 
         long targetDateMillis;
         String title;
         String bodyStyle;
+        @Contract.CountBy int countBy;
         if (cursor.moveToFirst()) {
-            targetDateMillis = cursor.getLong(cursor.getColumnIndexOrThrow(DayCountContract
-                .DayCountWidget.TARGET_DATE));
-            title = cursor.getString(cursor.getColumnIndexOrThrow(DayCountContract.DayCountWidget
-                .EVENT_TITLE));
-            bodyStyle = cursor.getString(cursor.getColumnIndexOrThrow(DayCountContract
-                .DayCountWidget.BODY_STYLE));
+            targetDateMillis = cursor.getLong(cursor.getColumnIndexOrThrow(TARGET_DATE));
+            title = cursor.getString(cursor.getColumnIndexOrThrow(EVENT_TITLE));
+            bodyStyle = cursor.getString(cursor.getColumnIndexOrThrow(BODY_STYLE));
+            //noinspection ResourceType
+            countBy = cursor.getInt(cursor.getColumnIndexOrThrow(COUNT_BY));
         } else {
             targetDateMillis = DateTime.now().getMillis();
             title = "";
             bodyStyle = String.valueOf(ContextCompat.getColor(this, R.color.body_black));
+            countBy = COUNT_BY_DAY;
         }
         cursor.close();
         db.close();
-
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-
-        mTvDetailTargetDay.setText(formatter.print(targetDateMillis));
-        mTvDetailTitle.setText(title);
-
-        mLlDetailbox.setBackgroundColor(Integer.parseInt(bodyStyle));
-
-        DateTime targetDate = new DateTime(targetDateMillis);
-        int diffDays = Days.daysBetween(DateTime.now().withTimeAtStartOfDay(),
-            targetDate.withTimeAtStartOfDay()).getDays();
-
-        if (diffDays > 0) {
-            String strDaysLeft = getResources().getQuantityString(R.plurals.detail_days_left,
-                diffDays, diffDays);
-            mTvDetailDiffDays.setText(strDaysLeft);
-        } else {
-            diffDays = -diffDays;
-            String strDaysLeft = getResources().getQuantityString(R.plurals.detail_days_since,
-                diffDays, diffDays);
-            mTvDetailDiffDays.setText(strDaysLeft);
-        }
+        mDate.setText(formatter.print(targetDateMillis));
+        mTitle.setText(title);
+        mDetailBox.setBackgroundColor(Integer.parseInt(bodyStyle));
+        DateTime targetDate = new DateTime(targetDateMillis).withTimeAtStartOfDay();
+        mDiffDays.setText(Dates.getDiffDaysString(this, countBy, targetDate));
     }
 
     @OnClick(R.id.btn_detail_edit) void onEditBtnClicked() {

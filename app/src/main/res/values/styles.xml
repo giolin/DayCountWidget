@@ -2,10 +2,18 @@
 
     <style name="AppTheme" parent="Theme.BaseTheme" />
 
-    <style name="Theme.BaseTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="Theme.BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/app_primary</item>
         <item name="colorPrimaryDark">@color/app_primary_dark</item>
         <item name="colorAccent">@color/app_primary</item>
+        <item name="android:actionOverflowButtonStyle">@style/OverFlow</item>
+        <item name="actionOverflowButtonStyle">@style/OverFlow</item>
+        <item name="android:actionMenuTextColor">@android:color/white</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
+    </style>
+
+    <style name="OverFlow" parent="@android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_overflow</item>
     </style>
 
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/widget"
+<RelativeLayout
+    android:id="@+id/widget"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/widget_width"
     android:layout_height="@dimen/widget_height"
@@ -8,43 +9,32 @@
     <ImageView
         android:id="@+id/widget_header_bg"
         android:layout_width="@dimen/widget_width"
-        android:layout_height="@dimen/widget_header_height"
-        android:scaleType="fitXY" />
+        android:layout_height="@dimen/widget_header_height" />
 
     <ImageView
         android:id="@+id/widget_body_bg"
         android:layout_width="@dimen/widget_width"
         android:layout_height="@dimen/widget_body_height"
-        android:layout_below="@+id/widget_header_bg"
-        android:scaleType="fitXY" />
+        android:layout_below="@+id/widget_header_bg" />
 
     <TextView
         android:id="@+id/widget_title"
         android:layout_width="@dimen/widget_width"
         android:layout_height="@dimen/widget_header_height"
         android:gravity="center"
-        android:paddingLeft="2dp"
+        android:paddingLeft="@dimen/widget_header_padding"
+        android:paddingRight="@dimen/widget_header_padding"
         android:singleLine="true"
         android:textColor="@android:color/white"
-        android:textSize="12sp" />
+        android:textSize="@dimen/widget_header_text_size" />
 
     <TextView
-        android:id="@+id/widget_diff_days"
+        android:id="@+id/widget_content"
         android:layout_width="@dimen/widget_width"
-        android:layout_height="@dimen/widget_content_height"
+        android:layout_height="@dimen/widget_body_height"
         android:layout_below="@+id/widget_title"
         android:gravity="center"
-        android:singleLine="true"
         android:textColor="@android:color/white"
-        android:textSize="30dp" />
-
-    <TextView
-        android:id="@+id/widget_since_left"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/widget_header_height"
-        android:layout_below="@+id/widget_diff_days"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:textSize="12sp" />
+        android:textSize="@dimen/widget_body_text_size" />
 
 </RelativeLayout>

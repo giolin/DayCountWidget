@@ -7,19 +7,101 @@
     <string name="no_data">-</string>
     <string name="enter_title">(Tap here to edit title)</string>
     <string name="ok">OK</string>
-    <string name="date">Date</string>
     <string name="what">What</string>
-    <string name="edit_your_day_counter">Edit Your Day Counter</string>
-    <string name="select_header_style">Select Header Style</string>
-    <string name="select_body_style">Select Body Style</string>
     <string name="edit">Edit</string>
     <string name="language_settings">Language Settings</string>
     <string name="sample_widget_title">event title</string>
+    <string name="date">Date</string>
+    <string name="edit_your_day_counter">Edit Your Day Counter</string>
+    <string name="select_header_style">Select Header Style</string>
+    <string name="select_body_style">Select Body Style</string>
+
+    <string name="count_day">Day</string>
+    <string name="count_week">Week</string>
+    <string name="count_month">Month</string>
+    <string name="count_year">Year</string>
+
+    <plurals name="list_day_left">
+        <item quantity="one">%d day left</item>
+        <item quantity="other">%d days left</item>
+    </plurals>
+
+    <plurals name="list_day_since">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+
+    <plurals name="list_week_left">
+        <item quantity="one">%d week left</item>
+        <item quantity="other">%d weeks left</item>
+    </plurals>
+
+    <plurals name="list_week_since">
+        <item quantity="one">%d week</item>
+        <item quantity="other">%d weeks</item>
+    </plurals>
+
+    <plurals name="list_month_left">
+        <item quantity="one">%d month left</item>
+        <item quantity="other">%d months left</item>
+    </plurals>
+
+    <plurals name="list_month_since">
+        <item quantity="one">%d month</item>
+        <item quantity="other">%d months</item>
+    </plurals>
+
+    <plurals name="list_year_left">
+        <item quantity="one">%d year left</item>
+        <item quantity="other">%d years left</item>
+    </plurals>
+
+    <plurals name="list_year_since">
+        <item quantity="one">%d year</item>
+        <item quantity="other">%d years</item>
+    </plurals>
+
+    <plurals name="widget_day_left">
+        <item quantity="one">%d\nday left</item>
+        <item quantity="other">%d\ndays left</item>
+    </plurals>
+
+    <plurals name="widget_day_since">
+        <item quantity="one">%d\nday</item>
+        <item quantity="other">%d\ndays</item>
+    </plurals>
+
+    <plurals name="widget_week_left">
+        <item quantity="one">%d\nweek left</item>
+        <item quantity="other">%d\nweeks left</item>
+    </plurals>
+
+    <plurals name="widget_week_since">
+        <item quantity="one">%d\nweek</item>
+        <item quantity="other">%d\nweeks</item>
+    </plurals>
+
+    <plurals name="widget_month_left">
+        <item quantity="one">%d\nmonth left</item>
+        <item quantity="other">%d\nmonths left</item>
+    </plurals>
+
+    <plurals name="widget_month_since">
+        <item quantity="one">%d\nmonth</item>
+        <item quantity="other">%d\nmonths</item>
+    </plurals>
+
+    <plurals name="widget_year_left">
+        <item quantity="one">%d\nyear left</item>
+        <item quantity="other">%d\nyears left</item>
+    </plurals>
+
+    <plurals name="widget_year_since">
+        <item quantity="one">%d\nyear</item>
+        <item quantity="other">%d\nyears</item>
+    </plurals>
+
     <string name="add_widget_instruction">No Widgets added to the Home Screen. \nGo to Home Screen > Add Widget > select \"Day Counter\" to add the widget.</string>
-    <string name="day">Day</string>
-    <string name="week">Week</string>
-    <string name="month">Month</string>
-    <string name="year">Year</string>
 
     <string name="english">English</string>
     <string name="chinese">繁體中文</string>
@@ -27,52 +109,5 @@
     <string name="japanese">日本語</string>
     <string name="french">Français</string>
     <string name="turkish">Türkçe</string>
-
-    <plurals name="list_days_since">
-        <item quantity="one">%d day</item>
-        <item quantity="other">%d days</item>
-    </plurals>
-
-    <plurals name="list_days_left">
-        <item quantity="one">%d day left</item>
-        <item quantity="other">%d days left</item>
-    </plurals>
-
-    <plurals name="detail_days_since">
-        <item quantity="one">%d day since</item>
-        <item quantity="other">%d days since</item>
-    </plurals>
-
-    <plurals name="detail_days_left">
-        <item quantity="one">%d day left until</item>
-        <item quantity="other">%d days left until</item>
-    </plurals>
-
-    <string-array name="header_style_list" translatable="false">
-        <item>header_black</item>
-        <item>header_blue</item>
-        <item>header_green</item>
-        <item>header_indigo</item>
-        <item>header_navy</item>
-        <item>header_orange</item>
-        <item>header_purple</item>
-        <item>header_red</item>
-        <item>header_yellow</item>
-    </string-array>
-
-    <string-array name="body_style_list" translatable="false">
-        <item>body_black</item>
-        <item>body_blue</item>
-        <item>body_green</item>
-        <item>body_navy</item>
-        <item>body_orange</item>
-        <item>body_pink</item>
-        <item>body_purple</item>
-        <item>body_red</item>
-        <item>body_yellow</item>
-        <item>body_camouflage</item>
-        <item>body_denin</item>
-        <item>body_wood</item>
-    </string-array>
 
 </resources>

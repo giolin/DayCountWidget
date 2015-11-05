@@ -6,22 +6,19 @@ import android.appwidget.AppWidgetManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.Drawable;
+import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.support.annotation.IntDef;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
+import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +27,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
-import com.google.common.collect.Lists;
+import com.facebook.rebound.SimpleSpringListener;
+import com.facebook.rebound.Spring;
+import com.facebook.rebound.SpringSystem;
+import com.facebook.rebound.SpringUtil;
+import com.larswerkman.holocolorpicker.ColorPicker;
+import com.larswerkman.holocolorpicker.SaturationBar;
+import com.larswerkman.holocolorpicker.ValueBar;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -43,73 +47,75 @@ import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.BindColor;
-import butterknife.BindDimen;
-import butterknife.BindString;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import mmpud.project.daycountwidget.data.db.DayCountContract.DayCountWidget;
+import mmpud.project.daycountwidget.data.db.Contract;
 import mmpud.project.daycountwidget.data.db.DayCountDbHelper;
-import mmpud.project.daycountwidget.misc.ClickableRecyclerAdapter;
-import mmpud.project.daycountwidget.misc.RecyclerViewOnItemClickListener;
+import mmpud.project.daycountwidget.util.Drawables;
 import mmpud.project.daycountwidget.util.Texts;
 import timber.log.Timber;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
-
+import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_DAY;
+import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_MONTH;
+import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_WEEK;
+import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_YEAR;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.BODY_STYLE;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.COUNT_BY;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.EVENT_DESCRIPTION;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.EVENT_TITLE;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.HEADER_STYLE;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.TABLE_NAME;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.TARGET_DATE;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.WIDGET_ID;
 
 public class DayCountConfigure extends AppCompatActivity
-    implements RadioGroup.OnCheckedChangeListener {
-
-    @IntDef({COUNT_BY_DAY, COUNT_BY_WEEK, COUNT_BY_MONTH, COUNT_BY_YEAR})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface CountBy {}
-
-    public static final int COUNT_BY_DAY = 0;
-    public static final int COUNT_BY_WEEK = 1;
-    public static final int COUNT_BY_MONTH = 2;
-    public static final int COUNT_BY_YEAR = 3;
+    implements RadioGroup.OnCheckedChangeListener, Toolbar.OnMenuItemClickListener {
 
     private final DateTimeFormatter mDateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     @Bind(R.id.toolbar) Toolbar mToolbar;
-    @Bind(R.id.tv_date) TextView mDateText;
     @Bind(R.id.edt_title) EditText mTitleText;
+    @Bind(R.id.tv_date) TextView mDateText;
     @Bind(R.id.radio_group) RadioGroup mRadioGroup;
     @Bind(R.id.preview_window_bg) ImageView mPreviewWindowBg;
-    @Bind(R.id.widget_body_bg) ImageView mPreviewWidgetBody;
     @Bind(R.id.widget_title) TextView mPreviewWidgetHeader;
-    @Bind(R.id.widget_diff_days) TextView mPreviewWidgetDiffDays;
-    @Bind(R.id.widget_since_left) TextView mPreviewSinceLeft;
-    @Bind(R.id.hlv_style_select_header) RecyclerView mHeaderStyleList;
-    @Bind(R.id.hlv_style_select_body) RecyclerView mBodyStyleList;
+    @Bind(R.id.widget_content) TextView mPreviewWidgetContent;
+    @Bind(R.id.head10) View mHeaderPanelBtn;
+    @Bind(R.id.body10) View mBodyPanelBtn;
+    @Bind(R.id.color_panel_header) RelativeLayout mHeaderColorPanel;
+    @Bind(R.id.color_panel_body) RelativeLayout mBodyColorPanel;
+    @Bind(R.id.picker1) ColorPicker mHeaderColorPicker;
+    @Bind(R.id.picker2) ColorPicker mBodyColorPicker;
+    @Bind(R.id.vbar1) ValueBar mHeaderVBar;
+    @Bind(R.id.vbar2) ValueBar mBodyVBar;
+    @Bind(R.id.sbar1) SaturationBar mHeaderSBar;
+    @Bind(R.id.sbar2) SaturationBar mBodySBar;
 
-    @BindDimen(R.dimen.widget_radius) int cornerR;
-    @BindColor(R.color.header_black) int initHeaderColor;
-    @BindColor(R.color.body_black) int initBodyColor;
-    @BindString(R.string.days_since) String daysSince;
-    @BindString(R.string.days_left) String daysLeft;
+    @BindColor(R.color.header_green) int initHeaderColor;
+    @BindColor(R.color.body_green) int initBodyColor;
 
     private DayCountDbHelper mDbHelper;
-    private HeaderColorAdapter mHeaderAdapter;
-    private BodyColorAdapter mBodyAdapter;
     private DatePickerDialog mDatePickerDialog;
     private int mAppWidgetId;
     private long mTimestamp;
-    @CountBy private int mCountBy;
+    @Contract.CountBy private int mCountBy;
     private String mHeaderStyle;
     private String mBodyStyle;
+    private Spring mSpring1;
+    private Spring mSpring2;
+
+
+    private int mHeaderColorPanelTransY = -1;
+    private int mBodyColorPanelTransY = -1;
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        // set the result to CANCELED. this will cause the widget host to cancel out of the widget
+        // set result CANCELED. this will cause the widget host to cancel out of the widget
         // placement if they press the back button.
         setResult(RESULT_CANCELED);
         // get widget id from the intent.
@@ -123,112 +129,72 @@ public class DayCountConfigure extends AppCompatActivity
             finish();
             return;
         }
-
         setContentView(R.layout.day_count_configure_layout);
         ButterKnife.bind(this);
-
-        mToolbar.setNavigationIcon(R.drawable.ic_back);
+        // set up the dimens of color panels
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        final int width = size.x;
+        mHeaderColorPanel.post(new Runnable() {
+            @Override public void run() {
+                ViewGroup.LayoutParams params = mHeaderColorPanel.getLayoutParams();
+                params.width = width / 2;
+                mHeaderColorPanel.setLayoutParams(params);
+                mHeaderColorPanelTransY = (int) (mHeaderColorPanel.getHeight() * 1.2);
+                mHeaderColorPanel.setTranslationY(mHeaderColorPanelTransY);
+                mHeaderColorPanel.setVisibility(View.VISIBLE);
+            }
+        });
+        mBodyColorPanel.post(new Runnable() {
+            @Override public void run() {
+                ViewGroup.LayoutParams params = mBodyColorPanel.getLayoutParams();
+                params.width = width / 2;
+                mBodyColorPanel.setLayoutParams(params);
+                mBodyColorPanelTransY = (int) (mBodyColorPanel.getHeight() * 1.2);
+                mBodyColorPanel.setTranslationY(mBodyColorPanelTransY);
+                mBodyColorPanel.setVisibility(View.VISIBLE);
+            }
+        });
+        mToolbar.setNavigationIcon(R.drawable.ic_cross);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 finish();
             }
         });
         mToolbar.inflateMenu(R.menu.configure_menu);
-        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.btn_ok) {
-                    Context context = getApplicationContext();
-                    // save data in database
-                    if (mDbHelper == null) {
-                        mDbHelper = new DayCountDbHelper(DayCountConfigure.this);
-                    }
-                    ContentValues values = new ContentValues();
-                    values.put(DayCountWidget.WIDGET_ID, mAppWidgetId);
-                    values.put(DayCountWidget.EVENT_TITLE, mTitleText.getText().toString());
-                    values.put(DayCountWidget.EVENT_DESCRIPTION, "");
-                    values.put(DayCountWidget.TARGET_DATE, mTimestamp);
-                    values.put(DayCountWidget.COUNT_BY, mCountBy);
-                    values.put(DayCountWidget.HEADER_STYLE, mHeaderStyle);
-                    values.put(DayCountWidget.BODY_STYLE, mBodyStyle);
-                    SQLiteDatabase db = mDbHelper.getWritableDatabase();
-                    db.insertWithOnConflict(DayCountWidget.TABLE_NAME, null, values, SQLiteDatabase
-                        .CONFLICT_REPLACE);
-                    db.close();
-
-                    // push widget update to surface
-                    RemoteViews views = DayCountWidgetProvider.buildRemoteViews(context,
-                        mAppWidgetId);
-                    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-                    appWidgetManager.updateAppWidget(mAppWidgetId, views);
-                    Timber.d("Menu clicked and The widget [" + mAppWidgetId + "] is updated.");
-                    // make sure we pass back the original appWidgetId
-                    Intent resultValue = new Intent();
-                    resultValue.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
-                    setResult(RESULT_OK, resultValue);
-                    finish();
-                    return true;
-                }
-                return false;
-            }
-        });
+        mToolbar.setOnMenuItemClickListener(this);
 
         // query from database
         if (mDbHelper == null) {
             mDbHelper = new DayCountDbHelper(this);
         }
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DayCountWidget.TABLE_NAME, null, DayCountWidget.WIDGET_ID + "=?",
+        Cursor cursor = db.query(TABLE_NAME, null, WIDGET_ID + "=?",
             new String[] {String.valueOf(mAppWidgetId)}, null, null, null);
-
         String initTitle;
         if (cursor.moveToFirst()) {
-            mTimestamp = cursor.getLong(cursor.getColumnIndexOrThrow(DayCountWidget.TARGET_DATE));
-            initTitle = cursor.getString(cursor.getColumnIndexOrThrow(DayCountWidget.EVENT_TITLE));
-            mHeaderStyle = cursor.getString(cursor.getColumnIndexOrThrow(DayCountWidget
-                .HEADER_STYLE));
-            mBodyStyle = cursor.getString(cursor.getColumnIndexOrThrow(DayCountWidget.BODY_STYLE));
+            initTitle = cursor.getString(cursor.getColumnIndexOrThrow(EVENT_TITLE));
+            mTimestamp = cursor.getLong(cursor.getColumnIndexOrThrow(TARGET_DATE));
+            mHeaderStyle = cursor.getString(cursor.getColumnIndexOrThrow(HEADER_STYLE));
+            mBodyStyle = cursor.getString(cursor.getColumnIndexOrThrow(BODY_STYLE));
             //noinspection ResourceType
-            mCountBy = cursor.getInt(cursor.getColumnIndexOrThrow(DayCountWidget.COUNT_BY));
+            mCountBy = cursor.getInt(cursor.getColumnIndexOrThrow(COUNT_BY));
         } else {
-            mTimestamp = DateTime.now().getMillis();
             initTitle = "";
+            mTimestamp = DateTime.now().getMillis();
             mHeaderStyle = String.valueOf(initHeaderColor);
             mBodyStyle = String.valueOf(initBodyColor);
             mCountBy = COUNT_BY_DAY;
         }
         cursor.close();
         db.close();
-
-        // set current date into datePicker
-        // set the date picker dialog
-        mDateText.setText(mDateTimeFormatter.print(mTimestamp));
-
-        DateTime dateTime = new DateTime(mTimestamp);
-        setSampleWidgetDayDiff(dateTime);
-        mDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                DateTime dateTime = new DateTime()
-                    .withYear(year)
-                    .withMonthOfYear(monthOfYear + 1)
-                    .withDayOfMonth(dayOfMonth)
-                    .withTimeAtStartOfDay();
-                mTimestamp = dateTime.getMillis();
-                mDateText.setText(mDateTimeFormatter.print(mTimestamp));
-                setSampleWidgetDayDiff(dateTime);
-            }
-        }, dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
-
-        // set count by radio group
-        mRadioGroup.setOnCheckedChangeListener(this);
-        ((RadioButton) mRadioGroup.getChildAt(mCountBy)).setChecked(true);
-
         // set title and sample widget title
         if (!TextUtils.isEmpty(initTitle)) {
             mTitleText.setText(initTitle);
             mPreviewWidgetHeader.setText(initTitle);
         }
-
+        // make the widget title change with user input
         mTitleText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -245,53 +211,84 @@ public class DayCountConfigure extends AppCompatActivity
                 mPreviewWidgetHeader.setText(mTitleText.getText().toString());
             }
         });
-
+        // set time in the text view
+        mDateText.setText(mDateTimeFormatter.print(mTimestamp));
+        // set sample widget
+        DateTime dateTime = new DateTime(mTimestamp);
+        setSampleWidgetContent(dateTime);
+        // set current date into datePicker
+        mDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                DateTime dateTime = new DateTime()
+                    .withYear(year)
+                    .withMonthOfYear(monthOfYear + 1)
+                    .withDayOfMonth(dayOfMonth)
+                    .withTimeAtStartOfDay();
+                mTimestamp = dateTime.getMillis();
+                mDateText.setText(mDateTimeFormatter.print(mTimestamp));
+                setSampleWidgetContent(dateTime);
+            }
+        }, dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
+        // set radio button
+        mRadioGroup.setOnCheckedChangeListener(this);
+        ((RadioButton) mRadioGroup.getChildAt(mCountBy)).setChecked(true);
         // set home screen wallpaper to the background sample widget
-        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
-        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-        mPreviewWindowBg.setImageDrawable(wallpaperDrawable);
-
+        mPreviewWindowBg.setImageDrawable(WallpaperManager.getInstance(this).getDrawable());
         // initialize header and body color for sample widget
-        GradientDrawable headerDrawable = new GradientDrawable();
-        headerDrawable.setColor(Integer.parseInt(mHeaderStyle));
-        final float[] radii1 = new float[] {cornerR, cornerR, cornerR, cornerR, 0, 0, 0, 0};
-        headerDrawable.setCornerRadii(radii1);
-        mPreviewWidgetHeader.setBackground(headerDrawable);
-        GradientDrawable bodyDrawable = new GradientDrawable();
-        bodyDrawable.setColor(Integer.parseInt(mBodyStyle));
-        final float[] radii2 = new float[] {0, 0, 0, 0, cornerR, cornerR, cornerR, cornerR};
-        bodyDrawable.setCornerRadii(radii2);
-        mPreviewWidgetBody.setBackground(bodyDrawable);
-
-        // set up the horizontal list for header style selection
-        mHeaderAdapter = new HeaderColorAdapter(this);
-        mHeaderAdapter.setOnItemClickListener(new RecyclerViewOnItemClickListener() {
-            @Override
-            public void onItemClick(RecyclerView.Adapter adapter, View view, int position) {
-                ((GradientDrawable) mPreviewWidgetHeader.getBackground())
-                    .setColor(mHeaderAdapter.getItem(position));
-                mHeaderStyle = String.valueOf(mHeaderAdapter.getItem(position));
+        mPreviewWidgetHeader.setBackground(Drawables.getHeaderDrawable(this, mHeaderStyle));
+        mPreviewWidgetContent.setBackground(Drawables.getBodyDrawable(this, mBodyStyle));
+        // initialize the color the open color panel buttons
+        mHeaderPanelBtn.setBackgroundColor(Integer.parseInt(mHeaderStyle));
+        mBodyPanelBtn.setBackgroundColor(Integer.parseInt(mBodyStyle));
+        // set up the color panels
+        mHeaderColorPicker.addValueBar(mHeaderVBar);
+        mHeaderColorPicker.addSaturationBar(mHeaderSBar);
+        mHeaderColorPicker.setShowOldCenterColor(false);
+        mHeaderColorPicker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
+            @Override public void onColorChanged(int color) {
+                ((GradientDrawable) mPreviewWidgetHeader.getBackground()).setColor(color);
+                mHeaderStyle = String.valueOf(color);
             }
         });
-        mHeaderStyleList.setHasFixedSize(true);
-        mHeaderStyleList.setLayoutManager(new LinearLayoutManager(this,
-            LinearLayoutManager.HORIZONTAL, false));
-        mHeaderStyleList.setAdapter(mHeaderAdapter);
-
-        // set up the horizontal list for body style selection
-        mBodyAdapter = new BodyColorAdapter(this);
-        mBodyAdapter.setOnItemClickListener(new RecyclerViewOnItemClickListener() {
-            @Override
-            public void onItemClick(RecyclerView.Adapter adapter, View view, int position) {
-                ((GradientDrawable) mPreviewWidgetBody.getBackground())
-                    .setColor(mBodyAdapter.getItem(position));
-                mBodyStyle = String.valueOf(mBodyAdapter.getItem(position));
+        mBodyColorPicker.addValueBar(mBodyVBar);
+        mBodyColorPicker.addSaturationBar(mBodySBar);
+        mBodyColorPicker.setShowOldCenterColor(false);
+        mBodyColorPicker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
+            @Override public void onColorChanged(int color) {
+                Timber.d("on Color changed %d", color);
+                ((GradientDrawable) mPreviewWidgetContent.getBackground()).setColor(color);
+                mBodyStyle = String.valueOf(color);
             }
         });
-        mBodyStyleList.setHasFixedSize(true);
-        mBodyStyleList.setLayoutManager(new LinearLayoutManager(this,
-            LinearLayoutManager.HORIZONTAL, false));
-        mBodyStyleList.setAdapter(mBodyAdapter);
+        SpringSystem mSpringSystem = SpringSystem.create();
+        mSpring1 = mSpringSystem.createSpring();
+        mSpring2 = mSpringSystem.createSpring();
+        mSpring1.addListener(new SimpleSpringListener() {
+            @Override public void onSpringUpdate(Spring spring) {
+                if (mHeaderColorPanelTransY <= 0) {
+                    return;
+                }
+                float transY = (float) SpringUtil.mapValueFromRangeToRange(spring.getCurrentValue(),
+                    0, 1, mHeaderColorPanelTransY, 0);
+                mHeaderColorPanel.setTranslationY(transY);
+            }
+        });
+        mSpring2.addListener(new SimpleSpringListener() {
+            @Override public void onSpringUpdate(Spring spring) {
+                if (mBodyColorPanelTransY <= 0) {
+                    return;
+                }
+                float transY = (float) SpringUtil.mapValueFromRangeToRange(spring.getCurrentValue(),
+                    0, 1, mBodyColorPanelTransY, 0);
+                mBodyColorPanel.setTranslationY(transY);
+            }
+        });
+    }
+
+    @Override protected void onPause() {
+        super.onPause();
+        finish();
     }
 
     @OnClick(R.id.tv_date) void showDatePicker() {
@@ -300,133 +297,125 @@ public class DayCountConfigure extends AppCompatActivity
         }
     }
 
-    @Override public void onCheckedChanged(RadioGroup group, int checkedId) {
-        int position = group.indexOfChild(group.findViewById(checkedId));
-        Timber.d("checked position %d", position);
-        //noinspection ResourceType
-        mCountBy = position;
-        setSampleWidgetDayDiff(new DateTime(mTimestamp));
+    @OnClick({R.id.head1, R.id.head2, R.id.head3, R.id.head4, R.id.head5, R.id.head6,
+        R.id.head7, R.id.head8, R.id.head9}) void onHeadColorPicked(View view) {
+        int color = ((ColorDrawable) view.getBackground()).getColor();
+        ((GradientDrawable) mPreviewWidgetHeader.getBackground()).setColor(color);
+        mHeaderStyle = String.valueOf(color);
     }
 
-    private void setSampleWidgetDayDiff(DateTime targetDate) {
+    @OnClick({R.id.body1, R.id.body2, R.id.body3, R.id.body4, R.id.body5, R.id.body6,
+        R.id.body7, R.id.body8, R.id.body9}) void onBodyColorPicked(View view) {
+        int color = ((ColorDrawable) view.getBackground()).getColor();
+        ((GradientDrawable) mPreviewWidgetContent.getBackground()).setColor(color);
+        mBodyStyle = String.valueOf(color);
+    }
+
+    @OnClick(R.id.head10) void openColorPanelHeader() {
+        mHeaderColorPicker.setColor(((ColorDrawable) mHeaderPanelBtn.getBackground()).getColor());
+        if (mSpring1 != null) {
+            mSpring1.setEndValue(1);
+        }
+    }
+
+    @OnClick(R.id.close_head) void closeColorPanelHeader() {
+        mHeaderPanelBtn.setBackgroundColor(mHeaderColorPicker.getColor());
+        if (mSpring1 != null) {
+            mSpring1.setEndValue(0);
+        }
+    }
+
+    @OnClick(R.id.body10) public void openColorPanelBody() {
+        mBodyColorPicker.setColor(((ColorDrawable) mBodyPanelBtn.getBackground()).getColor());
+        if (mSpring2 != null) {
+            mSpring2.setEndValue(1);
+        }
+    }
+
+    @OnClick(R.id.close_body) void closeColorPanelBody() {
+        mBodyPanelBtn.setBackgroundColor(mBodyColorPicker.getColor());
+        if (mSpring2 != null) {
+            mSpring2.setEndValue(0);
+        }
+    }
+
+    @Override public void onCheckedChanged(RadioGroup group, int checkedId) {
+        //noinspection ResourceType
+        mCountBy = group.indexOfChild(group.findViewById(checkedId));
+        setSampleWidgetContent(new DateTime(mTimestamp));
+    }
+
+    @Override public boolean onMenuItemClick(MenuItem item) {
+        if (item.getItemId() == R.id.btn_ok) {
+            Context context = getApplicationContext();
+            // save data in database
+            if (mDbHelper == null) {
+                mDbHelper = new DayCountDbHelper(DayCountConfigure.this);
+            }
+            ContentValues values = new ContentValues();
+            values.put(WIDGET_ID, mAppWidgetId);
+            values.put(EVENT_TITLE, mTitleText.getText().toString());
+            values.put(EVENT_DESCRIPTION, "");
+            values.put(TARGET_DATE, mTimestamp);
+            values.put(COUNT_BY, mCountBy);
+            values.put(HEADER_STYLE, mHeaderStyle);
+            values.put(BODY_STYLE, mBodyStyle);
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            db.insertWithOnConflict(TABLE_NAME, null, values, SQLiteDatabase
+                .CONFLICT_REPLACE);
+            db.close();
+            // push widget update to surface
+            RemoteViews views = DayCountWidgetProvider.buildRemoteViews(context, mAppWidgetId);
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            appWidgetManager.updateAppWidget(mAppWidgetId, views);
+            // make sure we pass back the original appWidgetId
+            Intent resultValue = new Intent();
+            resultValue.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
+            setResult(RESULT_OK, resultValue);
+            finish();
+            return true;
+        }
+        return false;
+    }
+
+    private void setSampleWidgetContent(DateTime targetDate) {
         int diff;
         DateTime today = DateTime.now().withTimeAtStartOfDay();
         targetDate = targetDate.withTimeAtStartOfDay();
+        String str;
+        Resources res = getResources();
         switch (mCountBy) {
         case COUNT_BY_DAY: {
             diff = Days.daysBetween(today, targetDate).getDays();
+            str = res.getQuantityString(diff > 0 ? R.plurals.widget_day_left
+                : R.plurals.widget_day_since, diff, Math.abs(diff));
             break;
         }
         case COUNT_BY_WEEK: {
             diff = Weeks.weeksBetween(today, targetDate).getWeeks();
+            str = res.getQuantityString(diff > 0 ? R.plurals.widget_week_left
+                : R.plurals.widget_week_since, diff, Math.abs(diff));
             break;
         }
         case COUNT_BY_MONTH: {
             diff = Months.monthsBetween(today, targetDate).getMonths();
+            str = res.getQuantityString(diff > 0 ? R.plurals.widget_month_left
+                : R.plurals.widget_month_since, diff, Math.abs(diff));
             break;
         }
         case COUNT_BY_YEAR: {
             diff = Years.yearsBetween(today, targetDate).getYears();
+            str = res.getQuantityString(diff > 0 ? R.plurals.widget_year_left
+                : R.plurals.widget_year_since, diff, Math.abs(diff));
             break;
         }
         default: {
             diff = Days.daysBetween(today, targetDate).getDays();
+            str = res.getQuantityString(diff > 0 ? R.plurals.widget_day_left
+                : R.plurals.widget_day_since, diff, Math.abs(diff));
         }
         }
-        mPreviewWidgetDiffDays.setText(Integer.toString(Math.abs(diff)));
-        mPreviewWidgetDiffDays.setTextSize(TypedValue.COMPLEX_UNIT_DIP,
-            Texts.getTextSizeDpByDigits(diff));
-        mPreviewSinceLeft.setText(diff > 0 ? daysLeft : daysSince);
-    }
-
-    public static class HeaderColorAdapter extends ClickableRecyclerAdapter<ColorViewHolder> {
-
-        private final List<Integer> mItems;
-
-        private LayoutInflater mInflater;
-
-        public HeaderColorAdapter(Context context) {
-            this.mItems = Lists.newArrayList(ContextCompat.getColor(context, R.color.header_red),
-                ContextCompat.getColor(context, R.color.header_orange),
-                ContextCompat.getColor(context, R.color.header_yellow),
-                ContextCompat.getColor(context, R.color.header_green),
-                ContextCompat.getColor(context, R.color.header_blue),
-                ContextCompat.getColor(context, R.color.header_indigo),
-                ContextCompat.getColor(context, R.color.header_navy),
-                ContextCompat.getColor(context, R.color.header_purple),
-                ContextCompat.getColor(context, R.color.header_black));
-        }
-
-        public int getItem(int position) {
-            return mItems.get(position);
-        }
-
-        @Override
-        public ColorViewHolder onCreateClickableViewHolder(ViewGroup parent, int viewType) {
-            if (mInflater == null) {
-                mInflater = LayoutInflater.from(parent.getContext());
-            }
-            return new ColorViewHolder(mInflater.inflate(R.layout.style_list_item, parent,
-                false));
-        }
-
-        @Override public void onBindViewHolder(ColorViewHolder holder, int position) {
-            holder.itemView.setBackgroundColor(getItem(position));
-        }
-
-        @Override public int getItemCount() {
-            return mItems.size();
-        }
-
-    }
-
-    public static class BodyColorAdapter extends ClickableRecyclerAdapter<ColorViewHolder> {
-
-        private final List<Integer> mItems;
-
-        private LayoutInflater mInflater;
-
-        public BodyColorAdapter(Context context) {
-            this.mItems = Lists.newArrayList(ContextCompat.getColor(context, R.color.body_red),
-                ContextCompat.getColor(context, R.color.body_orange),
-                ContextCompat.getColor(context, R.color.body_yellow),
-                ContextCompat.getColor(context, R.color.body_green),
-                ContextCompat.getColor(context, R.color.body_blue),
-                ContextCompat.getColor(context, R.color.body_navy),
-                ContextCompat.getColor(context, R.color.body_purple),
-                ContextCompat.getColor(context, R.color.body_pink),
-                ContextCompat.getColor(context, R.color.body_black));
-        }
-
-        public int getItem(int position) {
-            return mItems.get(position);
-        }
-
-        @Override
-        public ColorViewHolder onCreateClickableViewHolder(ViewGroup parent, int viewType) {
-            if (mInflater == null) {
-                mInflater = LayoutInflater.from(parent.getContext());
-            }
-            return new ColorViewHolder(mInflater.inflate(R.layout.style_list_item, parent,
-                false));
-        }
-
-        @Override public void onBindViewHolder(ColorViewHolder holder, int position) {
-            holder.itemView.setBackgroundColor(getItem(position));
-        }
-
-        @Override public int getItemCount() {
-            return mItems.size();
-        }
-
-    }
-
-    public static class ColorViewHolder extends ClickableRecyclerAdapter.ClickableViewHolder {
-
-        public ColorViewHolder(View view) {
-            super(view);
-        }
-
+        mPreviewWidgetContent.setText(Texts.getResizedText(str));
     }
 
 }

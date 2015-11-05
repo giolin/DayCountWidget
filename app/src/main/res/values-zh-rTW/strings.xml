@@ -7,30 +7,84 @@
     <string name="no_data">-</string>
     <string name="enter_title">(點選新增事件名稱)</string>
     <string name="ok">確認</string>
-    <string name="date">日期</string>
     <string name="what">事件</string>
     <string name="edit">編輯</string>
     <string name="language_settings">語言選擇</string>
     <string name="sample_widget_title">事件主題</string>
+    <string name="date">日期</string>
     <string name="edit_your_day_counter">編輯你的日子</string>
     <string name="select_header_style">選擇標題樣式</string>
     <string name="select_body_style">選擇內容樣式</string>
 
-    <plurals name="list_days_since">
-        <item quantity="other">已過 %d 天</item>
-    </plurals>
+    <string name="count_day">天</string>
+    <string name="count_week">週</string>
+    <string name="count_month">月</string>
+    <string name="count_year">年</string>
 
-    <plurals name="list_days_left">
+    <plurals name="list_day_left">
         <item quantity="other">還有 %d 天</item>
     </plurals>
 
-    <plurals name="detail_days_since">
+    <plurals name="list_day_since">
         <item quantity="other">已過 %d 天</item>
     </plurals>
 
-    <plurals name="detail_days_left">
-        <item quantity="other">還有 %d 天</item>
+    <plurals name="list_week_left">
+        <item quantity="other">還有 %d 週</item>
     </plurals>
+
+    <plurals name="list_week_since">
+        <item quantity="other">已過 %d 週</item>
+    </plurals>
+
+    <plurals name="list_month_left">
+        <item quantity="other">還有 %d 個月</item>
+    </plurals>
+
+    <plurals name="list_month_since">
+        <item quantity="other">已過 %d 個月</item>
+    </plurals>
+
+    <plurals name="list_year_left">
+        <item quantity="other">還有 %d 年</item>
+    </plurals>
+
+    <plurals name="list_year_since">
+        <item quantity="other">已過 %d 年</item>
+    </plurals>
+
+    <plurals name="widget_day_left">
+        <item quantity="other">還有\n%d天</item>
+    </plurals>
+
+    <plurals name="widget_day_since">
+        <item quantity="other">已過\n%d天</item>
+    </plurals>
+
+    <plurals name="widget_week_left">
+        <item quantity="other">還有\n%d週</item>
+    </plurals>
+
+    <plurals name="widget_week_since">
+        <item quantity="other">已過\n%d週</item>
+    </plurals>
+
+    <plurals name="widget_month_left">
+        <item quantity="other">還有\n%d月</item>
+    </plurals>
+
+    <plurals name="widget_month_since">
+        <item quantity="other">已過\n%d月</item>
+    </plurals>
+
+    <plurals name="widget_year_left">
+        <item quantity="other">還有\n%d年</item>
+    </plurals>
+
+    <plurals name="widget_year_since">
+        <item quantity="other">已過\n%d年</item>
+    </plurals>
+
     <string name="add_widget_instruction">目前桌面上還沒有任何數日子小工具\n請回到桌面在設定或是在桌面長按，進入新增小工具，就可以找到數日子小工具囉！</string>
 
 </resources>

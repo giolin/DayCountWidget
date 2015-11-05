@@ -15,24 +15,18 @@ import android.graphics.Canvas;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
-import android.util.TypedValue;
 import android.widget.RemoteViews;
 
 import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.Months;
-import org.joda.time.Weeks;
-import org.joda.time.Years;
 
+import mmpud.project.daycountwidget.data.db.Contract;
 import mmpud.project.daycountwidget.data.db.DayCountDbHelper;
-import mmpud.project.daycountwidget.util.Texts;
+import mmpud.project.daycountwidget.util.Dates;
+import mmpud.project.daycountwidget.util.Drawables;
 
-import static mmpud.project.daycountwidget.data.db.DayCountContract.DayCountWidget;
+import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_DAY;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget;
 import static org.joda.time.DateTimeConstants.MILLIS_PER_DAY;
-import static mmpud.project.daycountwidget.DayCountConfigure.COUNT_BY_DAY;
-import static mmpud.project.daycountwidget.DayCountConfigure.COUNT_BY_WEEK;
-import static mmpud.project.daycountwidget.DayCountConfigure.COUNT_BY_MONTH;
-import static mmpud.project.daycountwidget.DayCountConfigure.COUNT_BY_YEAR;
 
 public class DayCountWidgetProvider extends AppWidgetProvider {
 
@@ -103,7 +97,7 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         }
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         for (int appWidgetId : appWidgetIds) {
-            db.delete(DayCountWidget.TABLE_NAME, DayCountWidget.WIDGET_ID + "=?",
+            db.delete(Widget.TABLE_NAME, Widget.WIDGET_ID + "=?",
                 new String[] {String.valueOf(appWidgetId)});
         }
         db.close();
@@ -122,25 +116,25 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
             mDbHelper = new DayCountDbHelper(context);
         }
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DayCountWidget.TABLE_NAME, null, DayCountWidget.WIDGET_ID + "=?",
+        Cursor cursor = db.query(Widget.TABLE_NAME, null, Widget.WIDGET_ID + "=?",
             new String[] {String.valueOf(mAppWidgetId)}, null, null, null);
 
         long targetDateMillis;
         String title;
-        @DayCountConfigure.CountBy int countBy;
+        @Contract.CountBy int countBy;
         String headerStyle;
         String bodyStyle;
         if (cursor.moveToFirst()) {
             targetDateMillis = cursor.getLong(
-                cursor.getColumnIndexOrThrow(DayCountWidget.TARGET_DATE));
+                cursor.getColumnIndexOrThrow(Widget.TARGET_DATE));
             title = cursor.getString(
-                cursor.getColumnIndexOrThrow(DayCountWidget.EVENT_TITLE));
+                cursor.getColumnIndexOrThrow(Widget.EVENT_TITLE));
             //noinspection ResourceType
-            countBy = cursor.getInt(cursor.getColumnIndexOrThrow(DayCountWidget.COUNT_BY));
+            countBy = cursor.getInt(cursor.getColumnIndexOrThrow(Widget.COUNT_BY));
             headerStyle = cursor.getString(
-                cursor.getColumnIndexOrThrow(DayCountWidget.HEADER_STYLE));
+                cursor.getColumnIndexOrThrow(Widget.HEADER_STYLE));
             bodyStyle = cursor.getString(
-                cursor.getColumnIndexOrThrow(DayCountWidget.BODY_STYLE));
+                cursor.getColumnIndexOrThrow(Widget.BODY_STYLE));
         } else {
             targetDateMillis = DateTime.now().getMillis();
             title = "";
@@ -151,54 +145,22 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         cursor.close();
         db.close();
 
-        int diff;
-        DateTime today = DateTime.now().withTimeAtStartOfDay();
-        DateTime targetDate = new DateTime(targetDateMillis);
-        switch (countBy) {
-        case COUNT_BY_DAY: {
-            diff = Days.daysBetween(today, targetDate).getDays();
-            break;
-        }
-        case COUNT_BY_WEEK: {
-            diff = Weeks.weeksBetween(today, targetDate).getWeeks();
-            break;
-        }
-        case COUNT_BY_MONTH: {
-            diff = Months.monthsBetween(today, targetDate).getMonths();
-            break;
-        }
-        case COUNT_BY_YEAR: {
-            diff = Years.yearsBetween(today, targetDate).getYears();
-            break;
-        }
-        default: {
-            diff = Days.daysBetween(today, targetDate).getDays();
-        }
-        }
-
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
         Resources res = context.getResources();
-        int cornerR = res.getDimensionPixelSize(R.dimen.widget_radius);
         int widgetWidth = res.getDimensionPixelSize(R.dimen.widget_width);
         int headerHeight = res.getDimensionPixelSize(R.dimen.widget_header_height);
         int bodyHeight = res.getDimensionPixelSize(R.dimen.widget_body_height);
 
         // set header style
-        GradientDrawable headerDrawable = new GradientDrawable();
-        headerDrawable.setColor(Integer.parseInt(headerStyle));
-        float[] headerRadii = new float[] {cornerR, cornerR, cornerR, cornerR, 0, 0, 0, 0};
-        headerDrawable.setCornerRadii(headerRadii);
+        GradientDrawable headerDrawable = Drawables.getHeaderDrawable(context, headerStyle);
         Bitmap bitmapH = Bitmap.createBitmap(widgetWidth, headerHeight, Bitmap.Config.ARGB_8888);
         Canvas headerCanvas = new Canvas(bitmapH);
         headerDrawable.setBounds(0, 0, headerCanvas.getWidth(), headerCanvas.getHeight());
         headerDrawable.draw(headerCanvas);
         views.setImageViewBitmap(R.id.widget_header_bg, bitmapH);
         // set body style
-        GradientDrawable bodyDrawable = new GradientDrawable();
-        bodyDrawable.setColor(Integer.parseInt(bodyStyle));
-        float[] bodyRadii = new float[] {0, 0, 0, 0, cornerR, cornerR, cornerR, cornerR};
-        bodyDrawable.setCornerRadii(bodyRadii);
+        GradientDrawable bodyDrawable = Drawables.getBodyDrawable(context, bodyStyle);
         Bitmap bitmapB = Bitmap.createBitmap(widgetWidth, bodyHeight, Bitmap.Config.ARGB_8888);
         Canvas bodyCanvas = new Canvas(bitmapB);
         bodyDrawable.setBounds(0, 0, bodyCanvas.getWidth(), bodyCanvas.getHeight());
@@ -206,16 +168,14 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         views.setImageViewBitmap(R.id.widget_body_bg, bitmapB);
         // set view's title
         views.setTextViewText(R.id.widget_title, title);
-        // set view's diff days
-        views.setTextViewText(R.id.widget_since_left, diff > 0
-            ? context.getString(R.string.days_left) : context.getString(R.string.days_since));
-        views.setTextViewText(R.id.widget_diff_days, Integer.toString(Math.abs(diff)));
-        views.setTextViewTextSize(R.id.widget_diff_days, TypedValue.COMPLEX_UNIT_DIP,
-            Texts.getTextSizeDpByDigits(diff));
-
+        // set view's content
+        DateTime targetDate = (new DateTime(targetDateMillis)).withTimeAtStartOfDay();
+        views.setTextViewText(R.id.widget_content,
+            Dates.getWidgetContentSpannable(context, countBy, targetDate));
         // create intent for clicking on the widget for detail
         Intent intent = new Intent(context, DayCountDetail.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
         // no request code and no flags
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);

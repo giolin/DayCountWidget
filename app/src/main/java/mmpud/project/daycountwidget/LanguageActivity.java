@@ -40,13 +40,15 @@ public class LanguageActivity extends AppCompatActivity implements Toolbar.OnMen
 
         Locale current = getResources().getConfiguration().locale;
         int id = R.id.english;
-        if (current.getLanguage().equals("en")) {
+        if (current.equals(Locale.ENGLISH)) {
             id = R.id.english;
-        } else if (current.getLanguage().equals("zh")) {
+        } else if (current.equals(Locale.TRADITIONAL_CHINESE)) {
             id = R.id.chinese;
-        } else if (current.getLanguage().equals("ja")) {
+        } else if (current.equals(Locale.SIMPLIFIED_CHINESE)) {
+            id = R.id.chinese_sim;
+        } else if (current.equals(Locale.JAPANESE)) {
             id = R.id.japanese;
-        } else if (current.getLanguage().equals("fr")) {
+        } else if (current.equals(Locale.FRENCH)) {
             id = R.id.french;
         } else if (current.getLanguage().equals("tr")) {
             id = R.id.turkish;
@@ -64,19 +66,19 @@ public class LanguageActivity extends AppCompatActivity implements Toolbar.OnMen
                 break;
             }
             case R.id.chinese: {
-                config.locale = Locale.TAIWAN;
+                config.locale = Locale.TRADITIONAL_CHINESE;
                 break;
             }
             case R.id.chinese_sim: {
-                config.locale = Locale.CHINA;
+                config.locale = Locale.SIMPLIFIED_CHINESE;
                 break;
             }
             case R.id.japanese: {
-                config.locale = Locale.JAPAN;
+                config.locale = Locale.JAPANESE;
                 break;
             }
             case R.id.french: {
-                config.locale = Locale.FRANCE;
+                config.locale = Locale.FRENCH;
                 break;
             }
             case R.id.turkish: {

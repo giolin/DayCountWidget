@@ -13,24 +13,78 @@
     <string name="sample_widget_title">タイトル</string>
     <string name="date">日付</string>
     <string name="edit_your_day_counter">デイカウンターを編集</string>
-    <string name="select_body_style">ボディスタイル選択</string>
     <string name="select_header_style">ヘッダー選択</string>
+    <string name="select_body_style">ボディスタイル選択</string>
 
-    <plurals name="list_days_since">
-        <item quantity="other">%d 日経ち</item>
-    </plurals>
+    <string name="count_day">日</string>
+    <string name="count_week">週</string>
+    <string name="count_month">月</string>
+    <string name="count_year">年</string>
 
-    <plurals name="list_days_left">
+    <plurals name="list_day_left">
         <item quantity="other">あと %d 日</item>
     </plurals>
 
-    <plurals name="detail_days_since">
+    <plurals name="list_day_since">
         <item quantity="other">%d 日経ち</item>
     </plurals>
 
-    <plurals name="detail_days_left">
-        <item quantity="other">あと %d 日</item>
+    <plurals name="list_week_left">
+        <item quantity="other">あと %d 週間</item>
     </plurals>
+
+    <plurals name="list_week_since">
+        <item quantity="other">%d 週間経ち</item>
+    </plurals>
+
+    <plurals name="list_month_left">
+        <item quantity="other">あと %d ヶ月</item>
+    </plurals>
+
+    <plurals name="list_month_since">
+        <item quantity="other">%d ヶ月経ち</item>
+    </plurals>
+
+    <plurals name="list_year_left">
+        <item quantity="other">あと %d 年</item>
+    </plurals>
+
+    <plurals name="list_year_since">
+        <item quantity="other">%d 年経ち</item>
+    </plurals>
+
+    <plurals name="widget_day_left">
+        <item quantity="other">あと\n%d\n日</item>
+    </plurals>
+
+    <plurals name="widget_day_since">
+        <item quantity="other">%d\n日経ち</item>
+    </plurals>
+
+    <plurals name="widget_week_left">
+        <item quantity="other">あと\n%d\n週間</item>
+    </plurals>
+
+    <plurals name="widget_week_since">
+        <item quantity="other">%d\n週間経ち</item>
+    </plurals>
+
+    <plurals name="widget_month_left">
+        <item quantity="other">あと\n%d\nヶ月</item>
+    </plurals>
+
+    <plurals name="widget_month_since">
+        <item quantity="other">%d\nヶ月経ち</item>
+    </plurals>
+
+    <plurals name="widget_year_left">
+        <item quantity="other">あと\n%d\n年</item>
+    </plurals>
+
+    <plurals name="widget_year_since">
+        <item quantity="other">%d\n年経ち</item>
+    </plurals>
+
     <string name="add_widget_instruction">No Widgets added to the Home Screen. \nGo to Home Screen > Add Widget > select \"Day Counter\" to add the widget.</string>
 
 </resources>

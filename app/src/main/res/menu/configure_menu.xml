@@ -5,7 +5,7 @@
     <item
         android:id="@+id/btn_ok"
         android:title="@android:string/ok"
-        android:icon="@drawable/ic_back"
+        android:icon="@drawable/ic_check"
         app:showAsAction="always" />
 
 </menu>
