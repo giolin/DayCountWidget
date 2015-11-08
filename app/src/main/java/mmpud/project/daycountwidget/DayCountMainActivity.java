@@ -11,9 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -40,10 +38,8 @@ import static mmpud.project.daycountwidget.data.db.Contract.Widget.COUNT_BY;
 import static mmpud.project.daycountwidget.data.db.Contract.Widget.EVENT_TITLE;
 import static mmpud.project.daycountwidget.data.db.Contract.Widget.TARGET_DATE;
 
-public class DayCountMainActivity extends AppCompatActivity
-    implements Toolbar.OnMenuItemClickListener {
+public class DayCountMainActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar) Toolbar mToolbar;
     @Bind(android.R.id.list) RecyclerView mList;
     @Bind(android.R.id.text1) TextView mNoWidgetMsg;
 
@@ -59,8 +55,6 @@ public class DayCountMainActivity extends AppCompatActivity
         mList.setHasFixedSize(true);
         mList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mList.setAdapter(mAdapter);
-        mToolbar.inflateMenu(R.menu.day_count_menu);
-        mToolbar.setOnMenuItemClickListener(this);
         // query the data, ok we need to use sqlite to query
         updateAdapter();
         if (mAdapter.getItemCount() == 0) {
@@ -106,15 +100,6 @@ public class DayCountMainActivity extends AppCompatActivity
             cursor.close();
         }
         db.close();
-    }
-
-    @Override public boolean onMenuItemClick(MenuItem item) {
-        if (item.getItemId() == R.id.language_settings) {
-            Intent intent = new Intent(this, LanguageActivity.class);
-            startActivityForResult(intent, LanguageActivity.LANGUAGE_SELECT_REQUEST_CODE);
-            return true;
-        }
-        return false;
     }
 
     public static class DayCounterAdapter extends ClickableRecyclerAdapter<DayCounterViewHolder> {
