@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/language_settings"
-        android:title="@string/language_settings" />
+        android:id="@+id/licenses"
+        android:title="Open Source Licenses" />
 
 </menu>
