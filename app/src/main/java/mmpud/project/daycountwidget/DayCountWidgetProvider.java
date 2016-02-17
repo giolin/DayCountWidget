@@ -35,7 +35,6 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
 
     private static DayCountDbHelper mDbHelper;
 
-    // called when new widget is created
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         AppWidgetManager manager = AppWidgetManager.getInstance(context);
@@ -45,7 +44,6 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    // midnight alarm will trigger this method with a WIDGET_UPDATE_ALL intent
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
@@ -61,25 +59,21 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    // called when first widget of this kind is added
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
         // start the alarm when the first widget is added
-        // set the calendar to midnight on the next day
         long nextMidnight = DateTime.now()
             .withTimeAtStartOfDay()
             .plusDays(1)
             .getMillis();
-        Intent alarmIntent = new Intent(WIDGET_UPDATE_ALL);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, alarmIntent,
-            PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID,
+            new Intent(WIDGET_UPDATE_ALL), PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         // RTC does not wake the device up
         alarmManager.setRepeating(AlarmManager.RTC, nextMidnight, MILLIS_PER_DAY, pendingIntent);
     }
 
-    // called when last widget is deleted
     @Override
     public void onDisabled(Context context) {
         // delete the alarm
@@ -115,36 +109,39 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         if (mDbHelper == null) {
             mDbHelper = new DayCountDbHelper(context);
         }
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        Cursor cursor = db.query(Widget.TABLE_NAME, null, Widget.WIDGET_ID + "=?",
-            new String[] {String.valueOf(mAppWidgetId)}, null, null, null);
-
         long targetDateMillis;
         String title;
         @Contract.CountBy int countBy;
         String headerStyle;
         String bodyStyle;
-        if (cursor.moveToFirst()) {
-            targetDateMillis = cursor.getLong(
-                cursor.getColumnIndexOrThrow(Widget.TARGET_DATE));
-            title = cursor.getString(
-                cursor.getColumnIndexOrThrow(Widget.EVENT_TITLE));
-            //noinspection ResourceType
-            countBy = cursor.getInt(cursor.getColumnIndexOrThrow(Widget.COUNT_BY));
-            headerStyle = cursor.getString(
-                cursor.getColumnIndexOrThrow(Widget.HEADER_STYLE));
-            bodyStyle = cursor.getString(
-                cursor.getColumnIndexOrThrow(Widget.BODY_STYLE));
-        } else {
-            targetDateMillis = DateTime.now().getMillis();
-            title = "";
-            countBy = COUNT_BY_DAY;
-            headerStyle = String.valueOf(ContextCompat.getColor(context, R.color.header_black));
-            bodyStyle = String.valueOf(ContextCompat.getColor(context, R.color.body_black));
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = db.query(Widget.TABLE_NAME, null, Widget.WIDGET_ID + "=?",
+                new String[] {String.valueOf(mAppWidgetId)}, null, null, null);
+            if (cursor.moveToFirst()) {
+                targetDateMillis = cursor.getLong(
+                    cursor.getColumnIndexOrThrow(Widget.TARGET_DATE));
+                title = cursor.getString(
+                    cursor.getColumnIndexOrThrow(Widget.EVENT_TITLE));
+                //noinspection ResourceType
+                countBy = cursor.getInt(cursor.getColumnIndexOrThrow(Widget.COUNT_BY));
+                headerStyle = cursor.getString(
+                    cursor.getColumnIndexOrThrow(Widget.HEADER_STYLE));
+                bodyStyle = cursor.getString(
+                    cursor.getColumnIndexOrThrow(Widget.BODY_STYLE));
+            } else {
+                targetDateMillis = DateTime.now().getMillis();
+                title = "";
+                countBy = COUNT_BY_DAY;
+                headerStyle = String.valueOf(ContextCompat.getColor(context, R.color.header_black));
+                bodyStyle = String.valueOf(ContextCompat.getColor(context, R.color.body_black));
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
-        cursor.close();
-        db.close();
-
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
         Resources res = context.getResources();

@@ -206,3 +206,6 @@ local.properties
 # tools
 tools/cmd/vaccine/vaccine
 tools/output
+
+# keystore
+.keystore

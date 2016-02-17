@@ -3,7 +3,6 @@ package mmpud.project.daycountwidget.util;
 import android.content.Context;
 import android.content.res.Resources;
 import android.text.Spannable;
-import android.text.TextUtils;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -20,27 +19,6 @@ import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_WEEK;
 import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_YEAR;
 
 public class Dates {
-
-    /**
-     * Transform a date string in to timestamp in milliseconds.
-     *
-     * @param date in the form of yyyy-MM-dd
-     * @return milliseconds starting from 1970. 0 if input is empty.
-     */
-    public static long dateStringToTimestamp(String date) {
-        if (TextUtils.isEmpty(date)) {
-            return 0;
-        }
-        String[] ymd = date.split("-");
-        if (ymd.length < 3) {
-            return 0;
-        }
-        return new DateTime().withYear(Integer.parseInt(ymd[0]))
-            .withMonthOfYear(Integer.parseInt(ymd[1]))
-            .withDayOfMonth(Integer.parseInt(ymd[2]))
-            .withTimeAtStartOfDay()
-            .getMillis();
-    }
 
     /**
      * Get the widget's content.
