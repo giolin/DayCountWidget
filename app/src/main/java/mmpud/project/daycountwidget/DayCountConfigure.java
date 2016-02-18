@@ -11,7 +11,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -53,9 +52,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mmpud.project.daycountwidget.data.db.Contract;
 import mmpud.project.daycountwidget.data.db.DayCountDbHelper;
-import mmpud.project.daycountwidget.util.Drawables;
 import mmpud.project.daycountwidget.util.Texts;
-import timber.log.Timber;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -82,8 +79,10 @@ public class DayCountConfigure extends AppCompatActivity
     @Bind(R.id.tv_date) TextView mDateText;
     @Bind(R.id.radio_group) RadioGroup mRadioGroup;
     @Bind(R.id.preview_window_bg) ImageView mPreviewWindowBg;
-    @Bind(R.id.widget_title) TextView mPreviewWidgetHeader;
-    @Bind(R.id.widget_content) TextView mPreviewWidgetContent;
+    @Bind(R.id.widget_header_bg) ImageView mPreviewWidgetHeaderBg;
+    @Bind(R.id.widget_header) TextView mPreviewWidgetHeader;
+    @Bind(R.id.widget_body_bg) ImageView mPreviewWidgetBodyBg;
+    @Bind(R.id.widget_body) TextView mPreviewWidgetBody;
     @Bind(R.id.head10) View mHeaderPanelBtn;
     @Bind(R.id.body10) View mBodyPanelBtn;
     @Bind(R.id.color_panel_header) RelativeLayout mHeaderColorPanel;
@@ -236,8 +235,8 @@ public class DayCountConfigure extends AppCompatActivity
         // set home screen wallpaper to the background sample widget
         mPreviewWindowBg.setImageDrawable(WallpaperManager.getInstance(this).getDrawable());
         // initialize header and body color for sample widget
-        mPreviewWidgetHeader.setBackground(Drawables.getHeaderDrawable(this, mHeaderStyle));
-        mPreviewWidgetContent.setBackground(Drawables.getBodyDrawable(this, mBodyStyle));
+        mPreviewWidgetHeaderBg.setColorFilter(Integer.valueOf(mHeaderStyle));
+        mPreviewWidgetBodyBg.setColorFilter(Integer.valueOf(mBodyStyle));
         // initialize the color the open color panel buttons
         mHeaderPanelBtn.setBackgroundColor(Integer.parseInt(mHeaderStyle));
         mBodyPanelBtn.setBackgroundColor(Integer.parseInt(mBodyStyle));
@@ -247,7 +246,7 @@ public class DayCountConfigure extends AppCompatActivity
         mHeaderColorPicker.setShowOldCenterColor(false);
         mHeaderColorPicker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
             @Override public void onColorChanged(int color) {
-                ((GradientDrawable) mPreviewWidgetHeader.getBackground()).setColor(color);
+                mPreviewWidgetHeaderBg.setColorFilter(color);
                 mHeaderStyle = String.valueOf(color);
             }
         });
@@ -256,8 +255,7 @@ public class DayCountConfigure extends AppCompatActivity
         mBodyColorPicker.setShowOldCenterColor(false);
         mBodyColorPicker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
             @Override public void onColorChanged(int color) {
-                Timber.d("on Color changed %d", color);
-                ((GradientDrawable) mPreviewWidgetContent.getBackground()).setColor(color);
+                mPreviewWidgetBodyBg.setColorFilter(color);
                 mBodyStyle = String.valueOf(color);
             }
         });
@@ -300,14 +298,14 @@ public class DayCountConfigure extends AppCompatActivity
     @OnClick({R.id.head1, R.id.head2, R.id.head3, R.id.head4, R.id.head5, R.id.head6,
         R.id.head7, R.id.head8, R.id.head9}) void onHeadColorPicked(View view) {
         int color = ((ColorDrawable) view.getBackground()).getColor();
-        ((GradientDrawable) mPreviewWidgetHeader.getBackground()).setColor(color);
+        mPreviewWidgetHeaderBg.setColorFilter(color);
         mHeaderStyle = String.valueOf(color);
     }
 
     @OnClick({R.id.body1, R.id.body2, R.id.body3, R.id.body4, R.id.body5, R.id.body6,
         R.id.body7, R.id.body8, R.id.body9}) void onBodyColorPicked(View view) {
         int color = ((ColorDrawable) view.getBackground()).getColor();
-        ((GradientDrawable) mPreviewWidgetContent.getBackground()).setColor(color);
+        mPreviewWidgetBodyBg.setColorFilter(color);
         mBodyStyle = String.valueOf(color);
     }
 
@@ -415,7 +413,7 @@ public class DayCountConfigure extends AppCompatActivity
                 : R.plurals.widget_day_since, diff, Math.abs(diff));
         }
         }
-        mPreviewWidgetContent.setText(Texts.getResizedText(str));
+        mPreviewWidgetBody.setText(Texts.getResizedText(str));
     }
 
 }

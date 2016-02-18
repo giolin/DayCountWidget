@@ -48,6 +48,7 @@ public class DayCountDbHelper extends SQLiteOpenHelper {
     }
 
     @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // TODO need to do data migration before dropping the table
         db.execSQL(DELETE_TABLE_WIDGETS);
         onCreate(db);
     }
