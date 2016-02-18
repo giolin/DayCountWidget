@@ -7,12 +7,8 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.widget.RemoteViews;
@@ -22,7 +18,6 @@ import org.joda.time.DateTime;
 import mmpud.project.daycountwidget.data.db.Contract;
 import mmpud.project.daycountwidget.data.db.DayCountDbHelper;
 import mmpud.project.daycountwidget.util.Dates;
-import mmpud.project.daycountwidget.util.Drawables;
 
 import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_DAY;
 import static mmpud.project.daycountwidget.data.db.Contract.Widget;
@@ -124,7 +119,7 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
                     cursor.getColumnIndexOrThrow(Widget.TARGET_DATE));
                 title = cursor.getString(
                     cursor.getColumnIndexOrThrow(Widget.EVENT_TITLE));
-                //noinspection ResourceType
+                // noinspection ResourceType
                 countBy = cursor.getInt(cursor.getColumnIndexOrThrow(Widget.COUNT_BY));
                 headerStyle = cursor.getString(
                     cursor.getColumnIndexOrThrow(Widget.HEADER_STYLE));
@@ -143,31 +138,15 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
             }
         }
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-
-        Resources res = context.getResources();
-        int widgetWidth = res.getDimensionPixelSize(R.dimen.widget_width);
-        int headerHeight = res.getDimensionPixelSize(R.dimen.widget_header_height);
-        int bodyHeight = res.getDimensionPixelSize(R.dimen.widget_body_height);
-
         // set header style
-        GradientDrawable headerDrawable = Drawables.getHeaderDrawable(context, headerStyle);
-        Bitmap bitmapH = Bitmap.createBitmap(widgetWidth, headerHeight, Bitmap.Config.ARGB_8888);
-        Canvas headerCanvas = new Canvas(bitmapH);
-        headerDrawable.setBounds(0, 0, headerCanvas.getWidth(), headerCanvas.getHeight());
-        headerDrawable.draw(headerCanvas);
-        views.setImageViewBitmap(R.id.widget_header_bg, bitmapH);
+        views.setInt(R.id.widget_header_bg, "setColorFilter", Integer.parseInt(headerStyle));
         // set body style
-        GradientDrawable bodyDrawable = Drawables.getBodyDrawable(context, bodyStyle);
-        Bitmap bitmapB = Bitmap.createBitmap(widgetWidth, bodyHeight, Bitmap.Config.ARGB_8888);
-        Canvas bodyCanvas = new Canvas(bitmapB);
-        bodyDrawable.setBounds(0, 0, bodyCanvas.getWidth(), bodyCanvas.getHeight());
-        bodyDrawable.draw(bodyCanvas);
-        views.setImageViewBitmap(R.id.widget_body_bg, bitmapB);
+        views.setInt(R.id.widget_body_bg, "setColorFilter", Integer.parseInt(bodyStyle));
         // set view's title
-        views.setTextViewText(R.id.widget_title, title);
+        views.setTextViewText(R.id.widget_header, title);
         // set view's content
         DateTime targetDate = (new DateTime(targetDateMillis)).withTimeAtStartOfDay();
-        views.setTextViewText(R.id.widget_content,
+        views.setTextViewText(R.id.widget_body,
             Dates.getWidgetContentSpannable(context, countBy, targetDate));
         // create intent for clicking on the widget for detail
         Intent intent = new Intent(context, DayCountDetail.class);
@@ -177,7 +156,6 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         // no request code and no flags
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.widget, pendingIntent);
-
         return views;
     }
 
