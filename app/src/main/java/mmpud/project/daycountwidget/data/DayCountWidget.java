@@ -10,7 +10,7 @@ public class DayCountWidget {
     public final int widgetId;
     public final String title;
     public final String description;
-    public final long targetDate;
+    public final long targetDay;
     @Contract.CountBy public final int countBy;
     public final String headerStyle;
     public final String bodyStyle;
@@ -20,7 +20,7 @@ public class DayCountWidget {
         this.widgetId = widgetId;
         this.title = title;
         this.description = description;
-        this.targetDate = targetDate;
+        this.targetDay = targetDate;
         this.countBy = countBy;
         this.headerStyle = headerStyle;
         this.bodyStyle = bodyStyle;

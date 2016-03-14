@@ -21,9 +21,9 @@ import android.widget.TextView;
 
 import com.google.common.collect.Lists;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneOffset;
 
 import java.util.List;
 
@@ -34,6 +34,7 @@ import mmpud.project.daycountwidget.data.db.Contract;
 import mmpud.project.daycountwidget.data.db.DayCountDbHelper;
 import mmpud.project.daycountwidget.misc.ClickableRecyclerAdapter;
 import mmpud.project.daycountwidget.util.Dates;
+import mmpud.project.daycountwidget.util.Times;
 
 import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_DAY;
 import static mmpud.project.daycountwidget.data.db.Contract.Widget.BODY_STYLE;
@@ -104,7 +105,8 @@ public class DayCountMainActivity extends AppCompatActivity {
                 bodyStyle = cursor.getString(cursor.getColumnIndexOrThrow(BODY_STYLE));
                 countBy = cursor.getInt(cursor.getColumnIndexOrThrow(COUNT_BY));
             } else {
-                targetDateMillis = DateTime.now().getMillis();
+                targetDateMillis = LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()
+                    .toEpochMilli();
                 title = "";
                 bodyStyle = String.valueOf(ContextCompat.getColor(this, R.color.body_black));
                 countBy = COUNT_BY_DAY;
@@ -128,7 +130,6 @@ public class DayCountMainActivity extends AppCompatActivity {
 
     public static class DayCounterAdapter extends ClickableRecyclerAdapter<DayCounterViewHolder> {
 
-        private final DateTimeFormatter mFormatter;
         private final List<DayCountWidget> mItems;
         private final Context mContext;
         private LayoutInflater mInflater;
@@ -136,7 +137,6 @@ public class DayCountMainActivity extends AppCompatActivity {
         public DayCounterAdapter(Context context) {
             this.mContext = context;
             this.mItems = Lists.newArrayList();
-            this.mFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
         }
 
         public void add(DayCountWidget item) {
@@ -177,11 +177,10 @@ public class DayCountMainActivity extends AppCompatActivity {
         public void onBindViewHolder(DayCounterViewHolder holder, int position) {
             DayCountWidget counter = getItem(position);
             holder.title.setText(counter.title);
-            holder.targetDay.setText(mFormatter.print(counter.targetDate));
+            LocalDateTime targetDay = Times.getLocalDateTime(counter.targetDay);
+            holder.targetDay.setText(targetDay.format(Times.getDateFormatter()));
             holder.itemView.setBackgroundColor(Integer.parseInt(counter.bodyStyle));
-            DateTime targetDate = new DateTime(counter.targetDate).withTimeAtStartOfDay();
-            holder.dayDiff.setText(Dates.getDiffDaysString(mContext, counter.countBy,
-                targetDate));
+            holder.dayDiff.setText(Dates.getDiffDaysString(mContext, counter.countBy, targetDay));
         }
 
     }

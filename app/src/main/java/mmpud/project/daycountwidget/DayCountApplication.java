@@ -3,7 +3,7 @@ package mmpud.project.daycountwidget;
 import android.app.Application;
 import android.util.Log;
 
-import net.danlew.android.joda.JodaTimeAndroid;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import timber.log.Timber;
 
@@ -17,8 +17,8 @@ public class DayCountApplication extends Application {
         } else {
             Timber.plant(new CrashReportingTree());
         }
-        // init joda time
-        JodaTimeAndroid.init(this);
+        // init AndroidThreeTen
+        AndroidThreeTen.init(this);
     }
 
     /**

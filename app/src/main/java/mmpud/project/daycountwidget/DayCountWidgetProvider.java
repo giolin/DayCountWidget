@@ -13,20 +13,18 @@ import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.widget.RemoteViews;
 
-import org.joda.time.DateTime;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
 
 import mmpud.project.daycountwidget.data.db.Contract;
 import mmpud.project.daycountwidget.data.db.DayCountDbHelper;
 import mmpud.project.daycountwidget.util.Dates;
+import mmpud.project.daycountwidget.util.Times;
 
 import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_DAY;
 import static mmpud.project.daycountwidget.data.db.Contract.Widget;
-import static org.joda.time.DateTimeConstants.MILLIS_PER_DAY;
 
 public class DayCountWidgetProvider extends AppWidgetProvider {
-
-    public static final String WIDGET_UPDATE_ALL = "android.appwidget.action.WIDGET_UPDATE_ALL";
-    private static final int ALARM_ID = 5566;
 
     private static DayCountDbHelper mDbHelper;
 
@@ -43,7 +41,7 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         // when receiving the midnight alarm, update all the widgets
-        if (WIDGET_UPDATE_ALL.equals(intent.getAction())) {
+        if (Times.WIDGET_UPDATE_ALL.equals(intent.getAction())) {
             AppWidgetManager manager = AppWidgetManager.getInstance(context);
             ComponentName component = new ComponentName(context, DayCountWidgetProvider.class);
             int[] appWidgetIds = manager.getAppWidgetIds(component);
@@ -58,23 +56,15 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
     public void onEnabled(Context context) {
         super.onEnabled(context);
         // start the alarm when the first widget is added
-        long nextMidnight = DateTime.now()
-            .withTimeAtStartOfDay()
-            .plusDays(1)
-            .getMillis();
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID,
-            new Intent(WIDGET_UPDATE_ALL), PendingIntent.FLAG_CANCEL_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        // RTC does not wake the device up
-        alarmManager.setRepeating(AlarmManager.RTC, nextMidnight, MILLIS_PER_DAY, pendingIntent);
+        Times.setMidnightAlarm(context);
     }
 
     @Override
     public void onDisabled(Context context) {
         // delete the alarm
-        Intent alarmIntent = new Intent(WIDGET_UPDATE_ALL);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, alarmIntent,
-            PendingIntent.FLAG_CANCEL_CURRENT);
+        Intent alarmIntent = new Intent(Times.WIDGET_UPDATE_ALL);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Times.ALARM_ID,
+            alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
     }
@@ -104,19 +94,19 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         if (mDbHelper == null) {
             mDbHelper = new DayCountDbHelper(context);
         }
-        long targetDateMillis;
         String title;
         @Contract.CountBy int countBy;
         String headerStyle;
         String bodyStyle;
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         Cursor cursor = null;
+        LocalDateTime targetDay;
         try {
             cursor = db.query(Widget.TABLE_NAME, null, Widget.WIDGET_ID + "=?",
                 new String[] {String.valueOf(mAppWidgetId)}, null, null, null);
             if (cursor.moveToFirst()) {
-                targetDateMillis = cursor.getLong(
-                    cursor.getColumnIndexOrThrow(Widget.TARGET_DATE));
+                targetDay = Times.getLocalDateTime(cursor.getLong(cursor
+                    .getColumnIndexOrThrow(Widget.TARGET_DATE)));
                 title = cursor.getString(
                     cursor.getColumnIndexOrThrow(Widget.EVENT_TITLE));
                 // noinspection ResourceType
@@ -126,7 +116,7 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
                 bodyStyle = cursor.getString(
                     cursor.getColumnIndexOrThrow(Widget.BODY_STYLE));
             } else {
-                targetDateMillis = DateTime.now().getMillis();
+                targetDay = LocalDate.now().atStartOfDay();
                 title = "";
                 countBy = COUNT_BY_DAY;
                 headerStyle = String.valueOf(ContextCompat.getColor(context, R.color.header_black));
@@ -145,9 +135,8 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         // set view's title
         views.setTextViewText(R.id.widget_header, title);
         // set view's content
-        DateTime targetDate = (new DateTime(targetDateMillis)).withTimeAtStartOfDay();
         views.setTextViewText(R.id.widget_body,
-            Dates.getWidgetContentSpannable(context, countBy, targetDate));
+            Dates.getWidgetContentSpannable(context, countBy, targetDay));
         // create intent for clicking on the widget for detail
         Intent intent = new Intent(context, DayCountDetail.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);

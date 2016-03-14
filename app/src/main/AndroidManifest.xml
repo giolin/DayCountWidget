@@ -27,9 +27,19 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.WIDGET_UPDATE_ALL" />
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/day_count_widget_provider_info" />
+        </receiver>
+
+        <receiver
+            android:name="mmpud.project.daycountwidget.OnBootCompletedReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </receiver>
 
         <activity

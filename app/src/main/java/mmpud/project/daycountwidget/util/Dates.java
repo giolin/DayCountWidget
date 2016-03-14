@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.text.Spannable;
 
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.Months;
-import org.joda.time.Weeks;
-import org.joda.time.Years;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.Period;
 
 import mmpud.project.daycountwidget.R;
 import mmpud.project.daycountwidget.data.db.Contract;
@@ -25,42 +23,42 @@ public class Dates {
      *
      * @param context
      * @param countBy
-     * @param targetDate
+     * @param targetDay
      * @return
      */
     static public Spannable getWidgetContentSpannable(Context context,
-        @Contract.CountBy int countBy, DateTime targetDate) {
+        @Contract.CountBy int countBy, LocalDateTime targetDay) {
+        Period period = Period.between(LocalDate.now(), targetDay.toLocalDate());
         Resources res = context.getResources();
         int diff;
-        DateTime today = DateTime.now().withTimeAtStartOfDay();
         String str;
         switch (countBy) {
         case COUNT_BY_DAY: {
-            diff = Days.daysBetween(today, targetDate).getDays();
+            diff = period.getDays();
             str = res.getQuantityString(diff > 0 ? R.plurals.widget_day_left
                 : R.plurals.widget_day_since, diff, Math.abs(diff));
             break;
         }
         case COUNT_BY_WEEK: {
-            diff = Weeks.weeksBetween(today, targetDate).getWeeks();
+            diff = period.getDays() / 7;
             str = res.getQuantityString(diff > 0 ? R.plurals.widget_week_left
                 : R.plurals.widget_week_since, diff, Math.abs(diff));
             break;
         }
         case COUNT_BY_MONTH: {
-            diff = Months.monthsBetween(today, targetDate).getMonths();
+            diff = period.getMonths();
             str = res.getQuantityString(diff > 0 ? R.plurals.widget_month_left
                 : R.plurals.widget_month_since, diff, Math.abs(diff));
             break;
         }
         case COUNT_BY_YEAR: {
-            diff = Years.yearsBetween(today, targetDate).getYears();
+            diff = period.getYears();
             str = res.getQuantityString(diff > 0 ? R.plurals.widget_year_left
                 : R.plurals.widget_year_since, diff, Math.abs(diff));
             break;
         }
         default: {
-            diff = Days.daysBetween(today, targetDate).getDays();
+            diff = period.getDays();
             str = res.getQuantityString(diff > 0 ? R.plurals.widget_day_left
                 : R.plurals.widget_day_since, diff, Math.abs(diff));
         }
@@ -73,44 +71,44 @@ public class Dates {
      *
      * @param context
      * @param countBy
-     * @param targetDate
+     * @param targetDay
      * @return
      */
     static public String getDiffDaysString(Context context, @Contract.CountBy int countBy,
-        DateTime targetDate) {
-        DateTime today = DateTime.now().withTimeAtStartOfDay();
-        int diffDays;
+        LocalDateTime targetDay) {
+        Period period = Period.between(LocalDate.now(), targetDay.toLocalDate());
+        int diff;
         String str;
         Resources res = context.getResources();
         switch (countBy) {
         case COUNT_BY_DAY: {
-            diffDays = Days.daysBetween(today, targetDate).getDays();
-            str = res.getQuantityString(diffDays > 0 ? R.plurals.list_day_left
-                : R.plurals.list_day_since, diffDays, Math.abs(diffDays));
+            diff = period.getDays();
+            str = res.getQuantityString(diff > 0 ? R.plurals.list_day_left
+                : R.plurals.list_day_since, diff, Math.abs(diff));
             break;
         }
         case COUNT_BY_WEEK: {
-            diffDays = Weeks.weeksBetween(today, targetDate).getWeeks();
-            str = res.getQuantityString(diffDays > 0 ? R.plurals.list_week_left
-                : R.plurals.list_week_since, diffDays, Math.abs(diffDays));
+            diff = period.getDays() / 7;
+            str = res.getQuantityString(diff > 0 ? R.plurals.list_week_left
+                : R.plurals.list_week_since, diff, Math.abs(diff));
             break;
         }
         case COUNT_BY_MONTH: {
-            diffDays = Months.monthsBetween(today, targetDate).getMonths();
-            str = res.getQuantityString(diffDays > 0 ? R.plurals.list_month_left
-                : R.plurals.list_month_since, diffDays, Math.abs(diffDays));
+            diff = period.getMonths();
+            str = res.getQuantityString(diff > 0 ? R.plurals.list_month_left
+                : R.plurals.list_month_since, diff, Math.abs(diff));
             break;
         }
         case COUNT_BY_YEAR: {
-            diffDays = Years.yearsBetween(today, targetDate).getYears();
-            str = res.getQuantityString(diffDays > 0 ? R.plurals.list_year_left
-                : R.plurals.list_year_since, diffDays, Math.abs(diffDays));
+            diff = period.getYears();
+            str = res.getQuantityString(diff > 0 ? R.plurals.list_year_left
+                : R.plurals.list_year_since, diff, Math.abs(diff));
             break;
         }
         default: {
-            diffDays = Days.daysBetween(today, targetDate).getDays();
-            str = res.getQuantityString(diffDays > 0 ? R.plurals.list_day_left
-                : R.plurals.list_day_since, diffDays, Math.abs(diffDays));
+            diff = period.getDays();
+            str = res.getQuantityString(diff > 0 ? R.plurals.list_day_left
+                : R.plurals.list_day_since, diff, Math.abs(diff));
             break;
         }
         }

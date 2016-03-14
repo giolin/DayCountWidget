@@ -10,9 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -20,6 +19,7 @@ import butterknife.OnClick;
 import mmpud.project.daycountwidget.data.db.Contract;
 import mmpud.project.daycountwidget.data.db.DayCountDbHelper;
 import mmpud.project.daycountwidget.util.Dates;
+import mmpud.project.daycountwidget.util.Times;
 
 import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_DAY;
 import static mmpud.project.daycountwidget.data.db.Contract.Widget.BODY_STYLE;
@@ -79,26 +79,26 @@ public class DayCountDetail extends AppCompatActivity {
         String title;
         String bodyStyle;
         @Contract.CountBy int countBy;
+        LocalDateTime targetDay;
         if (cursor.moveToFirst()) {
-            targetDateMillis = cursor.getLong(cursor.getColumnIndexOrThrow(TARGET_DATE));
+            targetDay = Times.getLocalDateTime(cursor.getLong(cursor
+                .getColumnIndexOrThrow(TARGET_DATE)));
             title = cursor.getString(cursor.getColumnIndexOrThrow(EVENT_TITLE));
             bodyStyle = cursor.getString(cursor.getColumnIndexOrThrow(BODY_STYLE));
             //noinspection ResourceType
             countBy = cursor.getInt(cursor.getColumnIndexOrThrow(COUNT_BY));
         } else {
-            targetDateMillis = DateTime.now().getMillis();
+            targetDay = LocalDate.now().atStartOfDay();
             title = "";
             bodyStyle = String.valueOf(ContextCompat.getColor(this, R.color.body_black));
             countBy = COUNT_BY_DAY;
         }
         cursor.close();
         db.close();
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-        mDate.setText(formatter.print(targetDateMillis));
+        mDate.setText(targetDay.format(Times.getDateFormatter()));
         mTitle.setText(title);
         mDetailBox.setBackgroundColor(Integer.parseInt(bodyStyle));
-        DateTime targetDate = new DateTime(targetDateMillis).withTimeAtStartOfDay();
-        mDiffDays.setText(Dates.getDiffDaysString(this, countBy, targetDate));
+        mDiffDays.setText(Dates.getDiffDaysString(this, countBy, targetDay));
     }
 
     @OnClick(R.id.btn_detail_edit) void onEditBtnClicked() {

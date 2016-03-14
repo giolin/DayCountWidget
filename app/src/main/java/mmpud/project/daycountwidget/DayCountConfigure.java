@@ -38,13 +38,10 @@ import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
 
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.Months;
-import org.joda.time.Weeks;
-import org.joda.time.Years;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.Period;
+import org.threeten.bp.ZoneOffset;
 
 import butterknife.Bind;
 import butterknife.BindColor;
@@ -53,6 +50,7 @@ import butterknife.OnClick;
 import mmpud.project.daycountwidget.data.db.Contract;
 import mmpud.project.daycountwidget.data.db.DayCountDbHelper;
 import mmpud.project.daycountwidget.util.Texts;
+import mmpud.project.daycountwidget.util.Times;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -71,8 +69,6 @@ import static mmpud.project.daycountwidget.data.db.Contract.Widget.WIDGET_ID;
 
 public class DayCountConfigure extends AppCompatActivity
     implements RadioGroup.OnCheckedChangeListener, Toolbar.OnMenuItemClickListener {
-
-    private final DateTimeFormatter mDateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     @Bind(R.id.toolbar) Toolbar mToolbar;
     @Bind(R.id.edt_title) EditText mTitleText;
@@ -181,7 +177,7 @@ public class DayCountConfigure extends AppCompatActivity
             mCountBy = cursor.getInt(cursor.getColumnIndexOrThrow(COUNT_BY));
         } else {
             initTitle = "";
-            mTimestamp = DateTime.now().getMillis();
+            mTimestamp = Times.getStartOfDayMillis();
             mHeaderStyle = String.valueOf(initHeaderColor);
             mBodyStyle = String.valueOf(initBodyColor);
             mCountBy = COUNT_BY_DAY;
@@ -211,24 +207,21 @@ public class DayCountConfigure extends AppCompatActivity
             }
         });
         // set time in the text view
-        mDateText.setText(mDateTimeFormatter.print(mTimestamp));
+        LocalDateTime initDateTime = Times.getLocalDateTime(mTimestamp);
+        mDateText.setText(initDateTime.format(Times.getDateFormatter()));
         // set sample widget
-        DateTime dateTime = new DateTime(mTimestamp);
-        setSampleWidgetContent(dateTime);
+        setSampleWidgetContent(initDateTime);
         // set current date into datePicker
         mDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                DateTime dateTime = new DateTime()
-                    .withYear(year)
-                    .withMonthOfYear(monthOfYear + 1)
-                    .withDayOfMonth(dayOfMonth)
-                    .withTimeAtStartOfDay();
-                mTimestamp = dateTime.getMillis();
-                mDateText.setText(mDateTimeFormatter.print(mTimestamp));
-                setSampleWidgetContent(dateTime);
+                LocalDateTime targetDay = LocalDate.of(year, monthOfYear + 1, dayOfMonth)
+                    .atStartOfDay();
+                mTimestamp = targetDay.atZone(ZoneOffset.UTC).toInstant().toEpochMilli();
+                mDateText.setText(targetDay.format(Times.getDateFormatter()));
+                setSampleWidgetContent(targetDay);
             }
-        }, dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
+        }, initDateTime.getYear(), initDateTime.getMonthValue() - 1, initDateTime.getDayOfMonth());
         // set radio button
         mRadioGroup.setOnCheckedChangeListener(this);
         ((RadioButton) mRadioGroup.getChildAt(mCountBy)).setChecked(true);
@@ -340,7 +333,7 @@ public class DayCountConfigure extends AppCompatActivity
     @Override public void onCheckedChanged(RadioGroup group, int checkedId) {
         //noinspection ResourceType
         mCountBy = group.indexOfChild(group.findViewById(checkedId));
-        setSampleWidgetContent(new DateTime(mTimestamp));
+        setSampleWidgetContent(Times.getLocalDateTime(mTimestamp));
     }
 
     @Override public boolean onMenuItemClick(MenuItem item) {
@@ -376,39 +369,38 @@ public class DayCountConfigure extends AppCompatActivity
         return false;
     }
 
-    private void setSampleWidgetContent(DateTime targetDate) {
+    private void setSampleWidgetContent(LocalDateTime localDateTime) {
         int diff;
-        DateTime today = DateTime.now().withTimeAtStartOfDay();
-        targetDate = targetDate.withTimeAtStartOfDay();
+        Period period = Period.between(LocalDate.now(), localDateTime.toLocalDate());
         String str;
         Resources res = getResources();
         switch (mCountBy) {
         case COUNT_BY_DAY: {
-            diff = Days.daysBetween(today, targetDate).getDays();
+            diff = period.getDays();
             str = res.getQuantityString(diff > 0 ? R.plurals.widget_day_left
                 : R.plurals.widget_day_since, diff, Math.abs(diff));
             break;
         }
         case COUNT_BY_WEEK: {
-            diff = Weeks.weeksBetween(today, targetDate).getWeeks();
+            diff = period.getDays() / 7;
             str = res.getQuantityString(diff > 0 ? R.plurals.widget_week_left
                 : R.plurals.widget_week_since, diff, Math.abs(diff));
             break;
         }
         case COUNT_BY_MONTH: {
-            diff = Months.monthsBetween(today, targetDate).getMonths();
+            diff = period.getMonths();
             str = res.getQuantityString(diff > 0 ? R.plurals.widget_month_left
                 : R.plurals.widget_month_since, diff, Math.abs(diff));
             break;
         }
         case COUNT_BY_YEAR: {
-            diff = Years.yearsBetween(today, targetDate).getYears();
+            diff = period.getYears();
             str = res.getQuantityString(diff > 0 ? R.plurals.widget_year_left
                 : R.plurals.widget_year_since, diff, Math.abs(diff));
             break;
         }
         default: {
-            diff = Days.daysBetween(today, targetDate).getDays();
+            diff = period.getDays();
             str = res.getQuantityString(diff > 0 ? R.plurals.widget_day_left
                 : R.plurals.widget_day_since, diff, Math.abs(diff));
         }
