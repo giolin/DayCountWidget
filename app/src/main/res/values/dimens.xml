@@ -19,5 +19,7 @@
     <dimen name="style_select_item_height">45dp</dimen>
     <dimen name="style_select_item_margin">5dp</dimen>
     <dimen name="gridlayout_padding">10dp</dimen>
-    <dimen name="color_panel_main_padding">30dp</dimen>
+    <dimen name="color_panel_main_padding">8dp</dimen>
+    <dimen name="seek_bar_padding_top">16dp</dimen>
+    <dimen name="seek_bar_left_right_margin">30dp</dimen>
 </resources>

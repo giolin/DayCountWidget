@@ -28,6 +28,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.facebook.rebound.SimpleSpringListener;
@@ -40,11 +41,11 @@ import com.larswerkman.holocolorpicker.ValueBar;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.Period;
 import org.threeten.bp.ZoneOffset;
+import org.threeten.bp.temporal.ChronoUnit;
 
-import butterknife.Bind;
 import butterknife.BindColor;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mmpud.project.daycountwidget.data.db.Contract;
@@ -58,6 +59,7 @@ import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_DAY;
 import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_MONTH;
 import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_WEEK;
 import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_YEAR;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.ALPHA;
 import static mmpud.project.daycountwidget.data.db.Contract.Widget.BODY_STYLE;
 import static mmpud.project.daycountwidget.data.db.Contract.Widget.COUNT_BY;
 import static mmpud.project.daycountwidget.data.db.Contract.Widget.EVENT_DESCRIPTION;
@@ -70,25 +72,27 @@ import static mmpud.project.daycountwidget.data.db.Contract.Widget.WIDGET_ID;
 public class DayCountConfigure extends AppCompatActivity
     implements RadioGroup.OnCheckedChangeListener, Toolbar.OnMenuItemClickListener {
 
-    @Bind(R.id.toolbar) Toolbar mToolbar;
-    @Bind(R.id.edt_title) EditText mTitleText;
-    @Bind(R.id.tv_date) TextView mDateText;
-    @Bind(R.id.radio_group) RadioGroup mRadioGroup;
-    @Bind(R.id.preview_window_bg) ImageView mPreviewWindowBg;
-    @Bind(R.id.widget_header_bg) ImageView mPreviewWidgetHeaderBg;
-    @Bind(R.id.widget_header) TextView mPreviewWidgetHeader;
-    @Bind(R.id.widget_body_bg) ImageView mPreviewWidgetBodyBg;
-    @Bind(R.id.widget_body) TextView mPreviewWidgetBody;
-    @Bind(R.id.head10) View mHeaderPanelBtn;
-    @Bind(R.id.body10) View mBodyPanelBtn;
-    @Bind(R.id.color_panel_header) RelativeLayout mHeaderColorPanel;
-    @Bind(R.id.color_panel_body) RelativeLayout mBodyColorPanel;
-    @Bind(R.id.picker1) ColorPicker mHeaderColorPicker;
-    @Bind(R.id.picker2) ColorPicker mBodyColorPicker;
-    @Bind(R.id.vbar1) ValueBar mHeaderVBar;
-    @Bind(R.id.vbar2) ValueBar mBodyVBar;
-    @Bind(R.id.sbar1) SaturationBar mHeaderSBar;
-    @Bind(R.id.sbar2) SaturationBar mBodySBar;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.edt_title) EditText mTitleText;
+    @BindView(R.id.tv_date) TextView mDateText;
+    @BindView(R.id.radio_group) RadioGroup mRadioGroup;
+    @BindView(R.id.preview_window_bg) ImageView mPreviewWindowBg;
+    @BindView(R.id.widget_header_bg) ImageView mPreviewWidgetHeaderBg;
+    @BindView(R.id.widget_header) TextView mPreviewWidgetHeader;
+    @BindView(R.id.widget_body_bg) ImageView mPreviewWidgetBodyBg;
+    @BindView(R.id.widget_body) TextView mPreviewWidgetBody;
+    @BindView(R.id.head10) View mHeaderPanelBtn;
+    @BindView(R.id.body10) View mBodyPanelBtn;
+    @BindView(R.id.text_trans) TextView mTextTrans;
+    @BindView(R.id.seek_bar_trans) SeekBar mSeekBarTrans;
+    @BindView(R.id.color_panel_header) RelativeLayout mHeaderColorPanel;
+    @BindView(R.id.color_panel_body) RelativeLayout mBodyColorPanel;
+    @BindView(R.id.picker1) ColorPicker mHeaderColorPicker;
+    @BindView(R.id.picker2) ColorPicker mBodyColorPicker;
+    @BindView(R.id.vbar1) ValueBar mHeaderVBar;
+    @BindView(R.id.vbar2) ValueBar mBodyVBar;
+    @BindView(R.id.sbar1) SaturationBar mHeaderSBar;
+    @BindView(R.id.sbar2) SaturationBar mBodySBar;
 
     @BindColor(R.color.header_green) int initHeaderColor;
     @BindColor(R.color.body_green) int initBodyColor;
@@ -168,6 +172,7 @@ public class DayCountConfigure extends AppCompatActivity
         Cursor cursor = db.query(TABLE_NAME, null, WIDGET_ID + "=?",
             new String[] {String.valueOf(mAppWidgetId)}, null, null, null);
         String initTitle;
+        float initAlpha;
         if (cursor.moveToFirst()) {
             initTitle = cursor.getString(cursor.getColumnIndexOrThrow(EVENT_TITLE));
             mTimestamp = cursor.getLong(cursor.getColumnIndexOrThrow(TARGET_DATE));
@@ -175,12 +180,14 @@ public class DayCountConfigure extends AppCompatActivity
             mBodyStyle = cursor.getString(cursor.getColumnIndexOrThrow(BODY_STYLE));
             //noinspection ResourceType
             mCountBy = cursor.getInt(cursor.getColumnIndexOrThrow(COUNT_BY));
+            initAlpha = cursor.getFloat(cursor.getColumnIndexOrThrow(ALPHA));
         } else {
             initTitle = "";
             mTimestamp = Times.getStartOfDayMillis();
             mHeaderStyle = String.valueOf(initHeaderColor);
             mBodyStyle = String.valueOf(initBodyColor);
             mCountBy = COUNT_BY_DAY;
+            initAlpha = 1;
         }
         cursor.close();
         db.close();
@@ -206,6 +213,29 @@ public class DayCountConfigure extends AppCompatActivity
                 mPreviewWidgetHeader.setText(mTitleText.getText().toString());
             }
         });
+        // the seek bar
+        mSeekBarTrans.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                float alpha = (float) (progress / 100.0);
+                mTextTrans.setText(String.valueOf(progress));
+                mPreviewWidgetBodyBg.setAlpha(alpha);
+                mPreviewWidgetHeaderBg.setAlpha(alpha);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // do nothing intended
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // do nothing intended
+            }
+        });
+        int alphaPercent = (int) (initAlpha * 100);
+        mTextTrans.setText(String.valueOf(alphaPercent));
+        mSeekBarTrans.setProgress(alphaPercent);
         // set time in the text view
         LocalDateTime initDateTime = Times.getLocalDateTime(mTimestamp);
         mDateText.setText(initDateTime.format(Times.getDateFormatter()));
@@ -230,6 +260,8 @@ public class DayCountConfigure extends AppCompatActivity
         // initialize header and body color for sample widget
         mPreviewWidgetHeaderBg.setColorFilter(Integer.valueOf(mHeaderStyle));
         mPreviewWidgetBodyBg.setColorFilter(Integer.valueOf(mBodyStyle));
+        mPreviewWidgetBodyBg.setAlpha(initAlpha);
+        mPreviewWidgetHeaderBg.setAlpha(initAlpha);
         // initialize the color the open color panel buttons
         mHeaderPanelBtn.setBackgroundColor(Integer.parseInt(mHeaderStyle));
         mBodyPanelBtn.setBackgroundColor(Integer.parseInt(mBodyStyle));
@@ -343,6 +375,7 @@ public class DayCountConfigure extends AppCompatActivity
             if (mDbHelper == null) {
                 mDbHelper = new DayCountDbHelper(DayCountConfigure.this);
             }
+            float alpha = (float) (mSeekBarTrans.getProgress() / 100.0);
             ContentValues values = new ContentValues();
             values.put(WIDGET_ID, mAppWidgetId);
             values.put(EVENT_TITLE, mTitleText.getText().toString());
@@ -351,6 +384,7 @@ public class DayCountConfigure extends AppCompatActivity
             values.put(COUNT_BY, mCountBy);
             values.put(HEADER_STYLE, mHeaderStyle);
             values.put(BODY_STYLE, mBodyStyle);
+            values.put(ALPHA, alpha);
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
             db.insertWithOnConflict(TABLE_NAME, null, values, SQLiteDatabase
                 .CONFLICT_REPLACE);
@@ -371,36 +405,35 @@ public class DayCountConfigure extends AppCompatActivity
 
     private void setSampleWidgetContent(LocalDateTime localDateTime) {
         int diff;
-        Period period = Period.between(LocalDate.now(), localDateTime.toLocalDate());
         String str;
         Resources res = getResources();
         switch (mCountBy) {
         case COUNT_BY_DAY: {
-            diff = period.getDays();
+            diff = (int) ChronoUnit.DAYS.between(LocalDate.now(), localDateTime.toLocalDate());
             str = res.getQuantityString(diff > 0 ? R.plurals.widget_day_left
                 : R.plurals.widget_day_since, diff, Math.abs(diff));
             break;
         }
         case COUNT_BY_WEEK: {
-            diff = period.getDays() / 7;
+            diff = (int) ChronoUnit.DAYS.between(LocalDate.now(), localDateTime.toLocalDate()) / 7;
             str = res.getQuantityString(diff > 0 ? R.plurals.widget_week_left
                 : R.plurals.widget_week_since, diff, Math.abs(diff));
             break;
         }
         case COUNT_BY_MONTH: {
-            diff = period.getMonths();
+            diff = (int) ChronoUnit.MONTHS.between(LocalDate.now(), localDateTime.toLocalDate());
             str = res.getQuantityString(diff > 0 ? R.plurals.widget_month_left
                 : R.plurals.widget_month_since, diff, Math.abs(diff));
             break;
         }
         case COUNT_BY_YEAR: {
-            diff = period.getYears();
+            diff = (int) ChronoUnit.YEARS.between(LocalDate.now(), localDateTime.toLocalDate());
             str = res.getQuantityString(diff > 0 ? R.plurals.widget_year_left
                 : R.plurals.widget_year_since, diff, Math.abs(diff));
             break;
         }
         default: {
-            diff = period.getDays();
+            diff = (int) ChronoUnit.DAYS.between(LocalDate.now(), localDateTime.toLocalDate());
             str = res.getQuantityString(diff > 0 ? R.plurals.widget_day_left
                 : R.plurals.widget_day_since, diff, Math.abs(diff));
         }

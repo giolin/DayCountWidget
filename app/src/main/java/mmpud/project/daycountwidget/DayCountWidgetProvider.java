@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.widget.RemoteViews;
 
@@ -98,6 +99,7 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         @Contract.CountBy int countBy;
         String headerStyle;
         String bodyStyle;
+        float alpha;
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         Cursor cursor = null;
         LocalDateTime targetDay;
@@ -115,12 +117,15 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
                     cursor.getColumnIndexOrThrow(Widget.HEADER_STYLE));
                 bodyStyle = cursor.getString(
                     cursor.getColumnIndexOrThrow(Widget.BODY_STYLE));
+                // alpha
+                alpha = cursor.getFloat(cursor.getColumnIndexOrThrow(Widget.ALPHA));
             } else {
                 targetDay = LocalDate.now().atStartOfDay();
                 title = "";
                 countBy = COUNT_BY_DAY;
                 headerStyle = String.valueOf(ContextCompat.getColor(context, R.color.header_black));
                 bodyStyle = String.valueOf(ContextCompat.getColor(context, R.color.body_black));
+                alpha = 1;
             }
         } finally {
             if (cursor != null) {
@@ -137,6 +142,15 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         // set view's content
         views.setTextViewText(R.id.widget_body,
             Dates.getWidgetContentSpannable(context, countBy, targetDay));
+        // set view's transparency
+        int alphaPercent = (int) (alpha * 255);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            views.setInt(R.id.widget_header_bg, "setImageAlpha", alphaPercent);
+            views.setInt(R.id.widget_body_bg, "setImageAlpha", alphaPercent);
+        } else {
+            views.setInt(R.id.widget_header_bg, "setAlpha", alphaPercent);
+            views.setInt(R.id.widget_body_bg, "setAlpha", alphaPercent);
+        }
         // create intent for clicking on the widget for detail
         Intent intent = new Intent(context, DayCountDetail.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);

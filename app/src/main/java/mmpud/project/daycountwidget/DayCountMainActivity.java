@@ -27,7 +27,7 @@ import org.threeten.bp.ZoneOffset;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import mmpud.project.daycountwidget.data.DayCountWidget;
 import mmpud.project.daycountwidget.data.db.Contract;
@@ -44,9 +44,9 @@ import static mmpud.project.daycountwidget.data.db.Contract.Widget.TARGET_DATE;
 
 public class DayCountMainActivity extends AppCompatActivity {
 
-    @Bind(android.R.id.list) RecyclerView mList;
-    @Bind(android.R.id.text1) TextView mNoWidgetMsg;
-    @Bind(R.id.toolbar) Toolbar mToolbar;
+    @BindView(android.R.id.list) RecyclerView mList;
+    @BindView(android.R.id.text1) TextView mNoWidgetMsg;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
 
     private DayCounterAdapter mAdapter;
     private DayCountDbHelper mDbHelper;
@@ -187,9 +187,9 @@ public class DayCountMainActivity extends AppCompatActivity {
 
     static class DayCounterViewHolder extends ClickableRecyclerAdapter.ClickableViewHolder {
 
-        @Bind(R.id.list_item_tv_title) TextView title;
-        @Bind(R.id.list_item_tv_target_date) TextView targetDay;
-        @Bind(R.id.list_item_tv_day_diff) TextView dayDiff;
+        @BindView(R.id.list_item_tv_title) TextView title;
+        @BindView(R.id.list_item_tv_target_date) TextView targetDay;
+        @BindView(R.id.list_item_tv_day_diff) TextView dayDiff;
 
         public DayCounterViewHolder(View view) {
             super(view);

@@ -37,6 +37,8 @@ public class Contract {
 
         public static final String BODY_STYLE = "body";
 
+        public static final String ALPHA = "alpha";
+
     }
 
     /**

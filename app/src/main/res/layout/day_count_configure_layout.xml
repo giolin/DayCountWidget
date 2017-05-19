@@ -70,7 +70,7 @@
         android:id="@+id/sample_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/color_panel_main"
+        android:layout_above="@+id/trans_control"
         android:layout_below="@+id/radio_group">
 
         <ImageView
@@ -86,6 +86,30 @@
             android:layout_gravity="center" />
 
     </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/trans_control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/color_panel_main"
+        android:layout_marginEnd="@dimen/seek_bar_left_right_margin"
+        android:layout_marginStart="@dimen/seek_bar_left_right_margin"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/seek_bar_padding_top">
+
+        <TextView
+            android:id="@+id/text_trans"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="100" />
+
+        <SeekBar
+            android:id="@+id/seek_bar_trans"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/color_panel_main"

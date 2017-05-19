@@ -13,7 +13,7 @@ import android.widget.TextView;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mmpud.project.daycountwidget.data.db.Contract;
@@ -29,10 +29,10 @@ import static mmpud.project.daycountwidget.data.db.Contract.Widget.TARGET_DATE;
 
 public class DayCountDetail extends AppCompatActivity {
 
-    @Bind(R.id.ll_detailbox) LinearLayout mDetailBox;
-    @Bind(R.id.tv_detail_diffdays) TextView mDiffDays;
-    @Bind(R.id.tv_detail_targetday) TextView mDate;
-    @Bind(R.id.tv_detail_title) TextView mTitle;
+    @BindView(R.id.ll_detailbox) LinearLayout mDetailBox;
+    @BindView(R.id.tv_detail_diffdays) TextView mDiffDays;
+    @BindView(R.id.tv_detail_targetday) TextView mDate;
+    @BindView(R.id.tv_detail_title) TextView mTitle;
 
     private DayCountDbHelper mDbHelper;
     private int mAppWidgetId;
