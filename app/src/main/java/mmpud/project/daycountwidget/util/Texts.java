@@ -24,7 +24,7 @@ public class Texts {
         int numOfDigits = j - i;
         Spannable span = new SpannableString(str);
         span.setSpan(new RelativeSizeSpan(getSizeSpanByDigitNum(numOfDigits)), i, j,
-            Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         return span;
     }
 
@@ -36,30 +36,31 @@ public class Texts {
      */
     private static float getSizeSpanByDigitNum(int numOfDigits) {
         switch (numOfDigits) {
-        case 0: {
-            return 3f;
-        }
-        case 1: {
-            return 3f;
-        }
-        case 2: {
-            return 3f;
-        }
-        case 3: {
-            return 3f;
-        }
-        case 4: {
-            return 2.5f;
-        }
-        case 5: {
-            return 2f;
-        }
-        default: {
-            return 2f;
-        }
+            case 0: {
+                return 3f;
+            }
+            case 1: {
+                return 3f;
+            }
+            case 2: {
+                return 3f;
+            }
+            case 3: {
+                return 3f;
+            }
+            case 4: {
+                return 2.5f;
+            }
+            case 5: {
+                return 2f;
+            }
+            default: {
+                return 2f;
+            }
         }
     }
 
-    private Texts() {}
+    private Texts() {
+    }
 
 }

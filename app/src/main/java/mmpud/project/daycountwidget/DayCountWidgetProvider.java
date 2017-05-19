@@ -56,7 +56,7 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
     public void onEnabled(Context context) {
         super.onEnabled(context);
         // start the alarm when the first widget is added
-        Times.setMidnightAlarm(context);
+        //Times.setMidnightAlarm(context);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         // delete the alarm
         Intent alarmIntent = new Intent(Times.WIDGET_UPDATE_ALL);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Times.ALARM_ID,
-            alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
     }
@@ -77,17 +77,13 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         for (int appWidgetId : appWidgetIds) {
             db.delete(Widget.TABLE_NAME, Widget.WIDGET_ID + "=?",
-                new String[] {String.valueOf(appWidgetId)});
+                    new String[]{String.valueOf(appWidgetId)});
         }
         db.close();
     }
 
     /**
      * Generate remote views for the widget.
-     *
-     * @param context
-     * @param mAppWidgetId
-     * @return
      */
     public static RemoteViews buildRemoteViews(Context context, int mAppWidgetId) {
         // query from database
@@ -103,18 +99,15 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         LocalDateTime targetDay;
         try {
             cursor = db.query(Widget.TABLE_NAME, null, Widget.WIDGET_ID + "=?",
-                new String[] {String.valueOf(mAppWidgetId)}, null, null, null);
+                    new String[]{String.valueOf(mAppWidgetId)}, null, null, null);
             if (cursor.moveToFirst()) {
-                targetDay = Times.getLocalDateTime(cursor.getLong(cursor
-                    .getColumnIndexOrThrow(Widget.TARGET_DATE)));
-                title = cursor.getString(
-                    cursor.getColumnIndexOrThrow(Widget.EVENT_TITLE));
+                targetDay = Times.getLocalDateTime(
+                        cursor.getLong(cursor.getColumnIndexOrThrow(Widget.TARGET_DATE)));
+                title = cursor.getString(cursor.getColumnIndexOrThrow(Widget.EVENT_TITLE));
                 // noinspection ResourceType
                 countBy = cursor.getInt(cursor.getColumnIndexOrThrow(Widget.COUNT_BY));
-                headerStyle = cursor.getString(
-                    cursor.getColumnIndexOrThrow(Widget.HEADER_STYLE));
-                bodyStyle = cursor.getString(
-                    cursor.getColumnIndexOrThrow(Widget.BODY_STYLE));
+                headerStyle = cursor.getString(cursor.getColumnIndexOrThrow(Widget.HEADER_STYLE));
+                bodyStyle = cursor.getString(cursor.getColumnIndexOrThrow(Widget.BODY_STYLE));
             } else {
                 targetDay = LocalDate.now().atStartOfDay();
                 title = "";
@@ -136,7 +129,7 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         views.setTextViewText(R.id.widget_header, title);
         // set view's content
         views.setTextViewText(R.id.widget_body,
-            Dates.getWidgetContentSpannable(context, countBy, targetDay));
+                Dates.getWidgetContentSpannable(context, countBy, targetDay));
         // create intent for clicking on the widget for detail
         Intent intent = new Intent(context, DayCountDetail.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);

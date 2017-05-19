@@ -13,7 +13,7 @@ import android.widget.TextView;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mmpud.project.daycountwidget.data.db.Contract;
@@ -29,10 +29,14 @@ import static mmpud.project.daycountwidget.data.db.Contract.Widget.TARGET_DATE;
 
 public class DayCountDetail extends AppCompatActivity {
 
-    @Bind(R.id.ll_detailbox) LinearLayout mDetailBox;
-    @Bind(R.id.tv_detail_diffdays) TextView mDiffDays;
-    @Bind(R.id.tv_detail_targetday) TextView mDate;
-    @Bind(R.id.tv_detail_title) TextView mTitle;
+    @BindView(R.id.ll_detailbox)
+    LinearLayout mDetailBox;
+    @BindView(R.id.tv_detail_diffdays)
+    TextView mDiffDays;
+    @BindView(R.id.tv_detail_targetday)
+    TextView mDate;
+    @BindView(R.id.tv_detail_title)
+    TextView mTitle;
 
     private DayCountDbHelper mDbHelper;
     private int mAppWidgetId;
@@ -47,8 +51,8 @@ public class DayCountDetail extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            mAppWidgetId = extras.getInt(
-                AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            mAppWidgetId =
+                    extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
     }
 
@@ -71,9 +75,8 @@ public class DayCountDetail extends AppCompatActivity {
             mDbHelper = new DayCountDbHelper(this);
         }
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        Cursor cursor = db.query(Contract.Widget.TABLE_NAME, null,
-            Contract.Widget.WIDGET_ID + "=?",
-            new String[] {String.valueOf(mAppWidgetId)}, null, null, null);
+        Cursor cursor = db.query(Contract.Widget.TABLE_NAME, null, Contract.Widget.WIDGET_ID + "=?",
+                new String[]{String.valueOf(mAppWidgetId)}, null, null, null);
 
         long targetDateMillis;
         String title;
@@ -81,8 +84,7 @@ public class DayCountDetail extends AppCompatActivity {
         @Contract.CountBy int countBy;
         LocalDateTime targetDay;
         if (cursor.moveToFirst()) {
-            targetDay = Times.getLocalDateTime(cursor.getLong(cursor
-                .getColumnIndexOrThrow(TARGET_DATE)));
+            targetDay = Times.getLocalDateTime(cursor.getLong(cursor.getColumnIndexOrThrow(TARGET_DATE)));
             title = cursor.getString(cursor.getColumnIndexOrThrow(EVENT_TITLE));
             bodyStyle = cursor.getString(cursor.getColumnIndexOrThrow(BODY_STYLE));
             //noinspection ResourceType
@@ -101,12 +103,12 @@ public class DayCountDetail extends AppCompatActivity {
         mDiffDays.setText(Dates.getDiffDaysString(this, countBy, targetDay));
     }
 
-    @OnClick(R.id.btn_detail_edit) void onEditBtnClicked() {
+    @OnClick(R.id.btn_detail_edit)
+    void onEditBtnClicked() {
         // click to configure the widget
         Intent intent = new Intent(this, DayCountConfigure.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
-
 }

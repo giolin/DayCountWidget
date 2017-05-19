@@ -19,7 +19,7 @@ import mmpud.project.daycountwidget.misc.ClickableRecyclerAdapter.ClickableViewH
  * @param <T>
  */
 public abstract class ClickableRecyclerAdapter<T extends ClickableViewHolder>
-    extends RecyclerView.Adapter<T> {
+        extends RecyclerView.Adapter<T> {
 
     private final OnItemClickListenerProxy mClickListenerProxy;
     private final OnItemLongClickListenerProxy mLongClickListenerProxy;
@@ -29,17 +29,19 @@ public abstract class ClickableRecyclerAdapter<T extends ClickableViewHolder>
 
     public ClickableRecyclerAdapter() {
         this.mClickListenerProxy = new OnItemClickListenerProxy() {
-            @Override public void onItemClick(View view, int position) {
+            @Override
+            public void onItemClick(View view, int position) {
                 if (mClickListener != null) {
                     mClickListener.onItemClick(ClickableRecyclerAdapter.this, view, position);
                 }
             }
         };
         this.mLongClickListenerProxy = new OnItemLongClickListenerProxy() {
-            @Override public boolean onItemLongClick(View view, int position) {
+            @Override
+            public boolean onItemLongClick(View view, int position) {
                 if (mLongClickListener != null) {
                     return mLongClickListener.onItemLongClick(ClickableRecyclerAdapter.this,
-                        view, position);
+                            view, position);
                 }
                 return false;
             }
@@ -118,7 +120,7 @@ public abstract class ClickableRecyclerAdapter<T extends ClickableViewHolder>
      * OnClickListener} and {@link OnLongClickListener}
      */
     public abstract static class ClickableViewHolder extends RecyclerView.ViewHolder
-        implements OnClickListener, OnLongClickListener {
+            implements OnClickListener, OnLongClickListener {
 
         private OnItemClickListenerProxy onItemClickListener;
         private OnItemLongClickListenerProxy onItemLongClickListener;
@@ -133,7 +135,8 @@ public abstract class ClickableRecyclerAdapter<T extends ClickableViewHolder>
             this.onItemClickListener = onItemClickListener;
         }
 
-        @Override public void onClick(View v) {
+        @Override
+        public void onClick(View v) {
             if (onItemClickListener != null) {
                 onItemClickListener.onItemClick(v, getLayoutPosition());
             }
@@ -143,7 +146,8 @@ public abstract class ClickableRecyclerAdapter<T extends ClickableViewHolder>
             this.onItemLongClickListener = onItemLongClickListener;
         }
 
-        @Override public boolean onLongClick(View v) {
+        @Override
+        public boolean onLongClick(View v) {
             if (onItemLongClickListener != null) {
                 return onItemLongClickListener.onItemLongClick(v, getLayoutPosition());
             }
