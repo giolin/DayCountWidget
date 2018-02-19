@@ -1,19 +1,22 @@
 package mmpud.project.daycountwidget.pages.configure;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SVBar;
 
+import javax.annotation.CheckForNull;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import mmpud.project.daycountwidget.R;
 
 public class ColorSelectDialog extends DialogFragment {
@@ -25,26 +28,30 @@ public class ColorSelectDialog extends DialogFragment {
     @BindView(R.id.svbar)
     SVBar svBar;
 
+    private static ColorSelectDialog dialog;
+
     private OnColorSelectedListener onColorSelectedListener;
 
     public static ColorSelectDialog newInstance(int initColor) {
-        ColorSelectDialog dialog = new ColorSelectDialog();
+        if (dialog == null) {
+            synchronized (ColorSelectDialog.class) {
+                if (dialog == null) {
+                    dialog = new ColorSelectDialog();
+                }
+            }
+        }
         Bundle args = new Bundle();
         args.putInt(KEY_COLOR, initColor);
         dialog.setArguments(args);
         return dialog;
     }
 
-    @Nullable
+    @NonNull
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.color_select_dialog, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Context context = getActivity();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.color_select_dialog, null);
         ButterKnife.bind(this, view);
         colorPicker.addSVBar(svBar);
         Bundle bundle = getArguments();
@@ -53,25 +60,23 @@ public class ColorSelectDialog extends DialogFragment {
             colorPicker.setColor(color);
             colorPicker.setOldCenterColor(color);
         }
+        return new AlertDialog.Builder(context)
+                .setView(view)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog1, int which) {
+                        if (onColorSelectedListener != null) {
+                            onColorSelectedListener.OnColorSelected(colorPicker.getColor());
+                        }
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null).create();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         onColorSelectedListener = null;
-    }
-
-    @OnClick(R.id.ok)
-    void onColorSelected() {
-        if (onColorSelectedListener != null) {
-            onColorSelectedListener.OnColorSelected(colorPicker.getColor());
-        }
-        dismiss();
-    }
-
-    @OnClick(R.id.cancel)
-    void onCancel() {
-        dismiss();
     }
 
     /**
