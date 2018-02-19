@@ -44,9 +44,12 @@ import static mmpud.project.daycountwidget.data.db.Contract.Widget.TARGET_DATE;
 
 public class DayCountMainActivity extends AppCompatActivity {
 
-    @BindView(android.R.id.list) RecyclerView mList;
-    @BindView(android.R.id.text1) TextView mNoWidgetMsg;
-    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(android.R.id.list)
+    RecyclerView mList;
+    @BindView(android.R.id.text1)
+    TextView mNoWidgetMsg;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     private DayCounterAdapter mAdapter;
     private DayCountDbHelper mDbHelper;
@@ -58,7 +61,8 @@ public class DayCountMainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mToolbar.inflateMenu(R.menu.day_count_menu);
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override public boolean onMenuItemClick(MenuItem item) {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.licenses) {
                     showLicensesAlertDialog();
                     return true;
@@ -93,8 +97,8 @@ public class DayCountMainActivity extends AppCompatActivity {
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(component);
         for (int appWidgetId : appWidgetIds) {
             Cursor cursor = db.query(Contract.Widget.TABLE_NAME, null,
-                Contract.Widget.WIDGET_ID + "=?",
-                new String[] {String.valueOf(appWidgetId)}, null, null, null);
+                    Contract.Widget.WIDGET_ID + "=?",
+                    new String[]{String.valueOf(appWidgetId)}, null, null, null);
             long targetDateMillis;
             String title;
             String bodyStyle;
@@ -106,13 +110,13 @@ public class DayCountMainActivity extends AppCompatActivity {
                 countBy = cursor.getInt(cursor.getColumnIndexOrThrow(COUNT_BY));
             } else {
                 targetDateMillis = LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()
-                    .toEpochMilli();
+                        .toEpochMilli();
                 title = "";
                 bodyStyle = String.valueOf(ContextCompat.getColor(this, R.color.body_black));
                 countBy = COUNT_BY_DAY;
             }
             mAdapter.add(new DayCountWidget(appWidgetId, title, null, targetDateMillis, countBy,
-                null, bodyStyle));
+                    null, bodyStyle));
             cursor.close();
         }
         db.close();
@@ -122,10 +126,10 @@ public class DayCountMainActivity extends AppCompatActivity {
         WebView view = (WebView) LayoutInflater.from(this).inflate(R.layout.dialog_licenses, null);
         view.loadUrl("file:///android_asset/open_source_licenses.html");
         new AlertDialog.Builder(this)
-            .setTitle("Open Source Licenses")
-            .setView(view)
-            .setPositiveButton(android.R.string.ok, null)
-            .show();
+                .setTitle("Open Source Licenses")
+                .setView(view)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
     }
 
     public static class DayCounterAdapter extends ClickableRecyclerAdapter<DayCounterViewHolder> {
@@ -159,7 +163,8 @@ public class DayCountMainActivity extends AppCompatActivity {
             }
         }
 
-        @Override public int getItemCount() {
+        @Override
+        public int getItemCount() {
             synchronized (mItems) {
                 return mItems.size();
             }
@@ -187,9 +192,12 @@ public class DayCountMainActivity extends AppCompatActivity {
 
     static class DayCounterViewHolder extends ClickableRecyclerAdapter.ClickableViewHolder {
 
-        @BindView(R.id.list_item_tv_title) TextView title;
-        @BindView(R.id.list_item_tv_target_date) TextView targetDay;
-        @BindView(R.id.list_item_tv_day_diff) TextView dayDiff;
+        @BindView(R.id.list_item_tv_title)
+        TextView title;
+        @BindView(R.id.list_item_tv_target_date)
+        TextView targetDay;
+        @BindView(R.id.list_item_tv_day_diff)
+        TextView dayDiff;
 
         public DayCounterViewHolder(View view) {
             super(view);
