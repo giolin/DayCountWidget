@@ -18,6 +18,8 @@ import mmpud.project.daycountwidget.R;
 
 public class ColorSelectDialog extends DialogFragment {
 
+    static private String KEY_COLOR = "color";
+
     @BindView(R.id.color_picker)
     ColorPicker colorPicker;
     @BindView(R.id.svbar)
@@ -28,7 +30,7 @@ public class ColorSelectDialog extends DialogFragment {
     public static ColorSelectDialog newInstance(int initColor) {
         ColorSelectDialog dialog = new ColorSelectDialog();
         Bundle args = new Bundle();
-        args.putInt("color", initColor);
+        args.putInt(KEY_COLOR, initColor);
         dialog.setArguments(args);
         return dialog;
     }
@@ -47,7 +49,7 @@ public class ColorSelectDialog extends DialogFragment {
         colorPicker.addSVBar(svBar);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            int color = bundle.getInt("color");
+            int color = bundle.getInt(KEY_COLOR);
             colorPicker.setColor(color);
             colorPicker.setOldCenterColor(color);
         }

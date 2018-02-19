@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import mmpud.project.daycountwidget.R;
-import timber.log.Timber;
 
+/**
+ * Adapter for the color select list.
+ */
 public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private int[] colors;
@@ -18,9 +20,6 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     SelectAdapter(int[] colors, OnItemClickListener onItemClickListener) {
         this.colors = new int[colors.length + 1];
         System.arraycopy(colors, 0, this.colors, 0, colors.length);
-        for (int color : this.colors) {
-            Timber.d("color %d", color);
-        }
         this.onItemClickListener = onItemClickListener;
     }
 
@@ -41,18 +40,15 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         holder.itemView.setId(position);
         GradientDrawable gradientDrawable = (GradientDrawable) holder.itemView.getBackground();
-        Timber.d("position %d", position);
-        gradientDrawable.clearColorFilter();
         if (isLastItem(position)) {
-            Timber.d("last item rainbow");
             // rainbow color for user to define
             gradientDrawable.setColors(new int[]{Color.RED, Color.MAGENTA, Color.BLUE,
                     Color.CYAN, Color.GREEN, Color.YELLOW, Color.RED});
             gradientDrawable.setGradientType(GradientDrawable.SWEEP_GRADIENT);
         } else {
-            Timber.d("set color to %d", colors[position]);
             gradientDrawable.setColor(colors[position]);
         }
+        holder.itemView.setBackground(gradientDrawable);
     }
 
     @Override
@@ -66,6 +62,26 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     int getColor(int position) {
         return colors[position];
+    }
+
+    /**
+     * Listener for the item clicked.
+     */
+    interface OnItemClickListener {
+
+        void onItemClick(int position);
+
+    }
+
+    /**
+     * View holder for the {@link SelectAdapter}.
+     */
+    class SelectViewHolder extends RecyclerView.ViewHolder {
+
+        SelectViewHolder(View itemView) {
+            super(itemView);
+        }
+
     }
 
 }

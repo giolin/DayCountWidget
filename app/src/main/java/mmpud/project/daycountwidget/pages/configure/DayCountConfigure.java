@@ -44,6 +44,8 @@ import mmpud.project.daycountwidget.util.OnProgressChangeListener;
 import mmpud.project.daycountwidget.util.Texts;
 import mmpud.project.daycountwidget.util.Times;
 
+import static mmpud.project.daycountwidget.pages.configure.ColorSelectDialog.OnColorSelectedListener;
+
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 import static butterknife.OnTextChanged.Callback.AFTER_TEXT_CHANGED;
@@ -252,22 +254,13 @@ public class DayCountConfigure extends AppCompatActivity
         headerLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         headerAdapter = new SelectAdapter(new int[]{headerRed, headerOrange, headerYellow,
                 headerGreen, headerBlue, headerNavy, headerIndigo, headerPurple, headerBlack},
-                new OnItemClickListener() {
+                new SelectAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(int position) {
                         if (headerAdapter.isLastItem(position)) {
-                            ColorSelectDialog dialog = ColorSelectDialog
-                                    .newInstance(Integer.valueOf(mHeaderStyle));
-                            dialog.setOnColorSelectedListener(
-                                    new ColorSelectDialog.OnColorSelectedListener() {
-                                        @Override
-                                        public void OnColorSelected(int color) {
-                                            setPreviewHeadColor(color);
-                                        }
-                                    });
-                            dialog.show(getSupportFragmentManager(), "dialog");
+                            openColorSelectDialog(true);
                         } else {
-                            setPreviewHeadColor(headerAdapter.getColor(position));
+                            setHeaderColor(headerAdapter.getColor(position));
                         }
                     }
                 });
@@ -278,22 +271,13 @@ public class DayCountConfigure extends AppCompatActivity
         bodyLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         bodyAdapter = new SelectAdapter(new int[]{bodyRed, bodyOrange, bodyYellow, bodyGreen,
                 bodyBlue, bodyNavy, bodyPurple, bodyPink, bodyBlack},
-                new OnItemClickListener() {
+                new SelectAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(int position) {
                         if (bodyAdapter.isLastItem(position)) {
-                            ColorSelectDialog dialog = ColorSelectDialog
-                                    .newInstance(Integer.valueOf(mBodyStyle));
-                            dialog.setOnColorSelectedListener(
-                                    new ColorSelectDialog.OnColorSelectedListener() {
-                                        @Override
-                                        public void OnColorSelected(int color) {
-                                            setPreviewBodyColor(color);
-                                        }
-                                    });
-                            dialog.show(getSupportFragmentManager(), "dialog");
+                            openColorSelectDialog(false);
                         } else {
-                            setPreviewBodyColor(bodyAdapter.getColor(position));
+                            setBodyColor(bodyAdapter.getColor(position));
                         }
                     }
                 });
@@ -356,14 +340,33 @@ public class DayCountConfigure extends AppCompatActivity
         return false;
     }
 
-    private void setPreviewHeadColor(int color) {
+    private void setHeaderColor(int color) {
         mPreviewWidgetHeaderBg.setColorFilter(color);
         mHeaderStyle = String.valueOf(color);
     }
 
-    private void setPreviewBodyColor(int color) {
+    private void setBodyColor(int color) {
         mPreviewWidgetBodyBg.setColorFilter(color);
         mBodyStyle = String.valueOf(color);
+    }
+
+    private void openColorSelectDialog(boolean isForHeader) {
+        ColorSelectDialog dialog = ColorSelectDialog.newInstance(isForHeader ?
+                Integer.valueOf(mHeaderStyle) : Integer.valueOf(mBodyStyle));
+        dialog.setOnColorSelectedListener(isForHeader ?
+                new OnColorSelectedListener() {
+                    @Override
+                    public void OnColorSelected(int color) {
+                        setHeaderColor(color);
+                    }
+                } :
+                new OnColorSelectedListener() {
+                    @Override
+                    public void OnColorSelected(int color) {
+                        setBodyColor(color);
+                    }
+                });
+        dialog.show(getSupportFragmentManager(), "dialog");
     }
 
     private void setPreviewContent(LocalDateTime localDateTime) {
