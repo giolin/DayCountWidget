@@ -31,7 +31,7 @@ public class DayCountApplication extends Application {
             }
             if (t != null) {
                 if (priority == Log.ERROR) {
-                    // TODO log error
+                    // TODO log error (may send a message to crash reporting service)
                 } else if (priority == Log.WARN) {
                     // TODO log warning
                 }

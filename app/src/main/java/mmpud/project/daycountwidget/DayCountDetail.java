@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mmpud.project.daycountwidget.data.db.Contract;
 import mmpud.project.daycountwidget.data.db.DayCountDbHelper;
+import mmpud.project.daycountwidget.pages.configure.DayCountConfigure;
 import mmpud.project.daycountwidget.util.Dates;
 import mmpud.project.daycountwidget.util.Times;
 

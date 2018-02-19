@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -17,7 +18,6 @@
         android:id="@+id/edt_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
         android:gravity="center"
         android:hint="@string/enter_title"
         android:imeOptions="actionDone"
@@ -28,7 +28,6 @@
         android:id="@+id/tv_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edt_title"
         android:gravity="center"
         android:textSize="@dimen/text_size_l" />
 
@@ -36,7 +35,6 @@
         android:id="@+id/radio_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_date"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -67,16 +65,13 @@
     </RadioGroup>
 
     <FrameLayout
-        android:id="@+id/sample_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/trans_control"
-        android:layout_below="@+id/radio_group">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/preview_window_bg"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/widget_background_height"
             android:scaleType="centerCrop" />
 
         <include
@@ -88,21 +83,19 @@
     </FrameLayout>
 
     <LinearLayout
-        android:id="@+id/trans_control"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/color_panel_main"
+        android:layout_marginBottom="@dimen/top_bottom_margin"
         android:layout_marginEnd="@dimen/seek_bar_left_right_margin"
         android:layout_marginStart="@dimen/seek_bar_left_right_margin"
-        android:orientation="horizontal"
-        android:paddingTop="@dimen/seek_bar_padding_top">
+        android:layout_marginTop="@dimen/top_bottom_margin"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/text_trans"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="100" />
+            android:layout_gravity="center" />
 
         <SeekBar
             android:id="@+id/seek_bar_trans"
@@ -111,322 +104,14 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/color_panel_main"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/header_select"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/color_panel_main_padding"
-        android:paddingTop="@dimen/color_panel_main_padding">
+        android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/gridlayout_padding"
-            android:paddingRight="@dimen/gridlayout_padding">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <View
-                    android:id="@+id/head1"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/header_red" />
-
-                <View
-                    android:id="@+id/head2"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/header_orange" />
-
-                <View
-                    android:id="@+id/head3"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/header_yellow" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <View
-                    android:id="@+id/head4"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/header_green" />
-
-                <View
-                    android:id="@+id/head5"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/header_blue" />
-
-                <View
-                    android:id="@+id/head6"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/header_navy" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <View
-                    android:id="@+id/head7"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/header_indigo" />
-
-                <View
-                    android:id="@+id/head8"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/header_purple" />
-
-                <View
-                    android:id="@+id/head9"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/header_black" />
-
-
-            </LinearLayout>
-
-            <View
-                android:id="@+id/head10"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/style_select_item_height"
-                android:layout_margin="@dimen/style_select_item_margin"
-                android:background="@color/red" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/gridlayout_padding"
-            android:paddingRight="@dimen/gridlayout_padding">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <View
-                    android:id="@+id/body1"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/body_red" />
-
-                <View
-                    android:id="@+id/body2"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/body_orange" />
-
-                <View
-                    android:id="@+id/body3"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/body_yellow" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <View
-                    android:id="@+id/body4"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/body_green" />
-
-                <View
-                    android:id="@+id/body5"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/body_blue" />
-
-                <View
-                    android:id="@+id/body6"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/body_navy" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <View
-                    android:id="@+id/body7"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/body_purple" />
-
-                <View
-                    android:id="@+id/body8"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/body_pink" />
-
-                <View
-                    android:id="@+id/body9"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/style_select_item_height"
-                    android:layout_margin="@dimen/style_select_item_margin"
-                    android:layout_weight="1"
-                    android:background="@color/body_black" />
-
-
-            </LinearLayout>
-
-            <View
-                android:id="@+id/body10"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/style_select_item_height"
-                android:layout_margin="@dimen/style_select_item_margin"
-                android:background="@color/red" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/color_panel_header"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/body_select"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/color_panel_main"
-        android:background="@android:color/white"
-        android:orientation="vertical"
-        android:visibility="invisible">
+        android:layout_height="wrap_content" />
 
-        <com.larswerkman.holocolorpicker.ColorPicker
-            android:id="@+id/picker1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/sbar1"
-            android:layout_centerHorizontal="true" />
-
-        <com.larswerkman.holocolorpicker.SaturationBar
-            android:id="@+id/sbar1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/vbar1" />
-
-        <com.larswerkman.holocolorpicker.ValueBar
-            android:id="@+id/vbar1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/close_head" />
-
-        <Button
-            android:id="@+id/close_head"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="@dimen/style_select_item_margin"
-            android:background="@drawable/ok_button_bg"
-            android:text="@android:string/ok" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/color_panel_body"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/color_panel_main"
-        android:background="@android:color/white"
-        android:visibility="invisible">
-
-        <com.larswerkman.holocolorpicker.ColorPicker
-            android:id="@+id/picker2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/sbar2"
-            android:layout_centerHorizontal="true" />
-
-        <com.larswerkman.holocolorpicker.SaturationBar
-            android:id="@+id/sbar2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/vbar2" />
-
-        <com.larswerkman.holocolorpicker.ValueBar
-            android:id="@+id/vbar2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/close_body" />
-
-        <Button
-            android:id="@+id/close_body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="@dimen/style_select_item_margin"
-            android:background="@drawable/ok_button_bg"
-            android:text="@android:string/ok" />
-
-    </RelativeLayout>
-
-</RelativeLayout>
+</LinearLayout>
