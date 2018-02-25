@@ -145,16 +145,19 @@ public class DayCountConfigure extends AppCompatActivity
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        // set result CANCELED. this will cause the widget host to cancel out of the widget
-        // placement if they press the back button.
-        setResult(RESULT_CANCELED);
-
         // get widget id from the intent.
         mAppWidgetId = getAppWidgetId();
         if (mAppWidgetId == INVALID_APPWIDGET_ID) {
             finish();
             return;
         }
+
+        Intent resultValue = new Intent();
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+        // set result CANCELED. this will cause the widget host to cancel out of the widget
+        // placement if they press the back button.
+        setResult(RESULT_CANCELED, resultValue);
+
         setContentView(R.layout.day_count_configure_layout);
         ButterKnife.bind(this);
 
