@@ -11,7 +11,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.widget.RemoteViews;
 
@@ -22,7 +21,6 @@ import mmpud.project.daycountwidget.data.db.Contract;
 import mmpud.project.daycountwidget.data.db.DayCountDbHelper;
 import mmpud.project.daycountwidget.util.Dates;
 import mmpud.project.daycountwidget.util.Times;
-import timber.log.Timber;
 
 import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_DAY;
 import static mmpud.project.daycountwidget.data.db.Contract.Widget;
@@ -67,7 +65,7 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         // delete the alarm
         Intent alarmIntent = new Intent(Times.WIDGET_UPDATE_ALL);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Times.ALARM_ID,
-            alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
     }
@@ -80,7 +78,7 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         for (int appWidgetId : appWidgetIds) {
             db.delete(Widget.TABLE_NAME, Widget.WIDGET_ID + "=?",
-                new String[] {String.valueOf(appWidgetId)});
+                    new String[]{String.valueOf(appWidgetId)});
         }
         db.close();
     }
@@ -107,18 +105,18 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         LocalDateTime targetDay;
         try {
             cursor = db.query(Widget.TABLE_NAME, null, Widget.WIDGET_ID + "=?",
-                new String[] {String.valueOf(mAppWidgetId)}, null, null, null);
+                    new String[]{String.valueOf(mAppWidgetId)}, null, null, null);
             if (cursor.moveToFirst()) {
                 targetDay = Times.getLocalDateTime(cursor.getLong(cursor
-                    .getColumnIndexOrThrow(Widget.TARGET_DATE)));
+                        .getColumnIndexOrThrow(Widget.TARGET_DATE)));
                 title = cursor.getString(
-                    cursor.getColumnIndexOrThrow(Widget.EVENT_TITLE));
+                        cursor.getColumnIndexOrThrow(Widget.EVENT_TITLE));
                 // noinspection ResourceType
                 countBy = cursor.getInt(cursor.getColumnIndexOrThrow(Widget.COUNT_BY));
                 headerStyle = cursor.getString(
-                    cursor.getColumnIndexOrThrow(Widget.HEADER_STYLE));
+                        cursor.getColumnIndexOrThrow(Widget.HEADER_STYLE));
                 bodyStyle = cursor.getString(
-                    cursor.getColumnIndexOrThrow(Widget.BODY_STYLE));
+                        cursor.getColumnIndexOrThrow(Widget.BODY_STYLE));
                 // alpha
                 alpha = cursor.getFloat(cursor.getColumnIndexOrThrow(Widget.ALPHA));
             } else {
@@ -143,7 +141,7 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         views.setTextViewText(R.id.widget_header, title);
         // set view's content
         views.setTextViewText(R.id.widget_body,
-            Dates.getWidgetContentSpannable(context, countBy, targetDay));
+                Dates.getWidgetContentSpannable(context, countBy, targetDay));
         // set view's transparency
         int alphaPercent = (int) (alpha * 255);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
