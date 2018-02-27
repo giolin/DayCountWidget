@@ -39,7 +39,8 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         holder.itemView.setId(position);
-        GradientDrawable gradientDrawable = (GradientDrawable) holder.itemView.getBackground();
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        gradientDrawable.setShape(GradientDrawable.OVAL);
         if (isLastItem(position)) {
             // rainbow color for user to define
             gradientDrawable.setColors(new int[]{Color.RED, Color.MAGENTA, Color.BLUE,
