@@ -13,8 +13,6 @@ import android.view.View;
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SVBar;
 
-import javax.annotation.CheckForNull;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mmpud.project.daycountwidget.R;

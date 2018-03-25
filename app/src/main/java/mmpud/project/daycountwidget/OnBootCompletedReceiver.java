@@ -13,8 +13,13 @@ import mmpud.project.daycountwidget.util.Times;
  */
 public class OnBootCompletedReceiver extends BroadcastReceiver {
 
-    @Override public void onReceive(Context context, Intent intent) {
+    @Override
+    public void onReceive(Context context, Intent intent) {
         // if there exists some widgets on the desktop, reset the alarm.
+        String action = intent.getAction();
+        if (action == null || !action.equals(Intent.ACTION_BOOT_COMPLETED)) {
+            return;
+        }
         AppWidgetManager manager = AppWidgetManager.getInstance(context);
         ComponentName componentName = new ComponentName(context, DayCountWidgetProvider.class);
         if (manager.getAppWidgetIds(componentName).length > 0) {
