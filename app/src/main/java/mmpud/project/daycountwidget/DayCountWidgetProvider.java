@@ -21,6 +21,7 @@ import mmpud.project.daycountwidget.data.db.Contract;
 import mmpud.project.daycountwidget.data.db.DayCountDbHelper;
 import mmpud.project.daycountwidget.util.Dates;
 import mmpud.project.daycountwidget.util.Times;
+import mmpud.project.daycountwidget.util.WidgetPadding;
 
 import static mmpud.project.daycountwidget.data.db.Contract.COUNT_BY_DAY;
 import static mmpud.project.daycountwidget.data.db.Contract.Widget;
@@ -100,6 +101,8 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
         String headerStyle;
         String bodyStyle;
         float alpha;
+        int horizontalPadding;
+        int verticalPadding;
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         Cursor cursor = null;
         LocalDateTime targetDay;
@@ -119,6 +122,11 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
                         cursor.getColumnIndexOrThrow(Widget.BODY_STYLE));
                 // alpha
                 alpha = cursor.getFloat(cursor.getColumnIndexOrThrow(Widget.ALPHA));
+                // padding
+                horizontalPadding = cursor.getInt(cursor.getColumnIndexOrThrow(
+                        Widget.HORIZONTAL_PADDING));
+                verticalPadding = cursor.getInt(cursor.getColumnIndexOrThrow(
+                        Widget.VERTICAL_PADDING));
             } else {
                 targetDay = LocalDate.now().atStartOfDay();
                 title = "";
@@ -126,6 +134,8 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
                 headerStyle = String.valueOf(ContextCompat.getColor(context, R.color.header_black));
                 bodyStyle = String.valueOf(ContextCompat.getColor(context, R.color.body_black));
                 alpha = 1;
+                horizontalPadding = 0;
+                verticalPadding = 0;
             }
         } finally {
             if (cursor != null) {
@@ -151,6 +161,9 @@ public class DayCountWidgetProvider extends AppWidgetProvider {
             views.setInt(R.id.widget_header_bg, "setAlpha", alphaPercent);
             views.setInt(R.id.widget_body_bg, "setAlpha", alphaPercent);
         }
+        // widget padding
+        views.setViewPadding(R.id.widget, horizontalPadding, verticalPadding, horizontalPadding,
+                verticalPadding);
         // create intent for clicking on the widget for detail
         Intent intent = new Intent(context, DayCountDetail.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
