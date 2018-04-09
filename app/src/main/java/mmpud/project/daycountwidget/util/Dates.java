@@ -81,32 +81,32 @@ public class Dates {
         Resources res = context.getResources();
         switch (countBy) {
             case COUNT_BY_DAY: {
-                diff = (int) ChronoUnit.DAYS.between(LocalDateTime.now(), targetDay);
+                diff = (int) ChronoUnit.DAYS.between(LocalDate.now(), targetDay);
                 str = res.getQuantityString(diff > 0 ? R.plurals.list_day_left
                         : R.plurals.list_day_since, diff, Math.abs(diff));
                 break;
             }
             case COUNT_BY_WEEK: {
-                diff = (int) ChronoUnit.DAYS.between(LocalDateTime.now(), targetDay)
+                diff = (int) ChronoUnit.DAYS.between(LocalDate.now(), targetDay)
                         / 7;
                 str = res.getQuantityString(diff > 0 ? R.plurals.list_week_left
                         : R.plurals.list_week_since, diff, Math.abs(diff));
                 break;
             }
             case COUNT_BY_MONTH: {
-                diff = (int) ChronoUnit.MONTHS.between(LocalDateTime.now(), targetDay);
+                diff = (int) ChronoUnit.MONTHS.between(LocalDate.now(), targetDay);
                 str = res.getQuantityString(diff > 0 ? R.plurals.list_month_left
                         : R.plurals.list_month_since, diff, Math.abs(diff));
                 break;
             }
             case COUNT_BY_YEAR: {
-                diff = (int) ChronoUnit.YEARS.between(LocalDateTime.now(), targetDay);
+                diff = (int) ChronoUnit.YEARS.between(LocalDate.now(), targetDay);
                 str = res.getQuantityString(diff > 0 ? R.plurals.list_year_left
                         : R.plurals.list_year_since, diff, Math.abs(diff));
                 break;
             }
             default: {
-                diff = (int) ChronoUnit.DAYS.between(LocalDateTime.now(), targetDay);
+                diff = (int) ChronoUnit.DAYS.between(LocalDate.now(), targetDay);
                 str = res.getQuantityString(diff > 0 ? R.plurals.list_day_left
                         : R.plurals.list_day_since, diff, Math.abs(diff));
                 break;
