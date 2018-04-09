@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,10 +41,14 @@ import mmpud.project.daycountwidget.DayCountWidgetProvider;
 import mmpud.project.daycountwidget.R;
 import mmpud.project.daycountwidget.data.db.Contract;
 import mmpud.project.daycountwidget.data.db.DayCountDbHelper;
+import mmpud.project.daycountwidget.util.NumberPicker;
 import mmpud.project.daycountwidget.util.OnProgressChangeListener;
 import mmpud.project.daycountwidget.util.Texts;
 import mmpud.project.daycountwidget.util.Times;
+import mmpud.project.daycountwidget.util.WidgetPadding;
 
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.HORIZONTAL_PADDING;
+import static mmpud.project.daycountwidget.data.db.Contract.Widget.VERTICAL_PADDING;
 import static mmpud.project.daycountwidget.pages.configure.ColorSelectDialog.OnColorSelectedListener;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
@@ -92,6 +97,10 @@ public class DayCountConfigure extends AppCompatActivity
     RecyclerView headerSelect;
     @BindView(R.id.body_select)
     RecyclerView bodySelect;
+    @BindView(R.id.number_picker_horizontal_padding)
+    NumberPicker numberPickerHorizontalPadding;
+    @BindView(R.id.number_picker_vertical_padding)
+    NumberPicker numberPickerVerticalPadding;
 
     @BindColor(R.color.header_red)
     int headerRed;
@@ -160,6 +169,7 @@ public class DayCountConfigure extends AppCompatActivity
 
         setContentView(R.layout.day_count_configure_layout);
         ButterKnife.bind(this);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         // toolbar
         mToolbar.setNavigationIcon(R.drawable.ic_cross);
@@ -182,6 +192,8 @@ public class DayCountConfigure extends AppCompatActivity
                 new String[]{String.valueOf(mAppWidgetId)}, null, null, null);
         String initTitle;
         float initAlpha;
+        int horizontalPadding;
+        int verticalPadding;
         if (cursor.moveToFirst()) {
             initTitle = cursor.getString(cursor.getColumnIndexOrThrow(EVENT_TITLE));
             mTimestamp = cursor.getLong(cursor.getColumnIndexOrThrow(TARGET_DATE));
@@ -189,6 +201,8 @@ public class DayCountConfigure extends AppCompatActivity
             mBodyStyle = cursor.getString(cursor.getColumnIndexOrThrow(BODY_STYLE));
             mCountBy = cursor.getInt(cursor.getColumnIndexOrThrow(COUNT_BY));
             initAlpha = cursor.getFloat(cursor.getColumnIndexOrThrow(ALPHA));
+            horizontalPadding = cursor.getInt(cursor.getColumnIndexOrThrow(HORIZONTAL_PADDING));
+            verticalPadding = cursor.getInt(cursor.getColumnIndexOrThrow(VERTICAL_PADDING));
         } else {
             initTitle = "";
             mTimestamp = Times.getStartOfDayMillis();
@@ -196,6 +210,8 @@ public class DayCountConfigure extends AppCompatActivity
             mBodyStyle = String.valueOf(bodyGreen);
             mCountBy = COUNT_BY_DAY;
             initAlpha = 1;
+            horizontalPadding = -1;
+            verticalPadding = -1;
         }
         cursor.close();
         db.close();
@@ -286,6 +302,14 @@ public class DayCountConfigure extends AppCompatActivity
                 });
         bodySelect.setAdapter(bodyAdapter);
         bodySelect.setLayoutManager(bodyLayoutManager);
+        if (horizontalPadding == -1) {
+            horizontalPadding = WidgetPadding.getHorizontalPadding(this);
+        }
+        if (verticalPadding == -1) {
+            verticalPadding = WidgetPadding.getVerticalPadding(this);
+        }
+        numberPickerHorizontalPadding.setNumber(horizontalPadding);
+        numberPickerVerticalPadding.setNumber(verticalPadding);
     }
 
     @Override
@@ -325,10 +349,17 @@ public class DayCountConfigure extends AppCompatActivity
             values.put(HEADER_STYLE, mHeaderStyle);
             values.put(BODY_STYLE, mBodyStyle);
             values.put(ALPHA, alpha);
+            values.put(HORIZONTAL_PADDING, numberPickerHorizontalPadding.getNumber());
+            values.put(VERTICAL_PADDING, numberPickerVerticalPadding.getNumber());
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
             db.insertWithOnConflict(TABLE_NAME, null, values, SQLiteDatabase
                     .CONFLICT_REPLACE);
             db.close();
+            // save the padding in pref
+            WidgetPadding.saveHorizontalPadding(this,
+                    numberPickerHorizontalPadding.getNumber());
+            WidgetPadding.saveVerticalPadding(this,
+                    numberPickerVerticalPadding.getNumber());
             // push widget update to surface
             RemoteViews views = DayCountWidgetProvider.buildRemoteViews(context, mAppWidgetId);
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);

@@ -39,6 +39,10 @@ public class Contract {
 
         public static final String ALPHA = "alpha";
 
+        public static final String HORIZONTAL_PADDING = "horizontal_padding";
+
+        public static final String VERTICAL_PADDING = "vertical_padding";
+
     }
 
     /**

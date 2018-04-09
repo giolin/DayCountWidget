@@ -112,6 +112,38 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/body_select"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/top_bottom_margin" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="90"
+            android:src="@drawable/ic_vertical_gap" />
+
+        <mmpud.project.daycountwidget.util.NumberPicker
+            android:id="@+id/number_picker_horizontal_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/number_picker_margin"
+            android:layout_marginRight="@dimen/number_picker_margin" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_vertical_gap" />
+
+        <mmpud.project.daycountwidget.util.NumberPicker
+            android:id="@+id/number_picker_vertical_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 </LinearLayout>

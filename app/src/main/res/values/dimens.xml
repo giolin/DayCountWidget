@@ -24,4 +24,7 @@
     <dimen name="round_item_size">40dp</dimen>
     <dimen name="round_item_layout_margin">5dp</dimen>
     <dimen name="top_bottom_margin">10dp</dimen>
+    <dimen name="number_picker_text_margin">12dp</dimen>
+    <dimen name="number_picker_margin">12dp</dimen>
+    <dimen name="number_picker_btn_padding">4dp</dimen>
 </resources>
