@@ -3,6 +3,7 @@ package mmpud.project.daycountwidget.data.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.squareup.phrase.Phrase;
 
@@ -35,7 +36,9 @@ public class DayCountDbHelper extends SQLiteOpenHelper {
             + "{count_by} INTEGER,"
             + "{header_style} TEXT,"
             + "{body_style} TEXT,"
-            + "{alpha} REAL"
+            + "{alpha} REAL,"
+            + "{horizontal_padding} INTEGER,"
+            + "{vertical_padding} INTEGER"
             + ")")
             .put("table", Widget.TABLE_NAME)
             .put("widget_id", Widget.WIDGET_ID)
@@ -46,6 +49,8 @@ public class DayCountDbHelper extends SQLiteOpenHelper {
             .put("header_style", Widget.HEADER_STYLE)
             .put("body_style", Widget.BODY_STYLE)
             .put("alpha", Widget.ALPHA)
+            .put("horizontal_padding", Widget.HORIZONTAL_PADDING)
+            .put("vertical_padding", Widget.VERTICAL_PADDING)
             .format().toString();
     private static final String ALTER_TABLE_ADD_COLUMN_ALPHA = Phrase.from(""
             + "ALTER TABLE {table} "
@@ -80,15 +85,12 @@ public class DayCountDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (newVersion > oldVersion) {
-            if (oldVersion == Version.ORIGIN) {
+            if (oldVersion < Version.ADD_COLUMN_ALPHA) {
                 db.execSQL(ALTER_TABLE_ADD_COLUMN_ALPHA);
-            } else if (oldVersion == Version.ADD_COLUMN_ALPHA) {
+            }
+            if (oldVersion < Version.ADD_COLUMN_HORIZONTAL_VERTICAL_PADDING) {
                 db.execSQL(ALTER_TABLE_ADD_COLUMN_HORIZONTAL_PADDING);
                 db.execSQL(ALTER_TABLE_ADD_COLUMN_VERTICAL_PADDING);
-            } else {
-                // TODO need to do data migration before dropping the table
-                db.execSQL(DELETE_TABLE_WIDGETS);
-                onCreate(db);
             }
         }
     }
