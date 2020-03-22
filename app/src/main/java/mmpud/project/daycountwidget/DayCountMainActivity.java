@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -44,166 +43,171 @@ import static mmpud.project.daycountwidget.data.db.Contract.Widget.TARGET_DATE;
 
 public class DayCountMainActivity extends AppCompatActivity {
 
-    @BindView(android.R.id.list)
-    RecyclerView mList;
-    @BindView(android.R.id.text1)
-    TextView mNoWidgetMsg;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+  @BindView(R.id.widget_list)
+  RecyclerView mWidgetList;
 
-    private DayCounterAdapter mAdapter;
-    private DayCountDbHelper mDbHelper;
+  @BindView(R.id.no_widget_message)
+  TextView mNoWidgetMsg;
+
+  @BindView(R.id.toolbar)
+  Toolbar mToolbar;
+
+  private DayCounterAdapter mAdapter;
+  private DayCountDbHelper mDbHelper;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_day_count_main);
+    ButterKnife.bind(this);
+    mToolbar.inflateMenu(R.menu.day_count_menu);
+    mToolbar.setOnMenuItemClickListener(
+        item -> {
+          if (item.getItemId() == R.id.licenses) {
+            showLicenseDialog();
+            return true;
+          }
+          return false;
+        });
+    mAdapter = new DayCounterAdapter(this);
+    mWidgetList.setHasFixedSize(true);
+    mWidgetList.setLayoutManager(
+        new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+    mWidgetList.setAdapter(mAdapter);
+    updateAdapter();
+    if (mAdapter.getItemCount() == 0) {
+      mNoWidgetMsg.setVisibility(View.VISIBLE);
+    } else {
+      mNoWidgetMsg.setVisibility(View.GONE);
+    }
+  }
+
+  private void updateAdapter() {
+    mAdapter.clear();
+    // query from database
+    if (mDbHelper == null) {
+      mDbHelper = new DayCountDbHelper(this);
+    }
+    SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+    // get all available day count widget ids
+    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+    ComponentName component = new ComponentName(this, DayCountWidgetProvider.class);
+    int[] appWidgetIds = appWidgetManager.getAppWidgetIds(component);
+    for (int appWidgetId : appWidgetIds) {
+      Cursor cursor =
+          db.query(
+              Contract.Widget.TABLE_NAME,
+              null,
+              Contract.Widget.WIDGET_ID + "=?",
+              new String[] {String.valueOf(appWidgetId)},
+              null,
+              null,
+              null);
+      long targetDateMillis;
+      String title;
+      String bodyStyle;
+      int countBy;
+      if (cursor.moveToFirst()) {
+        targetDateMillis = cursor.getLong(cursor.getColumnIndexOrThrow(TARGET_DATE));
+        title = cursor.getString(cursor.getColumnIndexOrThrow(EVENT_TITLE));
+        bodyStyle = cursor.getString(cursor.getColumnIndexOrThrow(BODY_STYLE));
+        countBy = cursor.getInt(cursor.getColumnIndexOrThrow(COUNT_BY));
+      } else {
+        targetDateMillis =
+            LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant().toEpochMilli();
+        title = "";
+        bodyStyle = String.valueOf(ContextCompat.getColor(this, R.color.body_black));
+        countBy = COUNT_BY_DAY;
+      }
+      mAdapter.add(
+          new DayCountWidget(appWidgetId, title, null, targetDateMillis, countBy, null, bodyStyle));
+      cursor.close();
+    }
+    db.close();
+  }
+
+  private void showLicenseDialog() {
+    WebView view = new WebView(this);
+    view.loadUrl("file:///android_asset/open_source_licenses.html");
+    new AlertDialog.Builder(this)
+        .setTitle("Open Source Licenses")
+        .setView(view)
+        .setPositiveButton(android.R.string.ok, null)
+        .show();
+  }
+
+  public static class DayCounterAdapter extends ClickableRecyclerAdapter<DayCounterViewHolder> {
+
+    private final List<DayCountWidget> mItems;
+    private final Context mContext;
+    private LayoutInflater mInflater;
+
+    DayCounterAdapter(Context context) {
+      this.mContext = context;
+      this.mItems = Lists.newArrayList();
+    }
+
+    void add(DayCountWidget item) {
+      synchronized (mItems) {
+        mItems.add(item);
+      }
+      notifyItemInserted(getItemCount() - 1);
+    }
+
+    void clear() {
+      synchronized (mItems) {
+        mItems.clear();
+      }
+      notifyDataSetChanged();
+    }
+
+    DayCountWidget getItem(int position) {
+      synchronized (mItems) {
+        return mItems.get(position);
+      }
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_day_count_main);
-        ButterKnife.bind(this);
-        mToolbar.inflateMenu(R.menu.day_count_menu);
-        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.licenses) {
-                    showLicensesAlertDialog();
-                    return true;
-                }
-                return false;
-            }
-        });
-        mAdapter = new DayCounterAdapter(this);
-        mList.setHasFixedSize(true);
-        mList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mList.setAdapter(mAdapter);
-        // query the data, ok we need to use sqlite to query
-        updateAdapter();
-        if (mAdapter.getItemCount() == 0) {
-            mNoWidgetMsg.setVisibility(View.VISIBLE);
-        } else {
-            mNoWidgetMsg.setVisibility(View.GONE);
-        }
+    public int getItemCount() {
+      synchronized (mItems) {
+        return mItems.size();
+      }
     }
 
-    private void updateAdapter() {
-        mAdapter.clear();
-        // query from database
-        if (mDbHelper == null) {
-            mDbHelper = new DayCountDbHelper(this);
-        }
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        // get all available day count widget ids
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        ComponentName component = new ComponentName(this, DayCountWidgetProvider.class);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(component);
-        for (int appWidgetId : appWidgetIds) {
-            Cursor cursor = db.query(Contract.Widget.TABLE_NAME, null,
-                    Contract.Widget.WIDGET_ID + "=?",
-                    new String[]{String.valueOf(appWidgetId)}, null, null, null);
-            long targetDateMillis;
-            String title;
-            String bodyStyle;
-            int countBy;
-            if (cursor.moveToFirst()) {
-                targetDateMillis = cursor.getLong(cursor.getColumnIndexOrThrow(TARGET_DATE));
-                title = cursor.getString(cursor.getColumnIndexOrThrow(EVENT_TITLE));
-                bodyStyle = cursor.getString(cursor.getColumnIndexOrThrow(BODY_STYLE));
-                countBy = cursor.getInt(cursor.getColumnIndexOrThrow(COUNT_BY));
-            } else {
-                targetDateMillis = LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()
-                        .toEpochMilli();
-                title = "";
-                bodyStyle = String.valueOf(ContextCompat.getColor(this, R.color.body_black));
-                countBy = COUNT_BY_DAY;
-            }
-            mAdapter.add(new DayCountWidget(appWidgetId, title, null, targetDateMillis, countBy,
-                    null, bodyStyle));
-            cursor.close();
-        }
-        db.close();
+    @Override
+    public DayCounterViewHolder onCreateClickableViewHolder(ViewGroup parent, int viewType) {
+      if (mInflater == null) {
+        mInflater = LayoutInflater.from(mContext);
+      }
+      return new DayCounterViewHolder(mInflater.inflate(R.layout.list_item, parent, false));
     }
 
-    private void showLicensesAlertDialog() {
-        WebView view = (WebView) LayoutInflater.from(this).inflate(R.layout.dialog_licenses, null);
-        view.loadUrl("file:///android_asset/open_source_licenses.html");
-        new AlertDialog.Builder(this)
-                .setTitle("Open Source Licenses")
-                .setView(view)
-                .setPositiveButton(android.R.string.ok, null)
-                .show();
+    @Override
+    public void onBindViewHolder(DayCounterViewHolder holder, int position) {
+      DayCountWidget counter = getItem(position);
+      holder.title.setText(counter.title);
+      LocalDateTime targetDay = Times.getLocalDateTime(counter.targetDay);
+      holder.targetDay.setText(targetDay.format(Times.getDateFormatter()));
+      holder.itemView.setBackgroundColor(Integer.parseInt(counter.bodyStyle));
+      holder.dayDiff.setText(Dates.getDiffDaysString(mContext, counter.countBy, targetDay));
     }
+  }
 
-    public static class DayCounterAdapter extends ClickableRecyclerAdapter<DayCounterViewHolder> {
+  static class DayCounterViewHolder extends ClickableRecyclerAdapter.ClickableViewHolder {
 
-        private final List<DayCountWidget> mItems;
-        private final Context mContext;
-        private LayoutInflater mInflater;
+    @BindView(R.id.list_item_tv_title)
+    TextView title;
 
-        public DayCounterAdapter(Context context) {
-            this.mContext = context;
-            this.mItems = Lists.newArrayList();
-        }
+    @BindView(R.id.list_item_tv_target_date)
+    TextView targetDay;
 
-        public void add(DayCountWidget item) {
-            synchronized (mItems) {
-                mItems.add(item);
-            }
-            notifyItemInserted(getItemCount() - 1);
-        }
+    @BindView(R.id.list_item_tv_day_diff)
+    TextView dayDiff;
 
-        public void clear() {
-            synchronized (mItems) {
-                mItems.clear();
-            }
-            notifyDataSetChanged();
-        }
-
-        public DayCountWidget getItem(int position) {
-            synchronized (mItems) {
-                return mItems.get(position);
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            synchronized (mItems) {
-                return mItems.size();
-            }
-        }
-
-        @Override
-        public DayCounterViewHolder onCreateClickableViewHolder(ViewGroup parent, int viewType) {
-            if (mInflater == null) {
-                mInflater = LayoutInflater.from(mContext);
-            }
-            return new DayCounterViewHolder(mInflater.inflate(R.layout.list_item, parent, false));
-        }
-
-        @Override
-        public void onBindViewHolder(DayCounterViewHolder holder, int position) {
-            DayCountWidget counter = getItem(position);
-            holder.title.setText(counter.title);
-            LocalDateTime targetDay = Times.getLocalDateTime(counter.targetDay);
-            holder.targetDay.setText(targetDay.format(Times.getDateFormatter()));
-            holder.itemView.setBackgroundColor(Integer.parseInt(counter.bodyStyle));
-            holder.dayDiff.setText(Dates.getDiffDaysString(mContext, counter.countBy, targetDay));
-        }
-
+    DayCounterViewHolder(View view) {
+      super(view);
+      ButterKnife.bind(this, view);
     }
-
-    static class DayCounterViewHolder extends ClickableRecyclerAdapter.ClickableViewHolder {
-
-        @BindView(R.id.list_item_tv_title)
-        TextView title;
-        @BindView(R.id.list_item_tv_target_date)
-        TextView targetDay;
-        @BindView(R.id.list_item_tv_day_diff)
-        TextView dayDiff;
-
-        public DayCounterViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-
-    }
-
+  }
 }

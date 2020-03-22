@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="mmpud.project.daycountwidget">
-    
+    xmlns:tools="http://schemas.android.com/tools"
+    package="mmpud.project.daycountwidget"
+    tools:ignore="GoogleAppIndexingWarning">
+
     <application
         android:name="mmpud.project.daycountwidget.DayCountApplication"
         android:allowBackup="false"

@@ -15,14 +15,7 @@ android {
         versionName "1.94"
         versionCode 13
     }
-//    signingConfigs {
-//        release {
-//            storeFile file(KEYSTORE_FILE)
-//            storePassword KEYSTORE_PASSWORD
-//            keyAlias KEYSTORE_ALIAS
-//            keyPassword KEYSTORE_ALIAS_PASSWORD
-//        }
-//    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -40,6 +33,6 @@ dependencies {
     implementation "com.larswerkman:HoloColorPicker:1.5"
     implementation "com.facebook.rebound:rebound:0.3.8"
     implementation "com.google.guava:guava:24.1-jre"
-    implementation "com.jakewharton.threetenabp:threetenabp:1.0.5"
+    implementation "com.jakewharton.threetenabp:threetenabp:1.2.2"
     implementation "com.squareup.phrase:phrase:1.1.0"
 }
