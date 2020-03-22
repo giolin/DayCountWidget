@@ -1,6 +1,6 @@
 package mmpud.project.daycountwidget.misc;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import mmpud.project.daycountwidget.misc.ClickableRecyclerAdapter.ClickableViewHolder;
 
 /**
- * ClickableRecyclerAdapter wraps {@link android.support.v7.widget.RecyclerView.Adapter} to
+ * ClickableRecyclerAdapter wraps {@link RecyclerView.Adapter} to
  * enable catching item click events from each child item view in adapter.
  * <p/>
  * To perform onItemClick event callback, a {@link RecyclerViewOnItemClickListener} must be set

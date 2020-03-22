@@ -1,25 +1,31 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion 29
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     defaultConfig {
         applicationId "mmpud.project.daycountwidget"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion 15
+        targetSdkVersion 29
         versionName "1.94"
         versionCode 13
     }
-    signingConfigs {
-        release {
-            storeFile file(KEYSTORE_FILE)
-            storePassword KEYSTORE_PASSWORD
-            keyAlias KEYSTORE_ALIAS
-            keyPassword KEYSTORE_ALIAS_PASSWORD
-        }
-    }
+//    signingConfigs {
+//        release {
+//            storeFile file(KEYSTORE_FILE)
+//            storePassword KEYSTORE_PASSWORD
+//            keyAlias KEYSTORE_ALIAS
+//            keyPassword KEYSTORE_ALIAS_PASSWORD
+//        }
+//    }
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -27,15 +33,15 @@ android {
 }
 
 dependencies {
-    implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
-    implementation "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
-    implementation "com.larswerkman:HoloColorPicker:$rootProject.holoColorPickerVersion"
-    implementation "com.facebook.rebound:rebound:$rootProject.reboundVersion"
-    implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
-    implementation "com.google.guava:guava:$rootProject.guavaVersion"
-    implementation "com.jakewharton.threetenabp:threetenabp:$rootProject.threeTenAbpVersion"
-    implementation "com.squareup.phrase:phrase:$rootProject.phraseVersion"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation "com.jakewharton:butterknife:10.2.1"
+    annotationProcessor "com.jakewharton:butterknife-compiler:10.2.1"
+    implementation "com.larswerkman:HoloColorPicker:1.5"
+    implementation "com.facebook.rebound:rebound:0.3.8"
+    implementation "com.jakewharton.timber:timber:4.6.0"
+    implementation "com.google.guava:guava:24.1-jre"
+    implementation "com.jakewharton.threetenabp:threetenabp:1.0.5"
+    implementation "com.squareup.phrase:phrase:1.1.0"
 }

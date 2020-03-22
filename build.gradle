@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0'
+        classpath 'com.android.tools.build:gradle:3.5.3'
     }
 }
 
@@ -18,21 +18,4 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-ext {
-    // Sdk and tools
-    minSdkVersion = 16
-    targetSdkVersion = 26
-    compileSdkVersion = 26
-
-    // App dependencies
-    supportLibraryVersion = '27.1.0'
-    guavaVersion = '23.0-android'
-    threeTenAbpVersion = '1.0.5'
-    timberVersion = '4.6.0'
-    butterknifeVersion = '8.8.1'
-    reboundVersion = '0.3.8'
-    holoColorPickerVersion = '1.5'
-    phraseVersion = '1.1.0'
 }
