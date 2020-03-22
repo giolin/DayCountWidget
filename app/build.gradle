@@ -25,7 +25,6 @@ android {
 //    }
     buildTypes {
         release {
-//            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -40,7 +39,6 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:10.2.1"
     implementation "com.larswerkman:HoloColorPicker:1.5"
     implementation "com.facebook.rebound:rebound:0.3.8"
-    implementation "com.jakewharton.timber:timber:4.6.0"
     implementation "com.google.guava:guava:24.1-jre"
     implementation "com.jakewharton.threetenabp:threetenabp:1.0.5"
     implementation "com.squareup.phrase:phrase:1.1.0"

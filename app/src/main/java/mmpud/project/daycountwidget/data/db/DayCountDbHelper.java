@@ -24,8 +24,8 @@ public class DayCountDbHelper extends SQLiteOpenHelper {
 
     }
 
-    public static final int DATABASE_VERSION = Version.ADD_COLUMN_HORIZONTAL_VERTICAL_PADDING;
-    public static final String DATABASE_NAME = "DayCount.db";
+    private static final int DATABASE_VERSION = Version.ADD_COLUMN_HORIZONTAL_VERTICAL_PADDING;
+    private static final String DATABASE_NAME = "DayCount.db";
 
     private static final String CREATE_TABLE_WIDGETS = Phrase.from(""
             + "CREATE TABLE {table} ("

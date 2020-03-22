@@ -4,7 +4,7 @@
     android:background="#dd000000">
 
     <LinearLayout
-        android:id="@+id/ll_detailbox"
+        android:id="@+id/detail_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -14,17 +14,16 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_detail_diffdays"
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#55000000"
             android:gravity="center"
             android:padding="2dp"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="40sp" />
 
         <TextView
-            android:id="@+id/tv_detail_targetday"
+            android:id="@+id/target_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#33000000"
@@ -34,13 +33,14 @@
             android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/tv_detail_title"
+            android:id="@+id/time_diff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#55000000"
             android:gravity="center"
             android:padding="2dp"
             android:textColor="@android:color/white"
-            android:textSize="40sp" />
+            android:textSize="20sp" />
     </LinearLayout>
 
     <Button
@@ -48,12 +48,6 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="2dp"
         android:background="@drawable/edit_button_bg"
         android:text="@string/edit"
         android:textColor="@android:color/white"
